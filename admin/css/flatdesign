@@ -1,0 +1,215 @@
+/* Static design */
+*{
+    box-sizing: content-box;
+    padding: 0;
+    margin: 0;
+}
+html{
+    background-color: #a0b8e8;
+    color: #0038d0;
+    overflow-y: hidden;
+    font: 17px/1.55 "Poppins" ;
+}
+
+/* Main content  */
+.mainContent{
+    margin: 0 auto;
+    align-content: center;
+    width: 80%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: #e0e8f8;
+    min-height: 600px;
+    max-width: 1000px;
+    min-width: 400px;
+    border-radius: 15px;
+}
+/* Logo section */
+.logoSection {
+    margin: 0 auto;
+}
+.logoSection img{
+    min-width: 500px;
+    max-width: 500px;
+}
+
+/* Login form section */
+.loginFormSection{
+    padding: 2rem;
+}
+.loginFormSection h1{
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+.loginFormSection form {
+    display: grid;
+}
+.loginFormSection input{
+        border: none;
+        font-size: 1rem;
+        height: 30px;
+        padding: .3rem 1.7rem;
+        margin-bottom: 1rem;
+        background-color: transparent;
+        border-bottom: 1px solid #6088e0;
+        background-size: 1rem;
+        background-position: left;
+        background-repeat: no-repeat;
+}
+.loginFormSection input[type="text"]{
+    background-image: url("../assets/user.svg");
+    color: #6088e0;
+}
+.loginFormSection input[type="password"]{
+    background-image: url("../assets/password.svg");
+    color: #6088e0;
+}
+.loginFormSection input::placeholder{
+    color: #6088e0;
+}
+.loginFormSection input:focus{
+    outline: none;
+}
+.loginFormSection a{
+    text-decoration: none;
+    color: #6088e0;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+.loginFormSection a:hover{
+    color: #1848d8;
+}
+.loginFormSection button{
+    padding: .4rem;
+    font-size: 1rem;
+    height: 30px;
+    border: none;
+    color: white;
+    background-color: #0038d0;
+    border-radius: 10px;
+    width: 50%;
+    margin: 0 auto;
+}
+.loginFormSection button:hover{
+    background-color: #1848d8;
+    cursor: pointer;
+}
+
+/* Admin dashboard sidebar */
+.mainLayout{
+    display: grid;
+    grid-template-columns: 220px 1fr;
+}
+.sidebar{
+    height: 100vh;
+    background-color: #6088e0;
+}
+/* Sidebar */
+.sidebar .logo{
+    text-align: center;
+    cursor: pointer;
+}
+.sidebar img{
+    width: 100%;
+    margin-top: 1rem;
+}
+.dashboard{
+    background: url("../assets/dashboard.svg")  no-repeat 20px;
+}
+.accounts{
+    background: url("../assets/accounts.svg")  no-repeat 20px;
+}
+.materials{
+    background: url("../assets/materials.svg")  no-repeat 20px;
+    background-size: .8rem !important;
+}
+.reports{
+    background: url("../assets/reports.svg")  no-repeat 20px;
+    background-size: .7rem !important;
+}
+.sidebar nav{
+    margin-top: 1rem;
+    text-indent: 2rem;
+}
+.sidebar nav a{
+    display: block;
+    padding: 1rem;
+    background-size: 1rem;
+    font-size: 1.3rem;
+    text-decoration: none;
+    text-align: left;
+    color: #0038d0;
+}
+.sidebar nav a:hover{
+    color: #0038d0 !important;
+    background-color: #e0e8f8;
+}
+.active{
+    color: #0038d0 !important;
+    background-color: #e0e8f8;
+}
+
+/* Content */
+.content{
+    background-color: #e0e8f8;
+}
+.profile{
+    display: flex;
+    gap: .5rem;
+    justify-content: end;
+    margin: .8rem;
+}
+.profile span{
+    background-color: #a0b8e8;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 1px;
+}
+.profile-menu{
+    font-size: 1.2rem;
+    background: url("../assets/arrowdown.svg") no-repeat right;
+    background-size: .7rem;
+    width: 80px;
+}
+.profile-menu:hover{
+    cursor: pointer;
+}
+.content h3{
+    margin-left: 1rem;
+}
+/* cards */
+
+.content .container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem;
+}
+.content .container .card{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 1.7rem;
+    min-height: 50px;
+    max-height: 50px;
+    min-width: 180px;
+    max-width: 250px;
+    background-color: white;
+    border-radius: 10px;
+}
+.report-icon{
+    width: 1.6rem !important;
+}
+.content .container .card img{
+    width: 2rem;
+    text-align: left;
+}
+.menu-icon{
+    margin-top: .7rem;
+    text-align: center;
+}
+.content .container .card h4{
+    font-size: 1.4rem;
+}
