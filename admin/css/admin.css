@@ -13,6 +13,10 @@ body{
     background-color: #e0e8f8 !important;
     color: #0038d0;
 }
+h1{
+    color: #0038d0;
+
+}
 .wrapper{
     display: grid;
     grid-template-columns: 250px 1fr;
@@ -84,7 +88,6 @@ body{
 }
 .btn-logout:hover{
     background-color: rgba(50, 100, 198, 1) !important;
-
 }
 
 /* topbar */
@@ -143,10 +146,10 @@ body{
     border-color: #A0B8E8 !important;
 }
 
-table thead{
+table thead th{
     color: #3264C6;
-    font-weight: 800 !important;
-    font-size: 1.4rem;
+    font-weight: 600 !important;
+    font-size: 1rem;
 }
 table tbody{
     color: #3264C6;
@@ -179,8 +182,9 @@ table tbody{
 /* .table tr:last-child {
     border: transparent;
 } */
+
 .bottom-pagination{
-    margin-top: 2rem;
+    margin-top: rem;
 }
 .page-link{
     background-color:#3264C6 !important;
@@ -190,7 +194,31 @@ table tbody{
 .page-item{
     margin-right: 5px !important;
 }
-
+.pagination-total{
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+    align-items: baseline;
+    /* flex-direction: row-reverse; */
+}
+.pagination-total p{
+    color: #315CB0;
+}
+.pager{
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+.page-number{
+    width: 75px !important;
+    border: 1px solid #3264C6 !important;
+    border-radius: 30px !important;
+}
+.nav-tabs .nav-link.active{
+    background-color: #3264C6 !important;
+    color: #e0e8f8 !important;
+}
 /* Account  */
 .header-button{
     padding: 0 !important;
@@ -198,6 +226,12 @@ table tbody{
     display: flex;
     gap: .4rem;
     justify-content: end;
+
+}
+.btn-add{
+    background-color: #3264C6 !important;
+    border: none;
+    color: #e0e8f8;
 }
 /* searchbar */
 .searchbar{

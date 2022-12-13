@@ -16,8 +16,8 @@
                     <img src="../assets/logo.png"  width="100px" alt="">
                 </div>
                 <div class="sidebar-content">
-                    <a href="../pages/dashboard.html" >Overview</a>
-                    <a href="../pages/requisition.html">Requisition</a>
+                    <a href="../pages/dashboard.html" >Dashboard</a>
+                    <a href="../pages/requisition.html">Requisitions</a>
                     <a href="" class="active">Materials</a>
                     <a href="../pages/account.html" >Accounts</a>
                 </div>
@@ -32,6 +32,8 @@
                         <a href="">Admin</a>
                     </div>
                 </nav>
+                <h1>Materials</h1>
+
                 <!-- Table -->
                 <section>
                   <div class="container header-button">
@@ -117,23 +119,33 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <nav aria-label="Page navigation example" class="bottom-pagination">
-                                    <ul class="pagination justify-content-end">
-                                      <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                          <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                      </li>
-                                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                      <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                          <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                      </li>
-                                    </ul>
-                                </nav>
+                                <div class="pagination-total">
+                                    <div class="pager">
+                                      <p>Limit per Page</p>
+                                      <select class="form-select page-number" aria-label="Default select example">
+                                        <option value="1">1</option>
+                                        <option value="5">5</option>
+                                        <option selected value="10">10</option>
+                                      </select>
+                                    </div>
+                                    <nav aria-label="Page navigation example" class="bottom-pagination">
+                                      <ul class="pagination justify-content-end">
+                                        <li class="page-item">
+                                          <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                          </a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                          <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                          </a>
+                                        </li>
+                                      </ul>
+                                    </nav>
+                                  </div>
                             </div>
                             <!-- Non-nonsumable -->
                             <div class="tab-pane fade" id="nav-non-consumable" role="tabpanel" aria-labelledby="nav-non-consumable-tab" tabindex="0">
@@ -216,23 +228,33 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <nav aria-label="Page navigation example" class="bottom-pagination">
-                                    <ul class="pagination justify-content-end">
-                                      <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                          <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                      </li>
-                                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                      <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                          <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                      </li>
-                                    </ul>
-                                </nav>
+                                <div class="pagination-total">
+                                    <div class="pager">
+                                      <p>Limit per Page</p>
+                                      <select class="form-select page-number" aria-label="Default select example">
+                                        <option value="1">1</option>
+                                        <option value="5">5</option>
+                                        <option selected value="10">10</option>
+                                      </select>
+                                    </div>
+                                    <nav aria-label="Page navigation example" class="bottom-pagination">
+                                      <ul class="pagination justify-content-end">
+                                        <li class="page-item">
+                                          <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                          </a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                          <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                          </a>
+                                        </li>
+                                      </ul>
+                                    </nav>
+                                  </div>
                             </div>
                             <!-- Obsolete -->
                             <div class="tab-pane fade" id="nav-obsolete" role="tabpanel" aria-labelledby="nav-obsolete-tab" tabindex="0">
@@ -287,23 +309,33 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <nav aria-label="Page navigation example" class="bottom-pagination">
-                                    <ul class="pagination justify-content-end">
-                                      <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                          <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                      </li>
-                                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                      <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                      <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                          <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                      </li>
-                                    </ul>
-                                </nav>
+                                <div class="pagination-total">
+                                    <div class="pager">
+                                      <p>Limit per Page</p>
+                                      <select class="form-select page-number" aria-label="Default select example">
+                                        <option value="1">1</option>
+                                        <option value="5">5</option>
+                                        <option selected value="10">10</option>
+                                      </select>
+                                    </div>
+                                    <nav aria-label="Page navigation example" class="bottom-pagination">
+                                      <ul class="pagination justify-content-end">
+                                        <li class="page-item">
+                                          <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                          </a>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                          <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                          </a>
+                                        </li>
+                                      </ul>
+                                    </nav>
+                                  </div>
                             </div>
                         </div>
                        
