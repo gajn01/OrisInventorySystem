@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <nav id="sidebar">
+        <nav id="sidebar" >
             <div class="sidebar-nav">
                 <div class="circle">
                     <img src="../assets/logo.png"  width="100px" alt="">
@@ -25,8 +25,38 @@
             </div>
         </nav>
         <div class="content">
-            <div class="container">
-             
+          <!-- Mobile view button -->
+          <div class="top-header-mobile text-end d-lg-none ">
+            <div class="btn btn-bar"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive" aria-controls="offcanvasResponsive">
+              <img  class="bars-icon" src="../assets/bars.svg" width="20px" alt="">
+            </div>
+            <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="offcanvasResponsive" aria-labelledby="offcanvasResponsiveLabel">
+              <div class="offcanvas-header justify-content-end ">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasResponsive" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body text-center">
+                <div class="text-center">
+                  <div class="circle">
+                    <img class="mt-3" src="../assets/logo.png"  width="100px" alt="">
+                  </div>
+                  <div class="topbar-content">
+                    <a href="../pages/dashboard.html" >Dashboard</a>
+                    <a href="../pages/requisition.html">Requisitions</a>
+                    <a href="../pages/material.html">Inventory</a>
+                    <a href="" class="active">Accounts</a>
+                </div>
+                <a class="btn btn-primary btn-logout-mobile text-center" href="../index.html">Logout</a>
+                </div>
+
+       
+              </div>
+            </div>
+          </div>
+          <!-- Mobile view button -->
+
+
+
+            <div class="container-fluid">
                 <!-- Topbar -->
                 <nav class="topbar-nav">
                     <div class="profile-menu">
@@ -36,112 +66,115 @@
                 <h1>Accounts</h1>
                 <!-- Table -->
                 <section>
-                  <div class="container header-button">
+                  <div class="header-button mt-5">
                     <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here...">
                     <!-- <button type="button" class="btn btn-primary btn-add">Filter</button> -->
                     <button type="button" class="btn btn-primary btn-add">Add Account</button>
                     </div>
                 </section>
-            <!-- Table data -->
-              <section class="table-data">
-                <div class="container">
-                    <div class="account-table">
+              <!-- Table data -->
+              <section >
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="table-content table-responsive-md mt-5">
                         <table class="table">
-                            <thead>
-                                <th>#</th>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Department</th>
-                                <th>Position</th>
-                                <th>Employment Status</th>
-                                <th>Action</th>
-                            </thead>
-                            <tbody class="table-group-divider">
-                              <tr>
-                                <td>1</td>
-                                <td >ACSD12345</td>
-                                <td>Juan Arcz</td>
-                                <td>IT Department</td>
-                                <td>IT Head</td>
-                                <td>Full Time</td>
+                          <thead>
+                              <th>#</th>
+                              <th>ID</th>
+                              <th>Name</th>
+                              <th>Department</th>
+                              <th>Position</th>
+                              <th>Employment Status</th>
+                              <th>Action</th>
+                          </thead>
+                          <tbody class="table-group-divider">
+                            <tr>
+                              <td>1</td>
+                              <td >ACSD12345</td>
+                              <td>Juan Arcz</td>
+                              <td>IT Department</td>
+                              <td>IT Head</td>
+                              <td>Full Time</td>
+                              <td>
+                                <span class="action-button">View</span> | <span class="action-button">Delete</span> 
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td >ACSD12345</td>
+                              <td>Hello po</td>
+                              <td>Science Department</td>
+                              <td>Teacher</td>
+                              <td>Part Time</td>
+                              <td>
+                                <span class="action-button">View</span> | <span class="action-button">Delete</span> 
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>3</td>
+                              <td >ACSD12345</td>
+                              <td>Junryl</td>
+                              <td>Math Department</td>
+                              <td>Janitor</td>
+                              <td>Full Time</td>
+                              <td>
+                                <span class="action-button">View</span> | <span class="action-button">Delete</span> 
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>4</td>
+                              <td >ACSD12345</td>
+                              <td>Razon</td>
+                              <td>IT Department</td>
+                              <td>Teacher</td>
+                              <td>Full Time</td>
+                              <td>
+                                <span class="action-button">View</span> | <span class="action-button">Delete</span> 
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>5</td>
+                              <td >ACSD12345</td>
+                              <td>Miguel</td>
+                              <td>IT Department</td>
+                              <td>Vendor</td>
+                              <td>Full Time</td>
                                 <td>
-                                  <span class="action-button">View</span> | <span class="action-button">Delete</span> 
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>2</td>
-                                <td >ACSD12345</td>
-                                <td>Hello po</td>
-                                <td>Science Department</td>
-                                <td>Teacher</td>
-                                <td>Part Time</td>
-                                <td>
-                                  <span class="action-button">View</span> | <span class="action-button">Delete</span> 
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>3</td>
-                                <td >ACSD12345</td>
-                                <td>Junryl</td>
-                                <td>Math Department</td>
-                                <td>Janitor</td>
-                                <td>Full Time</td>
-                                <td>
-                                  <span class="action-button">View</span> | <span class="action-button">Delete</span> 
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>4</td>
-                                <td >ACSD12345</td>
-                                <td>Razon</td>
-                                <td>IT Department</td>
-                                <td>Teacher</td>
-                                <td>Full Time</td>
-                                <td>
-                                  <span class="action-button">View</span> | <span class="action-button">Delete</span> 
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>5</td>
-                                <td >ACSD12345</td>
-                                <td>Miguel</td>
-                                <td>IT Department</td>
-                                <td>Vendor</td>
-                                <td>Full Time</td>
-                                  <td>
-                                  <span class="action-button">View</span> | <span class="action-button">Delete</span> 
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                    </div>
-                    <div class="pagination-total">
-                      <div class="pager">
-                        <p>Limit per Page</p>
-                        <select class="form-select page-number" aria-label="Default select example">
-                          <option value="1">1</option>
-                          <option value="5">5</option>
-                          <option selected value="10">10</option>
-                        </select>
+                                <span class="action-button">View</span> | <span class="action-button">Delete</span> 
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
-                      <nav aria-label="Page navigation example" class="bottom-pagination">
-                        <ul class="pagination justify-content-end">
-                          <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                              <span aria-hidden="true">&laquo;</span>
-                            </a>
-                          </li>
-                          <li class="page-item"><a class="page-link" href="#">1</a></li>
-                          <li class="page-item"><a class="page-link" href="#">2</a></li>
-                          <li class="page-item"><a class="page-link" href="#">3</a></li>
-                          <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                              <span aria-hidden="true">&raquo;</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </nav>
+                      <div class="pagination-container mt-4">
+                        <div class="pager">
+                          <p>Limit per Page</p>
+                          <select class="form-select page-number" aria-label="Default select example">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option selected value="10">10</option>
+                          </select>
+                        </div>
+                        <nav aria-label="Page navigation example" class="bottom-pagination">
+                          <ul class="pagination justify-content-end">
+                            <li class="page-item">
+                              <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                              </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                              <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </nav>
+                      </div>
                     </div>
+                  </div>
               </section>
             </div>
         </div>

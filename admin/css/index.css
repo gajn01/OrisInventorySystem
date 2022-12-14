@@ -115,6 +115,7 @@ body{
     .login-form h1 {
         font-size: 2.3rem;
         margin-bottom: 3rem !important;
+        line-height: 2.7rem;
     }
     .login-form input{
         font-size: 1.4rem;
