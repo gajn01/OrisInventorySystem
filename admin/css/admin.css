@@ -13,9 +13,8 @@ body{
     background-color: #e0e8f8 !important;
     color: #0038d0;
 }
-h1{
+h1,h2{
     color: #0038d0;
-
 }
 .wrapper{
     display: grid;
@@ -134,6 +133,7 @@ h1{
     margin: 0 ;
 }
 /* Table */
+
 .table-group-divider{
     border-color: #A0B8E8 !important;
 }
@@ -281,9 +281,30 @@ table tbody{
     left: 5.6rem;
 }
 
+/* Modal */
+.modal-header,.modal-footer{
+    background: #e0e8f8 !important;
+}
+.modal-body{
+    border-top: 2px solid #315CB0 !important;
+    background: #e0e8f8 !important;
+}
+
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
+@media (max-width: 412px) {
+ .table-content{
+    max-width: 380px !important;
+ }
+}
+
+@media (max-width: 576px) {
+    .table-content{
+       max-width: 380px !important;
+    }
+}
+
 @media (max-width: 992px) {
     #sidebar{
         display: none;
@@ -294,5 +315,11 @@ table tbody{
     html{
         overflow-y: auto;
     }
-   
+    .table-content .table{
+        display: block !important;
+        max-width: fit-content !important;
+    }
+
 }
+
+
