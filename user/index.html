@@ -4,25 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/landingpage.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <title>Oris Invetory System</title>
 </head>
 <body>
-    <div class="mainContent">
-        <section class="logoSection">
-            <img src="assets/logo.png" alt="">
-        </section>
+    <div class="wrapper vertical-center">
+        <div class="container">
 
-        <section class="loginFormSection">
-            <h1>Welcome Admin!</h1>
-            <form action="" method="post">
-                <input type="text" placeholder="Enter username" id="username" name="username">
-                <input type="password" id="password" name="password" placeholder="Enter Password">
-                <a href="#">Forgot Password?</a>
-                <button>Login</button>
-            </form>
-        </section>
+            <div id="login-content">
+                <div class="row login-form">
+                    <div class="col-lg text-center"> 
+                        <img src="assets/logo.png" alt="">
+                    </div>
+                    <div class="col-md text-center">
+                        <form action="pages/dashboard.html" method="post">
+                            <h1>Welcome Admin!</h1>
+                            <div>
+                                <div class="circle"></div>
+                                <input  type="text"  id="username" name="username" placeholder="Enter Username">
+                            </div>
+                            <div>
+                                <div class="circle"></div>
+                                <input  type="password" id="password" name="password" placeholder="Enter Password">
+                            </div>
+                            <a href="pages/forgot-password.html">Forgot Password?</a>
+                            <button type="submit" class="btn btn-login" >Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

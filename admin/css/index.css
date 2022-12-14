@@ -1,34 +1,36 @@
-/* Static design */
+/* Reboot design*/
 *{
     box-sizing: content-box;
     padding: 0;
     margin: 0;
     /* transition: all 0.3s; */
-    font: 17px/1.55 'Avenir';
+    font: 20px/1.55 'Avenir';
     font-style: normal;
-}
-html{
-    overflow-y: hidden;
 }
 body{
     background-color: #a0b8e8 !important;
     color: #0038d0;
 }
+
 .vertical-center {
     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
     min-height: 100vh; /* These two lines are counted as one :-)       */
     display: flex;
     align-items: center;
 }
-.wrapper{
-    max-width: 1000px !important;
-}
-.login-form{
+
+/* Login layout */
+#login-content{
+    padding: 2rem;
     background-color: #EAF1FF;
     border-radius: 25px;
 }
+#login-content img{
+    width: 100%;
+    max-width: 500px;
+}
+
 .login-form form{
-    margin-top: 3rem;
     text-align: center;
 }
 .login-form .col img{
@@ -36,15 +38,16 @@ body{
 }
 .login-form h1 {
     font-weight: 500;
-    font-size: 31.9544px;
+    font-size: 2rem;
     line-height: 44px;
     margin-top: 3rem;
+    margin-bottom: 3rem;
     color: #315CB0;
 }
 .login-form input{
     width: 100%;
     border: none;
-    font-size: 1rem;
+    font-size: 1.2rem;
     height: 30px;
     padding: .3rem 1.9rem;
     margin-bottom: 1.5rem;
@@ -78,9 +81,11 @@ body{
     display: block;
     color: #8497BE;
     text-decoration: none;
+    font-size: 1.2rem;
+
 }
 .login-form button{
-    height: 40px;
+    height: 50px;
     color: white;
     background-color: #3264C6;
     border-radius: 10px;
@@ -88,11 +93,64 @@ body{
     margin-top: 1rem;
     margin-bottom: 1rem;
     font-weight: 500;
-    font-size: 17.0423px;
+    font-size: 1rem;
     line-height: 23px
 }
 .login-form button:hover{
     background-color: #1848d8;
     cursor: pointer;
 }
+
+/* Meduim size */
+@media (max-width: 768px ) {
+    .wrapper{
+        margin: 1rem 0;
+    }
+    #login-content img{
+        width: 50%;
+    }
+    .btn-login{
+        width: 100% !important;
+    }
+    .login-form h1 {
+        font-size: 2.3rem;
+        margin-bottom: 3rem !important;
+    }
+    .login-form input{
+        font-size: 1.4rem;
+    }
+    .login-form a{
+        font-size: 1.2rem;
+    }
+
+}
+
+/* Large size */
+
+@media (max-width: 992px ) {
+    .wrapper{
+        margin: 1rem 0;
+    }
+    #login-content img{
+        width: 70%;
+    }
+    .btn-login{
+        width: 100% !important;
+    }
+    .login-form h1{
+        font-size: 2.3rem;
+        margin-bottom: 2rem !important;
+    }
+    .login-form input{
+        font-size: 1.6rem;
+    }
+    .login-form a{
+        font-size: 1.3rem;
+    }
+
+}
+
+
+
+
 
