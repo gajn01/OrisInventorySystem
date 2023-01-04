@@ -97,6 +97,8 @@ h1,h2{
     margin-top: 2rem !important;
     margin: 0 auto;
     width: 95%;
+    overflow-y: auto;
+    height: 95vh;
 }
 
 /* Thumbnail */
