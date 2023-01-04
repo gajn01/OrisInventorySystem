@@ -79,11 +79,15 @@ body{
 .login-form a{
     text-align: left !important;
     display: block;
-    color: #8497BE;
-    text-decoration: none;
-    font-size: 1.2rem;
-
+    color: #8497BE !important;
+    text-decoration: none ;
+    font-size: 1.2rem !important;
+    cursor: pointer;
 }
+.login-form a:hover{
+    color: #315CB0  !important;
+}
+
 .login-form button{
     height: 50px;
     color: white;
