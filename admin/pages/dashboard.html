@@ -6,7 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/admin.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <title>Admin</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <link href="../css/toastr.css" rel="stylesheet"/>
+    <script src="../js/toastr.js"></script>
+    <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
+    <title>Dashboard | Oris Inventory System</title>
 </head>
 <body>
     <div class="wrapper">
@@ -32,7 +38,6 @@
                         <a href="">Admin</a>
                     </div>
                 </nav>
-
                 <h1>Dashboard</h1>
                 <!-- Thumbnail -->
                 <section class="thumbnail">
@@ -68,117 +73,27 @@
                     </div>
                 </section>
 
-                <!-- Table -->
-                <section class="table-data">
-                    <div class="container">
-                        <div class="material-table">
-                            <table class="table ">
-                                <thead>
-                                    <th>#</th>
-                                    <th>Item Code</th>
-                                    <th>Product Name</th>
-                                    <th>Description</th>
-                                    <th>Quantity</th>
-                                    <th>Unit</th>
-                                    <th>Location</th>
-                                    <th>Person-in-charge</th>
-                                    <th>Inventory Date</th>
-                                    <th>Receiving Date</th>
-                                    <th>Action</th>
-                                </thead>
-                                <tbody class="table-group-divider">
-                                    <tr>
-                                        <td>1</td>
-                                        <td>100002</td>
-                                        <td>Muriatic</td>
-                                        <td>1L</td>
-                                        <td>2</td>
-                                        <td>Bottle</td>
-                                        <td>Office of the President</td>
-                                        <td>Danica De Guia</td>
-                                        <td>00/00/0000</td>
-                                        <td>00/00/0000</td>
-                                        <td>
-                                            <span class="action-button">View</span> | <span class="action-button">Delete</span> 
-                                        </td>
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>100002</td>
-                                        <td>Muriatic</td>
-                                        <td>1L</td>
-                                        <td>2</td>
-                                        <td>Bottle</td>
-                                        <td>Office of the President</td>
-                                        <td>Danica De Guia</td>
-                                        <td>00/00/0000</td>
-                                        <td>00/00/0000</td>
-                                        <td>
-                                            <span class="action-button">View</span> | <span class="action-button">Delete</span> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>100002</td>
-                                        <td>Muriatic</td>
-                                        <td>1L</td>
-                                        <td>2</td>
-                                        <td>Bottle</td>
-                                        <td>Office of the President</td>
-                                        <td>Danica De Guia</td>
-                                        <td>00/00/0000</td>
-                                        <td>00/00/0000</td>
-                                        <td>
-                                            <span class="action-button">View</span> | <span class="action-button">Delete</span> 
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <nav aria-label="Page navigation example" class="bottom-pagination">
-                            <ul class="pagination justify-content-end">
-                              <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                  <span aria-hidden="true">&laquo;</span>
-                                </a>
-                              </li>
-                              <li class="page-item"><a class="page-link" href="#">1</a></li>
-                              <li class="page-item"><a class="page-link" href="#">2</a></li>
-                              <li class="page-item"><a class="page-link" href="#">3</a></li>
-                              <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                  <span aria-hidden="true">&raquo;</span>
-                                </a>
-                              </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    
-                </section>
-
+            <!--     <div class="user-input-section">
+                    <section class="heading">
+                      <div class="title">QRcodes</div>
+                      <div class="sub-title">Generate QRCode for anything!</div>
+                    </section>
+                    <section class="user-input">
+                      <input type="text" placeholder="Type something..." name="input_text" id="input_text" autocomplete="off">
+                      <button class="button" type="submit">Generate<i class="fa-solid fa-rotate"></i></button>
+                    </section>
+                  </div>
+                  <div class="qr-code-container">
+                    <div class="qr-code" style></div>
+                </div> -->
             </div>
         </div>
     </div>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
+    <script src="../js/function.js"></script>
+    <script src="../js/generate-qr.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

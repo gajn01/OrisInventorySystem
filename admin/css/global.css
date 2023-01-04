@@ -1,0 +1,40 @@
+*{
+    box-sizing: content-box;
+    padding: 0;
+    margin: 0;
+    /* transition: all 0.3s; */
+    font: 20px/1.55 'Avenir';
+    font-style: normal;
+}
+.vertical-center {
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
+    display: flex;
+    align-items: center;
+}
+.circle{
+    background: #8497BE;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    display: block;
+    position: absolute;
+    margin-top: 24px;
+    margin-left: 4px;
+}
+.txt-primary{
+    color: #315CB0;
+}
+.txt-secondary{
+    color: #a0b8e8;
+}
+.bg-primary{
+    background-color: #315CB0;
+}
+.bg-secondary{
+    background-color: #a0b8e8;
+}
+label.error{
+    color: red;
+    font-size: .8rem;
+}
