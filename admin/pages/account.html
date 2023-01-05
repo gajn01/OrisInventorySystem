@@ -14,7 +14,7 @@
     <title>Account | Oris Inventory System</title>
     <script>
       window.onload = function () {
-      
+        onViewAccountList();
       }
     </script>
 </head>
@@ -66,7 +66,7 @@
               <!-- Table -->
               <section>
                 <div class="header-button mt-5">
-                  <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here...">
+                  <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch('account')">
                   <!-- <button type="button" class="btn btn-primary btn-add">Filter</button> -->
                   <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addUserModal">Add Account</button>
                   </div>
@@ -76,96 +76,41 @@
                 <div class="row">
                   <div class="col-12">
                     <div class="table-content table-responsive-md mt-5">
-                      <table class="table">
+                      <table class="table" >
                         <thead>
                             <th>#</th>
-                            <th>ID</th>
                             <th>Name</th>
                             <th>Department</th>
                             <th>Position</th>
                             <th>Employment Status</th>
+                            <th>In Charge</th>
                             <th>Action</th>
                         </thead>
-                        <tbody class="table-group-divider">
-                          <tr>
-                            <td>1</td>
-                            <td >ACSD12345</td>
-                            <td>Juan Arcz</td>
-                            <td>IT Department</td>
-                            <td>IT Head</td>
-                            <td>Full Time</td>
-                            <td>
-                              <span class="action-button">View</span> | <span class="action-button">Delete</span> 
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>2</td>
-                            <td >ACSD12345</td>
-                            <td>Hello po</td>
-                            <td>Science Department</td>
-                            <td>Teacher</td>
-                            <td>Part Time</td>
-                            <td>
-                              <span class="action-button">View</span> | <span class="action-button">Delete</span> 
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>3</td>
-                            <td >ACSD12345</td>
-                            <td>Junryl</td>
-                            <td>Math Department</td>
-                            <td>Janitor</td>
-                            <td>Full Time</td>
-                            <td>
-                              <span class="action-button">View</span> | <span class="action-button">Delete</span> 
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>4</td>
-                            <td >ACSD12345</td>
-                            <td>Razon</td>
-                            <td>IT Department</td>
-                            <td>Teacher</td>
-                            <td>Full Time</td>
-                            <td>
-                              <span class="action-button">View</span> | <span class="action-button">Delete</span> 
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>5</td>
-                            <td >ACSD12345</td>
-                            <td>Miguel</td>
-                            <td>IT Department</td>
-                            <td>Vendor</td>
-                            <td>Full Time</td>
-                              <td>
-                              <span class="action-button">View</span> | <span class="action-button">Delete</span> 
-                            </td>
-                          </tr>
-                        </tbody>
+                        <tbody class="table-group-divider"> </tbody>
                       </table>
                     </div>
                     <div class="pagination-container mt-4">
                       <div class="pager">
                         <p>Limit per Page</p>
-                        <select class="form-select page-number" aria-label="Default select example">
+                        <select class="form-select page-number" id="page_limit" onchange="onSelectLimit('account')" aria-label="Default select example">
                           <option value="1">1</option>
                           <option value="5">5</option>
                           <option selected value="10">10</option>
+                          <option value="20">20</option>
+                          <option value="50">50</option>
+                          <option value="1000000">All</option>
                         </select>
                       </div>
                       <nav aria-label="Page navigation example" class="bottom-pagination">
                         <ul class="pagination justify-content-end">
                           <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
+                            <a class="page-link" href="#" onclick="onPage(0,'account')" id="prev" aria-label="Previous">
                               <span aria-hidden="true">&laquo;</span>
                             </a>
                           </li>
-                          <li class="page-item"><a class="page-link" href="#">1</a></li>
-                          <li class="page-item"><a class="page-link" href="#">2</a></li>
-                          <li class="page-item"><a class="page-link" href="#">3</a></li>
+                          <li class="page-item "><a class="page-link" href="#" id="page_number">1</a></li>
                           <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
+                            <a class="page-link" href="#" onclick="onPage(1,'account')" id="next" aria-label="Next">
                               <span aria-hidden="true">&raquo;</span>
                             </a>
                           </li>
@@ -227,7 +172,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-primary" onclick="onCreateAccount()">Submit</button>
+                      <button type="submit" class="btn btn-add" onclick="onCreateAccount()">Submit</button>
                     </div>
                   </div>
                 </form>

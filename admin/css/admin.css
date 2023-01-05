@@ -1,11 +1,5 @@
-*{
-    box-sizing: content-box;
-    padding: 0;
-    margin: 0;
-    /* transition: all 0.3s; */
-    font: 17px/1.55 'Avenir';
-    font-style: normal;
-}
+@import "global.css";
+
 html{
     overflow-y: hidden;
 }
@@ -98,7 +92,7 @@ h1,h2{
     margin: 0 auto;
     width: 95%;
     overflow-y: auto;
-    height: 95vh;
+    height: 97vh;
 }
 
 /* Thumbnail */
@@ -157,6 +151,10 @@ table tbody{
 .table{
     text-align: center;
     margin: 0 !important;
+}
+.table-content{
+    overflow-y: auto;
+    height: 67vh;
 }
 
 .action-button{
@@ -217,10 +215,16 @@ table tbody{
     justify-content: end;
 
 }
+.btn-primary, .btn-add{
+    border-radius: 50px !important;
+}
 .btn-add{
     background-color: #3264C6 !important;
     border: none;
-    color: #e0e8f8;
+    color: #e0e8f8 !important;
+}
+.btn-add:hover{
+    opacity: .8;
 }
 /* searchbar */
 .searchbar{
@@ -290,6 +294,13 @@ table tbody{
 .modal-body{
     border-top: 2px solid #315CB0 !important;
     background: #e0e8f8 !important;
+}
+
+.form-control{
+    border-radius: 30px !important;
+}
+.col-form-label{
+    text-indent: .4rem !important;
 }
 
 /* ---------------------------------------------------

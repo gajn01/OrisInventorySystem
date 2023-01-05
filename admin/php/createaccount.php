@@ -15,7 +15,12 @@ include("connection.php"); //Establishing connection with our database
         $employment_status= $_POST['employment_status'];
         $position= $_POST['position'];
         $department= $_POST['department'];
-        $is_incharge= $_POST['is_incharge'];
+
+        if(isset($_POST['is_incharge']) ){
+            $is_incharge = 1;
+        }else{
+            $is_incharge = 0;
+        }
 
         
 
@@ -51,9 +56,10 @@ include("connection.php"); //Establishing connection with our database
                 $last_id = $db->insert_id;
             /* after insert into tbl_account insert into tbl_account_profile */
                 $sql_insert_profile=("INSERT INTO tbl_account_profile (account_id,firstname,lastname,department,position,employement_status,is_incharge) 
-                VALUES ('$last_id','$firstname','$lastname','$department','$position','$employement_status','$is_incharge')");
+                VALUES ('$last_id','$firstname','$lastname','$department','$position','$employment_status','$is_incharge')");
                  if (mysqli_query($db, $sql_insert_profile)) {
                     $form_data['success'] = true;
+                    $form_data['data'] = $password;
                     $form_data['success_msg'] = "Successfully registered";
                 } else {
                     $form_data['success'] = false;
