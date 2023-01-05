@@ -113,7 +113,10 @@ function onCreateAccount() {
           if(response.success){
             alert(response.success_msg)
             // $('#addUserModal').modal('hide');
-            window.location.reload();
+            let subject = "Account Creation";
+            let body = "Greetings!, <br> <br>"+ $('#firstname').val() +" "+ $('#lastname').val() +" your password is: " + response.data;
+            sendMail($('#email').val(),subject,body);
+            // window.location.reload();
           }else{
             alert(response.error_msg)
           }

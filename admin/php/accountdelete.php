@@ -7,14 +7,14 @@ include("connection.php");
         $sql_delete_account=("DELETE FROM  tbl_account WHERE id='$account_id' ");
         if (mysqli_query($db, $sql_delete_account)) {
             $form_data['success'] = true;
-            $form_data['success_msg'] = "Record deleted successfully";
+            $form_data['success_msg'] = "Record successfully delete";
         } else {
             $form_data['success'] = false;
-            $form_data['error_msg'] = "Record failed to deleted";
+            $form_data['error_msg'] = "Record failed to delete";
         }
     } else {
         $form_data['success'] = false;
-        $form_data['error_msg'] = "Record failed to deleted";
+        $form_data['error_msg'] = "Record failed to delete";
     }
     echo json_encode($form_data);
     $db->close();
