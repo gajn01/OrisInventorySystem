@@ -1,10 +1,3 @@
-/* Alert Options */
-toastr.options = {
-  "closeButton": true,
-  "positionClass": "toast-top-center",
-  "newestOnTop": true,
-  "preventDuplicates":true
-}
 /* Pagination fields */
 let ctr = 0;
 let page = 0;
@@ -18,6 +11,7 @@ const employment_status_input = document.getElementById("employment_status");
 const position_input = document.getElementById("position");
 const department_input = document.getElementById("department");
 const is_incharge_input = document.getElementById("is_incharge");
+const account_id_input = document.getElementById("account_id");
 
 /* Account Form */
 
@@ -89,10 +83,10 @@ function onLogin() {
         }).done(function (response) {
           if(response.success){
             sessionStorage.setItem("account",JSON.stringify(response.data));
+            alert(response.success_msg);
             location.href = '../admin/pages/dashboard.html'
-            toastr.success(response.success_msg)
           }else{
-            toastr.error(response.error_msg)
+            alert(response.error_msg);
           }
         }).fail(function (data){
           console.log(data);
@@ -110,18 +104,18 @@ function onCreateAccount() {
     },
     submitHandler: function (form) {
         $.ajax({  
-          url:"../php/createaccount.php",  
+          url:"../php/accountcreate.php",  
           method:"POST",  
           data: $('#account_form').serialize(), 
           dataType: "json",
           encode: true, 
         }).done(function (response) {
           if(response.success){
-            toastr.success(response.success_msg);
+            alert(response.success_msg)
             // $('#addUserModal').modal('hide');
             window.location.reload();
           }else{
-            toastr.error(response.error_msg)
+            alert(response.error_msg)
           }
         }).fail(function (response){
           console.log(response.responseText);
@@ -133,7 +127,7 @@ function onViewAccountList() {
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
   $.ajax({  
-    url:"../php/viewaccount.php",  
+    url:"../php/accountview.php",  
     method:"POST",  
     data: {limit:limit,page:page*limit,search:search},  
     dataType: "json",
@@ -175,7 +169,7 @@ function onViewAccountList() {
       onGenerateAccoutList(response.data);
       sessionStorage.setItem("account_list",JSON.stringify(response.data));
     }else{
-      toastr.error(response.error_msg)
+      alert(response.error_msg);
       template = 
       `<tr>
           <td colspan="10">No records found!</td>
@@ -206,8 +200,8 @@ function onGenerateAccoutList(data) {
                 <td>${element.employement_status}</td>
                 <td>${element.is_incharge}</td>
                 <td>
-                    <span  data-bs-toggle="modal" data-bs-target="#addUserModal" class="action-button" onClick="onClickEditAccount(${element.id})">Edit</span> | 
-                    <span class="action-button" onClick="onDeleteAccount(${element.id})" >Delete</span> 
+                    <span  data-bs-toggle="modal" data-bs-target="#addUserModal" class="action-button" onClick="onClickEditAccount(${element.account_id})">Edit</span> | 
+                    <span class="action-button" onClick="onDeleteAccount(${element.account_id})" >Delete</span> 
                 </td>
             </tr>`;
         table.innerHTML += template;
@@ -220,13 +214,14 @@ function onClickEditAccount(account_id) {
   let account_list = sessionStorage.getItem("account_list");
   let json_account = JSON.parse(account_list);
   json_account.forEach(element => {
-    if(element.id == account_id){
+    if(element.account_id == account_id){
       firstname_input.value = element.firstname;
       lastname_input.value = element.lastname;
       email_input.value = element.email;
       employment_status_input.value = element.employement_status;
       position_input.value = element.position;
       department_input.value = element.department;
+      account_id_input.value = element.account_id;
       if(element.is_incharge == "Yes"){
         $("#is_incharge").prop("checked",true);
       }else{
@@ -235,33 +230,75 @@ function onClickEditAccount(account_id) {
     }
   });
 }
-function onClickAddAccount() {
+function onClickAddAccount(acount_id) {
   document.getElementById("account_form").reset();
   document.getElementById("addUserModalLabel").innerText = "Create Account";
   document.getElementById("create_account_submit").setAttribute("onclick","onCreateAccount()");
 }
-function onUpdateAccount(params) {
+function onUpdateAccount() {
+  $('#account_form').validate({
+    rules: {
+      firstname: { required: true },
+      lastname: { required: true },
+      position : { required: true }
+    },
+    submitHandler: function (form) {
+      $.ajax({  
+        url:"../php/accountupdate.php",  
+        method:"POST",  
+        data: $('#account_form').serialize(), 
+        dataType: "json",
+        encode: true, 
+      }).done(function (response) {
+        if(response.success){
+          alert(response.success_msg);
+          // $('#addUserModal').modal('hide');
+          window.location.reload();
+        }else{
+          alert(response.error_msg);
+
+        }
+      }).fail(function (response){
+        console.log(response.responseText);
+      });
+    }
+    });
+}
+function onDeleteAccount(account_id) {
+  let text = "Do you want to delete the account?";
+  if (confirm(text)) {
     $.ajax({  
-      url:"../php/updateaccount.php",  
+      url:"../php/accountdelete.php",  
       method:"POST",  
-      data: $('#account_form').serialize(), 
+      data: {account_id:account_id}, 
       dataType: "json",
       encode: true, 
     }).done(function (response) {
       if(response.success){
-        toastr.success(response.success_msg);
-        // $('#addUserModal').modal('hide');
+        alert(response.success_msg);
         window.location.reload();
       }else{
-        toastr.error(response.error_msg)
+        alert(response.error_msg);
       }
     }).fail(function (response){
       console.log(response.responseText);
     });
+  }
 }
 
-function onDeleteAccount(account_id) {
-  
+function sendMail(email,subject,body) {
+  $.ajax({  
+         url:"../php/sendemail.php",  
+         method:"POST",  
+         data: { email:email,
+                 subject:subject,
+                 body:body},
+         success: function(response) {
+             /* alert('Email sent'); */
+         },error: function() {
+             alert('System error: Ajax not working properly');
+         }  
+     }); 
 }
 
 
