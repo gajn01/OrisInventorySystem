@@ -15,6 +15,7 @@
     <script>
       window.onload = function () {
         onViewAccountList();
+        
       }
     </script>
 </head>
@@ -68,7 +69,7 @@
                 <div class="header-button mt-5">
                   <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch('account')">
                   <!-- <button type="button" class="btn btn-primary btn-add">Filter</button> -->
-                  <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addUserModal">Add Account</button>
+                  <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addUserModal" onclick="onClickAddAccount()">Add Account</button>
                   </div>
               </section>
             <!-- Table data -->
@@ -126,7 +127,7 @@
                 <form id="account_form">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h2 class="modal-title fs-5" id="addUserModalLabel">Create User</h2>
+                      <h2 class="modal-title fs-5" id="addUserModalLabel">Create Account</h2>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -172,7 +173,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-add" onclick="onCreateAccount()">Submit</button>
+                      <button type="submit" class="btn btn-add" id="create_account_submit">Submit</button>
                     </div>
                   </div>
                 </form>

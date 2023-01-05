@@ -12,8 +12,8 @@
 //  or the following configurations through SSL should work as well. 
 //  $port = 465;
 //  $secure = "ssl";
-  $username = "onlinerepository2022@gmail.com";
-  $password = "qsomjziykakgawfv";
+  $username = "2023.oris@gmail.com";
+  $password = "nkqhapfyrwockhus";
 
   $email = $_POST['email'];
   $subject = $_POST['subject'];
