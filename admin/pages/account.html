@@ -82,7 +82,6 @@
                             <th>Department</th>
                             <th>Position</th>
                             <th>Employment Status</th>
-                            <th>In Charge</th>
                             <th>Action</th>
                         </thead>
                         <tbody class="table-group-divider"> </tbody>
@@ -132,42 +131,36 @@
                       <input class="form-control mb-3 d-none"   type="text"  id="account_id" name="account_id" >
                         <div class="row">
                           <div class="col-md-4 col-sm-12">
-                            <label for="firstname" class="col-sm-12 col-md-12 col-form-label">Firstname</label>
+                            <label for="firstname" class="col-sm-12 col-md-12 col-form-label">Firstname <span class="require"> * </span></label>
                             <input class="form-control mb-3"  type="text"  id="firstname" name="firstname" required >
                           </div>
                           <div class="col-md-4 col-sm-12">
-                            <label for="lastname" class="col-sm-12 col-md-12 col-form-label">Lastname</label>
+                            <label for="lastname" class="col-sm-12 col-md-12 col-form-label">Lastname  <span class="require"> * </span></label>
                             <input class="form-control mb-3"  type="text"  id="lastname" name="lastname" required >
                           </div>
                           <div class="col-md-4 col-sm-12">
-                            <label for="email" class="col-sm-12 col-md-12 col-form-label">Email Address</label>
+                            <label for="email" class="col-sm-12 col-md-12 col-form-label">Email Address  <span class="require"> * </span></label>
                             <input class="form-control mb-3"  type="text"  id="email" name="email" required>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col-md-4 col-sm-12">
-                            <label for="department" class="col-sm-12  col-md-12 col-form-label">Department</label>
+                            <label for="department" class="col-sm-12  col-md-12 col-form-label">Department  <span class="require"> * </span></label>
                             <select class="form-select form-control" aria-label="Default select example" id="department" name="department" required >
                               <option value="IT" selected >IT</option>
                               <option value="Science">Science</option>
                             </select>
                           </div>
                           <div class="col-md-4 col-sm-12">
-                            <label for="position" class="col-sm-12 col-md-12 col-form-label">Position</label>
+                            <label for="position" class="col-sm-12 col-md-12 col-form-label">Position  <span class="require"> * </span></label>
                             <input class="form-control mb-3"  type="text"  id="position" name="position" required >
                           </div>
                           <div class="col-md-4 col-sm-12">
-                            <label for="employment_status" class="col-sm-12 col-md-12 col-form-label">Employment Status</label>
+                            <label for="employment_status" class="col-sm-12 col-md-12 col-form-label">Employment Status  <span class="require"> * </span></label>
                             <select class="form-select form-control" aria-label="Default select example" id="employment_status" name="employment_status" required >
                               <option value="Full Time" selected >Full Time</option>
                               <option value="Part Time">Part Time</option>
                             </select>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-12">
-                            <input class="form-check-input" type="checkbox" id="is_incharge" name="is_incharge" value=on >
-                            <label class="form-check-label" for="is_incharge">In charge</label>
                           </div>
                         </div>
                     </div>
@@ -182,7 +175,6 @@
           </div>
         </div>
     </div>
-
     <script src="../js/function.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>

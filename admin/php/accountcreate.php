@@ -13,12 +13,6 @@ include("connection.php"); //Establishing connection with our database
     $employment_status= $_POST['employment_status'];
     $position= $_POST['position'];
     $department= $_POST['department'];
-
-    if(isset($_POST['is_incharge']) ){
-        $is_incharge = 1;
-    }else{
-        $is_incharge = 0;
-    }
 // To protect from MySQL injection
     $firstname = stripslashes($firstname);
     $lastname = stripslashes($lastname);
@@ -50,8 +44,8 @@ include("connection.php"); //Establishing connection with our database
         if (mysqli_query($db, $sql_insert_account)) {
             $last_id = $db->insert_id;
         /* after insert into tbl_account insert into tbl_account_profile */
-            $sql_insert_profile=("INSERT INTO tbl_account_profile (account_id,email,firstname,lastname,department,position,employement_status,is_incharge) 
-            VALUES ('$last_id','$email','$firstname','$lastname','$department','$position','$employment_status','$is_incharge')");
+            $sql_insert_profile=("INSERT INTO tbl_account_profile (account_id,email,firstname,lastname,department,position,employement_status) 
+            VALUES ('$last_id','$email','$firstname','$lastname','$department','$position','$employment_status')");
                 if (mysqli_query($db, $sql_insert_profile)) {
                 $form_data['success'] = true;
                 $form_data['data'] = $password;

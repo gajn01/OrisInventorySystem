@@ -38,3 +38,6 @@ label.error{
     color: red;
     font-size: .8rem;
 }
+.require{
+    color: red;
+}
