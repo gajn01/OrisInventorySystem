@@ -471,6 +471,19 @@ function onDeleteMaterial(account_id) {
 }
 
 
+function onChangeCategory() {
+  let category =  $('#category').val();
+  if(category == 1){
+    document.getElementById("remarks_div").setAttribute("class", "col-lg-6");
+    document.getElementById("status_div").classList.toggle("d-none");
+  }else{
+    document.getElementById("remarks_div").setAttribute("class", "col-lg-12");
+    document.getElementById("status_div").classList.toggle("d-none");
+  }
+  
+}
+
+
 function sendMail(email,subject,body) {
   $.ajax({  
          url:"../php/sendemail.php",  

@@ -285,7 +285,7 @@
                           <div class="row">
                             <div class="col-md-6 col-sm-12">
                               <label for="category" class="col-sm-12 col-md-12 col-form-label">Category</label>
-                              <select class="form-select form-control" aria-label="Default select example" id="category" name="category" >
+                              <select class="form-select form-control" aria-label="Default select example" id="category" name="category" onchange="onChangeCategory()">
                                 <option value="1" selected >Supplies</option>
                                 <option value="2">Fixed Assets</option>
                                 <option value="3">Obsolete</option>
@@ -346,9 +346,16 @@
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-md-12 col-sm-12">
+                            <div class="col-md-6 col-sm-12 col-lg-6" id="remarks_div">
                               <label for="product_remarks" class="col-sm-12 col-md-12 col-form-label">Product Remarks</label>
-                              <textarea class="form-control mb-3" id="product_remarks" name="product_remarks" ></textarea>
+                              <input class="form-control mb-3" type="text" id="product_remarks" name="product_remarks" >
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-lg-6" id="status_div">
+                              <label for="status" class="col-sm-12 col-md-12 col-form-label">Status</label>
+                              <select class="form-select form-control" aria-label="Default select example" id="status" name="status" >
+                                <option value="1" selected >Working</option>
+                                <option value="2">Not Working</option>
+                              </select>
                             </div>
                           </div>
                         </form>
