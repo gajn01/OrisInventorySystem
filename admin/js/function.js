@@ -14,8 +14,7 @@ const account_id_input = document.getElementById("account_id");
 
 /* Material Fields */
 
-
-const item_code_input = document.getElementById("item_code");
+const product_code_input = document.getElementById("product_code");
 const inventory_date_input = document.getElementById("inventory_date");
 const receiving_date_input = document.getElementById("receiving_date");
 
@@ -23,9 +22,6 @@ inventory_date_input.max = new Date().toISOString().split("T")[0];
 receiving_date_input.max = new Date().toISOString().split("T")[0];
 inventory_date_input.value = new Date().toISOString().split("T")[0];
 receiving_date_input.value = new Date().toISOString().split("T")[0];
-
-
-
 
 function onSelectLimit(table) {
   page = 0;
@@ -293,27 +289,24 @@ function onDeleteAccount(account_id) {
 /* Material Functions */
 
 function onCreateMaterial() {
-  $('#account_form').validate({
+  $('#material_form').validate({
     rules: {
-      firstname: { required: true },
-      lastname: { required: true },
-      email: { required: true ,email: true},
-      position : { required: true }
+      product_name: { required: true },
+      product_description: { required: true },
+      quantity: { required: true },
+      location : { required: true }
     },
     submitHandler: function (form) {
         $.ajax({  
-          url:"../php/accountcreate.php",  
+          url:"../php/materialcreate.php",  
           method:"POST",  
-          data: $('#account_form').serialize(), 
+          data: $('#material_form').serialize(), 
           dataType: "json",
           encode: true, 
         }).done(function (response) {
           if(response.success){
             alert(response.success_msg)
-            // $('#addUserModal').modal('hide');
-            let subject = "Account Creation";
-            let body = "Greetings!, <br> <br> <a href='http://orisadmin.ezyro.com/'>Login here </a> " + $('#firstname').val() +" "+ $('#lastname').val() +" your password is: " + response.data;
-            sendMail($('#email').val(),subject,body);
+           
             // window.location.reload();
           }else{
             alert(response.error_msg)
@@ -420,11 +413,11 @@ function onClickEditMaterial(account_id) {
   });
 }
 function onClickAddMaterial() {
-  var id = btoa(Math.random()).slice(0, 5);
-  item_code_input.value = id;
-  document.getElementById("material_form").reset();
-  document.getElementById("addUserModalLabel").innerText = "Create Account";
-  document.getElementById("create_account_submit").setAttribute("onclick","onCreateAccount()");
+  var id = btoa(Math.random()).slice(0, 9);
+  product_code_input.value = id;
+  /* document.getElementById("material_form").reset(); */
+  document.getElementById("addMaterialModalLabel").innerText = "Add Material";
+  document.getElementById("create_material_submit").setAttribute("onclick","onCreateMaterial()"); 
 }
 function onUpdateMaterial() {
   $('#account_form').validate({

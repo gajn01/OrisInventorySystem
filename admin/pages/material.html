@@ -60,7 +60,7 @@
               <div class="header-button mb-3 ">
                 <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here...">
                 <!-- <button type="button" class="btn btn-primary btn-add">Filter</button> -->
-                <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addMaterialModal">Add Material</button>
+                <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addMaterialModal" onclick="onClickAddMaterial()">Add Material</button>
                 </div>
             </section>
             <!-- Table -->
@@ -277,7 +277,7 @@
                   <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h2 class="modal-title fs-5" id="addMaterialModalLabel" onclick="onClickAddMaterial()">Add Material</h2>
+                        <h2 class="modal-title fs-5" id="addMaterialModalLabel" >Add Material</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
@@ -292,8 +292,8 @@
                               </select>
                             </div>
                             <div class="col-md-6 col-sm-12">
-                              <label for="item_code" class="col-sm-12 col-md-12 col-form-label">Item Code</label>
-                              <input class="form-control mb-3" disabled type="text"   id="item_code" name="item_code" >
+                              <label for="product_code" class="col-sm-12 col-md-12 col-form-label">Product Code</label>
+                              <input class="form-control mb-3" disabled type="text"   id="product_code" name="product_code" >
                             </div>
                           </div>
                           <div class="row">
@@ -305,14 +305,13 @@
                           <div class="row">
                             <div class="col-md-12 col-sm-12">
                               <label for="product_description" class="col-sm-12 col-md-12 col-form-label">Product Description  <span class="require"> * </span></label>
-                              <textarea class="form-control mb-3" id="exampleFormControlTextarea1" ></textarea>
+                              <textarea class="form-control mb-3" id="product_description" name="product_description" ></textarea>
                             </div>
                           </div>
-    
                           <div class="row">
                             <div class="col-md-6 col-sm-12">
                               <label for="quantity" class="col-sm-12  col-md-12 col-form-label">Quantity  <span class="require"> * </span></label>
-                              <input class="form-control mb-3" type="number" id="quantity" name="quantity" >
+                              <input class="form-control mb-3" type="number" id="quantity" min="1" value="1" name="quantity" >
                             </div>
                             <div class="col-md-6 col-sm-12">
                               <label for="unit" class="col-sm-12 col-md-12 col-form-label">Units</label>
@@ -346,12 +345,16 @@
                               <input class="form-control mb-3" type="date" id="receiving_date" name="receiving_date" >
                             </div>
                           </div>
-
-
+                          <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                              <label for="product_remarks" class="col-sm-12 col-md-12 col-form-label">Product Remarks</label>
+                              <textarea class="form-control mb-3" id="product_remarks" name="product_remarks" ></textarea>
+                            </div>
+                          </div>
                         </form>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-add" id="create_material_submit">Submit</button>
                       </div>
                     </div>
                   </div>

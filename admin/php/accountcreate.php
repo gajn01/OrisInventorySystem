@@ -1,5 +1,4 @@
 <?php
-session_start();
 include("connection.php"); //Establishing connection with our database
     function getRandomStringUniqid()
     {
