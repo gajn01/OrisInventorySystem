@@ -15,13 +15,13 @@ const account_id_input = document.getElementById("account_id");
 /* Material Fields */
 
 const product_code_input = document.getElementById("product_code");
-const inventory_date_input = document.getElementById("inventory_date");
-const receiving_date_input = document.getElementById("receiving_date");
+const product_inventory_date_input = document.getElementById("product_inventory_date");
+const product_recieved_date_input = document.getElementById("product_recieved_date");
 
-inventory_date_input.max = new Date().toISOString().split("T")[0];
-receiving_date_input.max = new Date().toISOString().split("T")[0];
-inventory_date_input.value = new Date().toISOString().split("T")[0];
-receiving_date_input.value = new Date().toISOString().split("T")[0];
+product_inventory_date_input.max = new Date().toISOString().split("T")[0];
+product_recieved_date_input.max = new Date().toISOString().split("T")[0];
+product_inventory_date_input.value = new Date().toISOString().split("T")[0];
+product_recieved_date_input.value = new Date().toISOString().split("T")[0];
 
 function onSelectLimit(table) {
   page = 0;
@@ -287,14 +287,15 @@ function onDeleteAccount(account_id) {
 /* Account Functions */
 
 /* Material Functions */
-
 function onCreateMaterial() {
+  /* document.getElementById('qr-download').click(); */
+
   $('#material_form').validate({
     rules: {
       product_name: { required: true },
       product_description: { required: true },
-      quantity: { required: true },
-      location : { required: true }
+      product_quantity: { required: true },
+      product_location : { required: true }
     },
     submitHandler: function (form) {
         $.ajax({  
@@ -306,8 +307,7 @@ function onCreateMaterial() {
         }).done(function (response) {
           if(response.success){
             alert(response.success_msg)
-           
-            // window.location.reload();
+            window.location.reload();
           }else{
             alert(response.error_msg)
           }
@@ -317,17 +317,20 @@ function onCreateMaterial() {
     }
   });
 }
-function onViewMaterialList() {
+function onViewMaterialList(category_id) {
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
   $.ajax({  
-    url:"../php/accountview.php",  
+    url:"../php/materialview.php",  
     method:"POST",  
-    data: {limit:limit,page:page*limit,search:search},  
+    data: {limit:limit,page:page*limit,search:search,category_id:category_id},  
     dataType: "json",
     encode: true, 
   }).done(function (response) {
     let table = document.querySelector("table");
+    var fixed_table = document.getElementById("fixed_table");
+    var obsolete_table = document.getElementById("obsolete_table");
+
     if(response.success){
       items = response.page_limit[0].ctr;
       let setPage = items / limit
@@ -349,48 +352,128 @@ function onViewMaterialList() {
           }
       }
       table.innerHTML =  "";
-      let template =`
+      fixed_table.innerHTML =  "";
+      obsolete_table.innerHTML =  "";
+
+      if(parseInt(category_id) == 1){
+        var template =`
           <thead>
             <th>#</th>
+            <th>Code</th>
             <th>Name</th>
-            <th>Department</th>
-            <th>Position</th>
-            <th>Employment Status</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Location</th>
+            <th>Person-in-charge</th>
+            <th>Inventory Date</th>
+            <th>Received Date</th>
             <th>Action</th>
           </thead>`;
+      }else if(parseInt(category_id) == 2){
+        var template =`
+          <thead>
+            <th>#</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Location</th>
+            <th>Person-in-charge</th>
+            <th>Status</th>
+            <th>Inventory Date</th>
+            <th>Remarks</th>
+            <th>Action</th>
+          </thead>`;
+      }else{
+        var template =`
+          <thead>
+            <th>#</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Location</th>
+            <th>Person-in-charge</th>
+            <th>Status</th>
+            <th>Action</th>
+          </thead>`;
+      }
       table.innerHTML += template;
-      onGenerateAccoutList(response.data);
-      sessionStorage.setItem("account_list",JSON.stringify(response.data));
+      onGenerateMaterialList(response.data,category_id);
+      sessionStorage.setItem("material_list",JSON.stringify(response.data));
     }else{
       alert(response.error_msg);
-      template = 
+      var template = 
       `<tr>
           <td colspan="10">No records found!</td>
       </tr>`;
       table.innerHTML += template;
-
     }
   }).fail(function (response){
     console.log(response.responseText);
   });
 }
-function onGenerateMaterialList(data) {
-  let table = document.querySelector("table");
+function onGenerateMaterialList(data,category_id) {
   let template;
     data.forEach(element => {
         ctr = ctr + 1;
-        template = 
-            `<tr>
-                <td>${ctr}</td>
-                <td>${element.firstname} ${element.lastname} </td>
-                <td>${element.department}</td>
-                <td>${element.position}</td>
-                <td>${element.employement_status}</td>
-                <td>
-                    <span  data-bs-toggle="modal" data-bs-target="#addUserModal" class="action-button" onClick="onClickEditAccount(${element.account_id})">Edit</span> | 
-                    <span class="action-button" onClick="onDeleteAccount(${element.account_id})" >Delete</span> 
-                </td>
-            </tr>`;
+        if(category_id == 1){
+        var table = document.getElementById("supplies_table");
+          template = 
+          `<tr>
+              <td>${ctr}</td>
+              <td>${element.product_code}</td>
+              <td>${element.product_name}</td>
+              <td>${element.product_description}</td>
+              <td>${element.product_quantity}</td>
+              <td>${element.product_unit}</td>
+              <td>${element.product_location}</td>
+              <td>${element.product_person_incharge}</td>
+              <td>${element.product_inventory_date}</td>
+              <td>${element.product_recieved_date}</td>
+              <td>
+                  <span  data-bs-toggle="modal" data-bs-target="#addUserModal" class="action-button" onClick="onClickEditAccount(${element.account_id})">Edit</span> | 
+                  <span class="action-button" onClick="onDeleteAccount(${element.account_id})" >Delete</span> 
+              </td>
+          </tr>`;
+        }else if(category_id == 2){
+        var table = document.getElementById("fixed_table");
+          template = 
+          `<tr>
+              <td>${ctr}</td>
+              <td>${element.product_code}</td>
+              <td>${element.product_name}</td>
+              <td>${element.product_description}</td>
+              <td>${element.product_quantity}</td>
+              <td>${element.product_unit}</td>
+              <td>${element.product_location}</td>
+              <td>${element.product_person_incharge}</td>
+              <td>${element.product_status}</td>
+              <td>${element.product_inventory_date}</td>
+              <td>${element.product_remarks}</td>
+              <td>
+                  <span  data-bs-toggle="modal" data-bs-target="#addUserModal" class="action-button" onClick="onClickEditAccount(${element.account_id})">Edit</span> | 
+                  <span class="action-button" onClick="onDeleteAccount(${element.account_id})" >Delete</span> 
+              </td>
+          </tr>`;
+        }else{
+        var table = document.getElementById("obsolete_table");
+          template = 
+          `<tr>
+              <td>${ctr}</td>
+              <td>${element.product_code}</td>
+              <td>${element.product_name}</td>
+              <td>${element.product_quantity}</td>
+              <td>${element.product_unit}</td>
+              <td>${element.product_location}</td>
+              <td>${element.product_person_incharge}</td>
+              <td>${element.product_status}</td>
+              <td>
+                  <span  data-bs-toggle="modal" data-bs-target="#addUserModal" class="action-button" onClick="onClickEditAccount(${element.account_id})">Edit</span> | 
+                  <span class="action-button" onClick="onDeleteAccount(${element.account_id})" >Delete</span> 
+              </td>
+          </tr>`;
+        }
         table.innerHTML += template;
     });
 }
@@ -412,12 +495,34 @@ function onClickEditMaterial(account_id) {
     }
   });
 }
+function onChangeCategory() {
+  let category =  $('#product_category').val();
+  if(category == 1){
+    document.getElementById("remarks_div").setAttribute("class", "col-lg-12");
+    document.getElementById("status_div").setAttribute("class","d-none"); 
+  }else{
+    document.getElementById("remarks_div").setAttribute("class","col-lg-6");
+    document.getElementById("status_div").setAttribute("class","col-lg-6");
+    document.getElementById("status_div").classList.remove("d-none"); 
+  }
+  
+}
 function onClickAddMaterial() {
   var id = btoa(Math.random()).slice(0, 9);
   product_code_input.value = id;
   /* document.getElementById("material_form").reset(); */
   document.getElementById("addMaterialModalLabel").innerText = "Add Material";
   document.getElementById("create_material_submit").setAttribute("onclick","onCreateMaterial()"); 
+/*   let product_category =  $('#category').val();
+  let product_name =  $('#product_name').val();
+  let qr_data = {
+    product_category : product_category,
+    product_name : product_name,
+    product_code : id,
+  };
+  console.log("data: ", JSON.stringify(qr_data)); */
+  generate(id);
+
 }
 function onUpdateMaterial() {
   $('#account_form').validate({
@@ -471,17 +576,8 @@ function onDeleteMaterial(account_id) {
 }
 
 
-function onChangeCategory() {
-  let category =  $('#category').val();
-  if(category == 1){
-    document.getElementById("remarks_div").setAttribute("class", "col-lg-6");
-    document.getElementById("status_div").classList.toggle("d-none");
-  }else{
-    document.getElementById("remarks_div").setAttribute("class", "col-lg-12");
-    document.getElementById("status_div").classList.toggle("d-none");
-  }
-  
-}
+
+
 
 
 function sendMail(email,subject,body) {

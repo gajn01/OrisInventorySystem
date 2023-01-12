@@ -1,53 +1,58 @@
 <?php
 include("connection.php"); //Establishing connection with our database
  
+    $product_category= $_POST['product_category'];
     $product_name= $_POST['product_name'];
     $product_description= $_POST['product_description'];
-    $quantity= $_POST['quantity'];
-    $location= $_POST['location'];
-    $item_code= $_POST['item_code'];
-    $unit= $_POST['unit'];
-    $person_charge= $_POST['person_charge'];
-    $inventory_date= $_POST['inventory_date'];
-    $receiving_date= $_POST['receiving_date'];
+    $product_quantity= $_POST['product_quantity'];
+    $product_location= $_POST['product_location'];
+    $product_code = $_POST['product_code'];
+    $product_unit= $_POST['product_unit'];
+    $product_person_incharge= $_POST['product_person_incharge'];
+    $product_inventory_date= $_POST['product_inventory_date'];
+    $product_recieved_date= $_POST['product_recieved_date'];
     $product_remarks= $_POST['product_remarks'];
-
-
-
+    if($product_category == 1){
+        $product_status = 0;
+    }else{
+        $product_status = $_POST['product_status'];
+    }
 
 // To protect from MySQL injection
-    $firstname = stripslashes($firstname);
-    $lastname = stripslashes($lastname);
-    $email = stripslashes($email);
-    $employment_status = stripslashes($employment_status);
-    $position = stripslashes($position);
-    $department = stripslashes($department);
+    $product_category = stripslashes($product_category);
+    $product_name = stripslashes($product_name);
+    $product_description = stripslashes($product_description);
+    $product_quantity = stripslashes($product_quantity);
+    $product_location = stripslashes($product_location);
+    $product_code = stripslashes($product_code);
+    $product_unit = stripslashes($product_unit);
+    $product_person_incharge = stripslashes($product_person_incharge);
+    $product_inventory_date = stripslashes($product_inventory_date);
+    $product_recieved_date = stripslashes($product_recieved_date);
+    $product_remarks = stripslashes($product_remarks);
+    $product_status = stripslashes($product_status);
 
-    $firstname = mysqli_real_escape_string($db, $firstname);
-    $lastname = mysqli_real_escape_string($db, $lastname);
-    $email = mysqli_real_escape_string($db, $email);
-    $employment_status = mysqli_real_escape_string($db, $employment_status);
-    $position = mysqli_real_escape_string($db, $position);
-    $department = mysqli_real_escape_string($db, $department);
-  
-    /* if username is avaiable insert into tbl_account */
-    $sql_insert_account=("INSERT INTO tbl_account (email,password) VALUES ('$email','$password_hash')");
-    if (mysqli_query($db, $sql_insert_account)) {
-        $last_id = $db->insert_id;
-    /* after insert into tbl_account insert into tbl_account_profile */
-        $sql_insert_profile=("INSERT INTO tbl_account_profile (account_id,email,firstname,lastname,department,position,employement_status) 
-        VALUES ('$last_id','$email','$firstname','$lastname','$department','$position','$employment_status')");
-            if (mysqli_query($db, $sql_insert_profile)) {
-            $form_data['success'] = true;
-            $form_data['data'] = $password;
-            $form_data['success_msg'] = "Successfully registered";
-        } else {
-            $form_data['success'] = false;
-            $form_data['error_msg'] = "Failed to register profile";
-        }
-    }else{
+    $product_category = mysqli_real_escape_string($db,$product_category);
+    $product_name = mysqli_real_escape_string($db,$product_name);
+    $product_description = mysqli_real_escape_string($db,$product_description);
+    $product_quantity = mysqli_real_escape_string($db,$product_quantity);
+    $product_location = mysqli_real_escape_string($db,$product_location);
+    $product_code = mysqli_real_escape_string($db,$product_code);
+    $product_unit = mysqli_real_escape_string($db,$product_unit);
+    $product_person_incharge = mysqli_real_escape_string($db,$product_person_incharge);
+    $product_inventory_date = mysqli_real_escape_string($db,$product_inventory_date);
+    $product_recieved_date = mysqli_real_escape_string($db,$product_recieved_date);
+    $product_remarks = mysqli_real_escape_string($db,$product_remarks);
+    $product_status = mysqli_real_escape_string($db,$product_status);
+
+    $sql=("INSERT INTO tbl_inventory (product_code,product_category,product_name,product_description,product_quantity,product_unit,product_location,product_person_incharge,product_status,product_recieved_date,product_inventory_date,product_remarks) 
+    VALUES ('$product_code','$product_category','$product_name','$product_description','$product_quantity','$product_unit','$product_location','$product_person_incharge','$product_status','$product_recieved_date','$product_inventory_date','$product_remarks')");
+        if (mysqli_query($db, $sql)) {
+        $form_data['success'] = true;
+        $form_data['success_msg'] = "Successfully added product";
+    } else {
         $form_data['success'] = false;
-        $form_data['error_msg'] = "Failed to register account";
+        $form_data['error_msg'] = "Failed to add product";
     }
 echo json_encode($form_data);
 $db->close();
