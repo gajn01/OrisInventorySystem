@@ -16,7 +16,7 @@ function generate(id,ctr) {
   }else{
     download_link.setAttribute("class", "qr_btn btn btn-add btn-primary");
   }
-  download_link.setAttribute("download", "qr_code.png");
+  download_link.setAttribute("download", `${id}.png`);
   download_link.setAttribute("id", "qr-download");
   download_link.innerHTML = `Download qr code`;
 

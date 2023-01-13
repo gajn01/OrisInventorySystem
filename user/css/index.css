@@ -1,17 +1,11 @@
 /* Reboot design*/
-*{
-    box-sizing: content-box;
-    padding: 0;
-    margin: 0;
-    /* transition: all 0.3s; */
-    font: 20px/1.55 'Avenir';
-    font-style: normal;
-}
+@import "global.css";
+
+/* Reboot design*/
 body{
     background-color: #a0b8e8 !important;
     color: #0038d0;
 }
-
 .vertical-center {
     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
     min-height: 100vh; /* These two lines are counted as one :-)       */
@@ -29,7 +23,6 @@ body{
     width: 100%;
     max-width: 500px;
 }
-
 .login-form form{
     text-align: center;
 }
@@ -68,10 +61,10 @@ body{
     margin-left: 4px;
 }
 .login-form input[type="text"], .login-form input[type="password"]{
-    color: #8497BE;
+    color: #000;
 }
 .login-form input::placeholder{
-    color: #8497BE;
+    color: #000;
 }
 .login-form input:focus{
     outline: none;
@@ -89,7 +82,7 @@ body{
     color: white;
     background-color: #3264C6;
     border-radius: 10px;
-    width: 60%;
+    width: 100%;
     margin-top: 1rem;
     margin-bottom: 1rem;
     font-weight: 500;
@@ -149,6 +142,10 @@ body{
     }
 
 }
+
+
+
+
 
 
 
