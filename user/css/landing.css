@@ -57,6 +57,11 @@ footer{
 .btn-add:hover{
     opacity: .8 !important;
 }
+.search_container{
+    display: flex;
+    justify-content: end;
+    margin-bottom: 1rem;
+}
 .searchbar{
     border-radius: 10px;
     outline-color:#3264C6 ;

@@ -20,26 +20,27 @@ const product_remarks_input = document.getElementById("product_remarks");
 const product_status_input = document.getElementById("product_status");
 
 
-function onSelectLimit(table) {
+function onSelectLimit() {
   page = 0;
   ctr  = 0;
   document.getElementById("page_number").innerText = page+1;
-  if(table == 'account'){
-    onViewAccountList();
-  }else if(table == 'material'){
-      onViewMaterialList(table_selected);
+
+  if(table_selected == 1){
+    onViewMaterialList(1);
+  }else if(table_selected == '2'){
+    onViewMaterialList(2);
   }
 }
-function onSearch(table) {
+function onSearch() {
   ctr =0;
   page = 0;
-  if(table == 'account'){
-    onViewAccountList();
-  }else if(table == 'material'){
-      onViewMaterialList(table_selected);
+  if(table_selected == 1){
+    onViewMaterialList(1);
+  }else if(table_selected == '2'){
+    onViewMaterialList(2);
   }
 }
-function onPage(params,table) {
+function onPage(params) {
   limit =  $('#page_limit').val();
   setPage = items / limit
   totalPage = Math.trunc(items / limit)
@@ -65,10 +66,10 @@ function onPage(params,table) {
           document.getElementById("prev").style.display = "block";
       }
   }
-  if(table == 'account'){
-      onViewAccountList();
-  }else if(table == 'material'){
-      onViewMaterialList(table_selected);
+  if(table_selected == 1){
+    onViewMaterialList(1);
+  }else if(table_selected == '2'){
+    onViewMaterialList(2);
   }
 }
 function onLogin() {
@@ -98,10 +99,21 @@ function onLogin() {
     }
   });
 }
-
-
 /* Material Functions */
 function onViewMaterialList(category_id) {
+  if(category_id == 1){
+    document.getElementById("supplies").classList.add("active");
+    document.getElementById("assets").classList.remove("active");
+    document.getElementById("history").classList.remove("active");
+  }else if(category_id == 2){
+    document.getElementById("assets").classList.add("active");
+    document.getElementById("supplies").classList.remove("active");
+    document.getElementById("history").classList.remove("active");
+  }else{
+    document.getElementById("history").classList.add("active");
+    document.getElementById("supplies").classList.remove("active");
+    document.getElementById("assets").classList.remove("active");
+  }
   table_selected = category_id;
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
@@ -140,13 +152,10 @@ function onViewMaterialList(category_id) {
             <th>#</th>
             <th>Code</th>
             <th>Name</th>
-            <th>Description</th>
             <th>Quantity</th>
             <th>Unit</th>
             <th>Location</th>
             <th>Person-in-charge</th>
-            <th>Inventory Date</th>
-            <th>Received Date</th>
             <th>Action</th>
           </thead>`;
       }else if(parseInt(category_id) == 2){
@@ -155,27 +164,10 @@ function onViewMaterialList(category_id) {
             <th>#</th>
             <th>Code</th>
             <th>Name</th>
-            <th>Description</th>
             <th>Quantity</th>
             <th>Unit</th>
             <th>Location</th>
             <th>Person-in-charge</th>
-            <th>Status</th>
-            <th>Inventory Date</th>
-            <th>Remarks</th>
-            <th>Action</th>
-          </thead>`;
-      }else{
-        var template =`
-          <thead>
-            <th>#</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Location</th>
-            <th>Person-in-charge</th>
-            <th>Status</th>
             <th>Action</th>
           </thead>`;
       }
@@ -218,16 +210,12 @@ function onGenerateMaterialList(data,category_id) {
               <td>${ctr}</td>
               <td>${element.product_code}</td>
               <td>${element.product_name}</td>
-              <td>${element.product_description}</td>
               <td>${element.product_quantity}</td>
               <td>${element.product_unit}</td>
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
-              <td>${element.product_inventory_date}</td>
-              <td  >${element.product_recieved_date}</td>
               <td>
-                  <span  data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="action-button" onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})'   >Edit</span> | 
-                  <span class="action-button" onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
+                  <span  data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})'>Request</span>
               </td>
           </tr>`;
         }else if(parseInt(category_id) == 2){
@@ -237,51 +225,17 @@ function onGenerateMaterialList(data,category_id) {
               <td>${ctr}</td>
               <td>${element.product_code}</td>
               <td>${element.product_name}</td>
-              <td>${element.product_description}</td>
               <td>${element.product_quantity}</td>
               <td>${element.product_unit}</td>
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
-              <td>${element.product_status}</td>
-              <td>${element.product_inventory_date}</td>
-              <td>${element.product_remarks}</td>
               <td>
-                  <span data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="action-button" onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})' >Edit</span> | 
-                  <span class="action-button" onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
-              </td>
-          </tr>`;
-        }else{
-          ctr = ctr + 1;
-          template = 
-          `<tr>
-              <td>${ctr}</td>
-              <td>${element.product_code}</td>
-              <td>${element.product_name}</td>
-              <td>${element.product_quantity}</td>
-              <td>${element.product_unit}</td>
-              <td>${element.product_location}</td>
-              <td>${element.product_person_incharge}</td>
-              <td>${element.product_status}</td>
-              <td>
-                  <span  data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="action-button" onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})' >Edit</span> | 
-                  <span class="action-button" onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
+                  <span data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="action-button" onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})' >Borrow</span>
               </td>
           </tr>`;
         }
         table.innerHTML += template;
     });
-}
-function onChangeCategory() {
-  let category =  $('#product_category').val();
-  if(category == 1){
-    document.getElementById("remarks_div").setAttribute("class", "col-lg-12");
-    document.getElementById("status_div").setAttribute("class","d-none"); 
-  }else{
-    document.getElementById("remarks_div").setAttribute("class","col-lg-6");
-    document.getElementById("status_div").setAttribute("class","col-lg-6");
-    document.getElementById("status_div").classList.remove("d-none"); 
-  }
-  
 }
 function onClickAddMaterial() {
   document.getElementById("material_form").reset();
@@ -319,77 +273,18 @@ function onClickEditMaterial(product_code) {
     }
   });
 }
-function onCreateMaterial() {
-  $('#material_form').validate({
-    rules: {
-      product_name: { required: true },
-      product_description: { required: true },
-      product_quantity: { required: true },
-      product_quantity: { required: true },
-      product_person_incharge : { required: true }
-    },
-    submitHandler: function (form) {
-        $.ajax({  
-          url:"../php/materialcreate.php",  
-          method:"POST",  
-          data: $('#material_form').serialize(), 
-          dataType: "json",
-          encode: true, 
-        }).done(function (response) {
-          if(response.success){
-            alert(response.success_msg)
-            let text = "Do you want to donwload qr code?";
-            if (confirm(text)) {
-              document.getElementById('qr-download').click();
-            }
-            window.location.reload();
-          }else{
-            alert(response.error_msg)
-          }
-        }).fail(function (response){
-          console.log(response.responseText);
-        });
-    }
-  });
-}
-function onUpdateMaterial() {
-      $.ajax({  
-        url:"../php/materialupdate.php",  
-        method:"POST",  
-        data: $('#material_form').serialize(), 
-        dataType: "json",
-        encode: true, 
-      }).done(function (response) {
-        if(response.success){
-          alert(response.success_msg);
-          window.location.reload();
-        }else{
-          alert(response.error_msg);
-        }
-      }).fail(function (response){
-        console.log(response.responseText);
-      });
-}
-function onDeleteMaterial(product_code) {
-  let text = "Do you want to delete the record?";
-  if (confirm(text)) {
-    $.ajax({  
-      url:"../php/materialdelete.php",  
-      method:"POST",  
-      data: {product_code:product_code}, 
-      dataType: "json",
-      encode: true, 
-    }).done(function (response) {
-      if(response.success){
-        alert(response.success_msg);
-        window.location.reload();
-      }else{
-        alert(response.error_msg);
-      }
-    }).fail(function (response){
-      console.log(response.responseText);
-    });
+
+function onChangeCategory() {
+  let category =  $('#product_category').val();
+  if(category == 1){
+    document.getElementById("requested_div").setAttribute("class", "col-lg-12");
+    document.getElementById("returned_div").setAttribute("class","d-none"); 
+  }else{
+    document.getElementById("requested_div").setAttribute("class","col-lg-6");
+    document.getElementById("returned_div").setAttribute("class","col-lg-6");
+    document.getElementById("returned_div").classList.remove("d-none"); 
   }
+  
 }
 
 function sendMail(email,subject,body) {
