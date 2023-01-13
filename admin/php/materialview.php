@@ -7,7 +7,7 @@
     $form_data = array();
 
     /* get total items  */
-    $sql=("SELECT COUNT(id) AS ctr FROM tbl_inventory");
+    $sql=("SELECT COUNT(id) AS ctr FROM tbl_inventory WHERE product_category = $category_id");
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
     if($fetch){

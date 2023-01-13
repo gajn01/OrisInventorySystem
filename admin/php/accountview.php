@@ -18,7 +18,7 @@
     }
 
     /* Fetch module based on subject and teacher ID */
-    $sql=("SELECT * FROM tbl_account_profile WHERE (firstname LIKE '$search%' OR department LIKE '$search%'  OR position LIKE '$search%')  LIMIT $limit OFFSET $page ");
+    $sql=("SELECT * FROM tbl_account_profile WHERE (department LIKE '$search%')  LIMIT $limit OFFSET $page ");
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
     if($fetch){

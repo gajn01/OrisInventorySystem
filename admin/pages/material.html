@@ -74,87 +74,29 @@
               <!-- Tabs  button -->
               <nav>
                 <div class="nav nav-tabs mt-5" id="nav-tab" role="tablist">
-                  <button class="nav-link active" id="nav-consumable-tab" data-bs-toggle="tab" data-bs-target="#nav-consumable" type="button" role="tab" aria-controls="nav-consumable" aria-selected="true" onclick="onViewMaterialList(1)">Supplies</button>
-                  <button class="nav-link" id="nav-non-consumable-tab" data-bs-toggle="tab" data-bs-target="#nav-non-consumable" type="button" role="tab" aria-controls="nav-non-consumable" aria-selected="false" onclick="onViewMaterialList(2)">Fixed Assets</button>
-                  <button class="nav-link" id="nav-obsolete-tab" data-bs-toggle="tab" data-bs-target="#nav-obsolete" type="button" role="tab" aria-controls="nav-obsolete" aria-selected="false" onclick="onViewMaterialList(3)">Obsolete</button>
+                  <button class="nav-link active"  data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-consumable" aria-selected="true" onclick="onViewMaterialList(1)">Supplies</button>
+                  <button class="nav-link"  data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-non-consumable" aria-selected="false" onclick="onViewMaterialList(2)">Fixed Assets</button>
+                  <button class="nav-link"  data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-obsolete" aria-selected="false" onclick="onViewMaterialList(3)">Obsolete</button>
                 </div>
               </nav>
-              <div class="tab-content " id="nav-tabContent">
-                <!-- Supplies -->
-                <div class="tab-pane fade show active" id="nav-consumable" role="tabpanel" aria-labelledby="nav-consumable-tab" tabindex="0">
-                  <div class="row">
-                    <div class="col">
-                      <div class="table-content table-responsive-md">
-                        <table class="table" id="supplies_table">
-                          <thead>
-                            <th>#</th>
-                            <th>Code</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Quantity</th>
-                            <th>Unit</th>
-                            <th>Location</th>
-                            <th>Person-in-charge</th>
-                            <th>Inventory Date</th>
-                            <th>Received Date</th>
-                            <th>Action</th>
-                          </thead>
-                          <tbody class="table-group-divider"></tbody>
-                      </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Fixed assets -->
-                <div class="tab-pane fade" id="nav-non-consumable" role="tabpanel" aria-labelledby="nav-non-consumable-tab" tabindex="0">
-                  <div class="row">
-                    <div class="col">
-                      <div class="table-content table-responsive-md ">
-                        <table class="table " id="fixed_table">
-                          <thead>
-                              <th>#</th>
-                              <th>Code</th>
-                              <th>Name</th>
-                              <th>Description</th>
-                              <th>Quantity</th>
-                              <th>Location</th>
-                              <th>Person-in-charge</th>
-                              <th>Status</th>
-                              <th>Inventory Date</th>
-                              <th>Remarks</th>
-                              <th>Action</th>
-                          </thead>
-                          <tbody class="table-group-divider"></tbody>
-                      </table>
-                      </div>
-                     
-                    </div>
-                  </div>
-                </div>
-                <!-- Obsolete -->
-                <div class="tab-pane fade" id="nav-obsolete" role="tabpanel" aria-labelledby="nav-obsolete-tab" tabindex="0">
-                    <div class="row">
-                      <div class="col">
-                        <div class="table-content table-responsive-md ">
-                          <table class="table " id="obsolete_table">
-                            <thead>
-                                <th>#</th>
-                                <th>Code</th>
-                                <th>Name</th>
-                                <th>Quantity</th>
-                                <th>Location</th>
-                                <th>Unit</th>
-                                <th>Person-in-charge</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </thead>
-                            <tbody class="table-group-divider"></tbody>
-                          </table>
-                        </div>
-                       
-                      </div>
-                    </div>
-                  </div>
+              <div class="table-content table-responsive-md">
+                <table class="table" >
+                  <thead>
+                    <th>#</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                    <th>Location</th>
+                    <th>Person-in-charge</th>
+                    <th>Inventory Date</th>
+                    <th>Received Date</th>
+                    <th onclick.delegate="onClickEditMaterial(ss)">Action</th>
+                  </thead>
+                  <tbody class="table-group-divider"></tbody>
+
+              </table>
               </div>
               <div class="pagination-container mt-4">
                 <div class="pager">
@@ -242,10 +184,8 @@
                                 <input class="form-control mb-3" type="text" id="product_location" name="product_location" >
                               </div>
                               <div class="col-md-6 col-sm-12">
-                                <label for="product_person_incharge" class="col-sm-12 col-md-12 col-form-label">Person in Charge</label>
-                                <select class="form-select form-control" aria-label="Default select example" id="product_person_incharge" name="product_person_incharge" >
-                                  <option value="Admin" selected >Admin</option>
-                                </select>
+                                <label for="product_person_incharge" class="col-sm-12 col-md-12 col-form-label">Person in Charge <span class="require"> * </span></label>
+                                <input class="form-control mb-3" type="text" id="product_person_incharge" name="product_person_incharge" >
                               </div>
                             </div>
                             <div class="row">

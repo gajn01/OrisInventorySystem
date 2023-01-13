@@ -13,10 +13,19 @@ const department_input = document.getElementById("department");
 const account_id_input = document.getElementById("account_id");
 
 /* Material Fields */
-
+var table_selected = 1;
 const product_code_input = document.getElementById("product_code");
+const product_category_input = document.getElementById("product_category");
+const product_name_input = document.getElementById("product_name");
+const product_description_input = document.getElementById("product_description");
+const product_unit_input = document.getElementById("product_unit");
+const product_quantity_input = document.getElementById("product_quantity");
+const product_location_input = document.getElementById("product_location");
+const product_person_incharge_input = document.getElementById("product_person_incharge");
 const product_inventory_date_input = document.getElementById("product_inventory_date");
 const product_recieved_date_input = document.getElementById("product_recieved_date");
+const product_remarks_input = document.getElementById("product_remarks");
+const product_status_input = document.getElementById("product_status");
 
 product_inventory_date_input.max = new Date().toISOString().split("T")[0];
 product_recieved_date_input.max = new Date().toISOString().split("T")[0];
@@ -29,8 +38,8 @@ function onSelectLimit(table) {
   document.getElementById("page_number").innerText = page+1;
   if(table == 'account'){
     onViewAccountList();
-  }else if(table == 'other_module'){
-      onViewOtherModule(subject_id,school_id,teacher_id);
+  }else if(table == 'material'){
+      onViewMaterialList(table_selected);
   }
 }
 function onSearch(table) {
@@ -38,8 +47,8 @@ function onSearch(table) {
   page = 0;
   if(table == 'account'){
     onViewAccountList();
-  }else if(table == 'other_module'){
-      onViewOtherModule(subject_id,school_id,teacher_id);
+  }else if(table == 'material'){
+      onViewMaterialList(table_selected);
   }
 }
 function onPage(params,table) {
@@ -70,8 +79,8 @@ function onPage(params,table) {
   }
   if(table == 'account'){
       onViewAccountList();
-  }else if(table == 'other_module'){
-      onViewOtherModule(subject_id,school_id,teacher_id);
+  }else if(table == 'material'){
+      onViewMaterialList(table_selected);
   }
 }
 function onLogin() {
@@ -105,10 +114,7 @@ function onLogin() {
 function onCreateAccount() {
   $('#account_form').validate({
     rules: {
-      firstname: { required: true },
-      lastname: { required: true },
       email: { required: true ,email: true},
-      position : { required: true }
     },
     submitHandler: function (form) {
         $.ajax({  
@@ -169,10 +175,7 @@ function onViewAccountList() {
       let template =`
           <thead>
             <th>#</th>
-            <th>Name</th>
             <th>Department</th>
-            <th>Position</th>
-            <th>Employment Status</th>
             <th>Action</th>
           </thead>`;
       table.innerHTML += template;
@@ -199,10 +202,7 @@ function onGenerateAccoutList(data) {
         template = 
             `<tr>
                 <td>${ctr}</td>
-                <td>${element.firstname} ${element.lastname} </td>
                 <td>${element.department}</td>
-                <td>${element.position}</td>
-                <td>${element.employement_status}</td>
                 <td>
                     <span  data-bs-toggle="modal" data-bs-target="#addUserModal" class="action-button" onClick="onClickEditAccount(${element.account_id})">Edit</span> | 
                     <span class="action-button" onClick="onDeleteAccount(${element.account_id})" >Delete</span> 
@@ -219,11 +219,7 @@ function onClickEditAccount(account_id) {
   let json_account = JSON.parse(account_list);
   json_account.forEach(element => {
     if(element.account_id == account_id){
-      firstname_input.value = element.firstname;
-      lastname_input.value = element.lastname;
       email_input.value = element.email;
-      employment_status_input.value = element.employement_status;
-      position_input.value = element.position;
       department_input.value = element.department;
       account_id_input.value = element.account_id;
     }
@@ -287,37 +283,8 @@ function onDeleteAccount(account_id) {
 /* Account Functions */
 
 /* Material Functions */
-function onCreateMaterial() {
-  /* document.getElementById('qr-download').click(); */
-
-  $('#material_form').validate({
-    rules: {
-      product_name: { required: true },
-      product_description: { required: true },
-      product_quantity: { required: true },
-      product_location : { required: true }
-    },
-    submitHandler: function (form) {
-        $.ajax({  
-          url:"../php/materialcreate.php",  
-          method:"POST",  
-          data: $('#material_form').serialize(), 
-          dataType: "json",
-          encode: true, 
-        }).done(function (response) {
-          if(response.success){
-            alert(response.success_msg)
-            window.location.reload();
-          }else{
-            alert(response.error_msg)
-          }
-        }).fail(function (response){
-          console.log(response.responseText);
-        });
-    }
-  });
-}
 function onViewMaterialList(category_id) {
+  table_selected = category_id;
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
   $.ajax({  
@@ -327,10 +294,7 @@ function onViewMaterialList(category_id) {
     dataType: "json",
     encode: true, 
   }).done(function (response) {
-    let table = document.querySelector("table");
-    var fixed_table = document.getElementById("fixed_table");
-    var obsolete_table = document.getElementById("obsolete_table");
-
+    var table = document.querySelector("table");
     if(response.success){
       items = response.page_limit[0].ctr;
       let setPage = items / limit
@@ -352,9 +316,6 @@ function onViewMaterialList(category_id) {
           }
       }
       table.innerHTML =  "";
-      fixed_table.innerHTML =  "";
-      obsolete_table.innerHTML =  "";
-
       if(parseInt(category_id) == 1){
         var template =`
           <thead>
@@ -402,11 +363,23 @@ function onViewMaterialList(category_id) {
       onGenerateMaterialList(response.data,category_id);
       sessionStorage.setItem("material_list",JSON.stringify(response.data));
     }else{
-      alert(response.error_msg);
-      var template = 
-      `<tr>
-          <td colspan="10">No records found!</td>
-      </tr>`;
+      table.innerHTML ="";
+      var template =`
+          <thead>
+            <th>#</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Location</th>
+            <th>Person-in-charge</th>
+            <th>Status</th>
+            <th>Action</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="12">No records found!</td>
+            </tr>
+          </tbody>`;
       table.innerHTML += template;
     }
   }).fail(function (response){
@@ -414,11 +387,12 @@ function onViewMaterialList(category_id) {
   });
 }
 function onGenerateMaterialList(data,category_id) {
+  ctr = 0;
+  let table = document.querySelector("table");
   let template;
     data.forEach(element => {
-        ctr = ctr + 1;
-        if(category_id == 1){
-        var table = document.getElementById("supplies_table");
+        if(parseInt(category_id)  == 1){
+          ctr = ctr + 1;
           template = 
           `<tr>
               <td>${ctr}</td>
@@ -430,14 +404,14 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td>${element.product_inventory_date}</td>
-              <td>${element.product_recieved_date}</td>
+              <td  >${element.product_recieved_date}</td>
               <td>
-                  <span  data-bs-toggle="modal" data-bs-target="#addUserModal" class="action-button" onClick="onClickEditAccount(${element.account_id})">Edit</span> | 
-                  <span class="action-button" onClick="onDeleteAccount(${element.account_id})" >Delete</span> 
+                  <span  data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="action-button" onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})'   >Edit</span> | 
+                  <span class="action-button" onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
               </td>
           </tr>`;
-        }else if(category_id == 2){
-        var table = document.getElementById("fixed_table");
+        }else if(parseInt(category_id) == 2){
+          ctr = ctr + 1;
           template = 
           `<tr>
               <td>${ctr}</td>
@@ -452,12 +426,12 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_inventory_date}</td>
               <td>${element.product_remarks}</td>
               <td>
-                  <span  data-bs-toggle="modal" data-bs-target="#addUserModal" class="action-button" onClick="onClickEditAccount(${element.account_id})">Edit</span> | 
-                  <span class="action-button" onClick="onDeleteAccount(${element.account_id})" >Delete</span> 
+                  <span data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="action-button" onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})' >Edit</span> | 
+                  <span class="action-button" onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
               </td>
           </tr>`;
         }else{
-        var table = document.getElementById("obsolete_table");
+          ctr = ctr + 1;
           template = 
           `<tr>
               <td>${ctr}</td>
@@ -469,31 +443,13 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_person_incharge}</td>
               <td>${element.product_status}</td>
               <td>
-                  <span  data-bs-toggle="modal" data-bs-target="#addUserModal" class="action-button" onClick="onClickEditAccount(${element.account_id})">Edit</span> | 
-                  <span class="action-button" onClick="onDeleteAccount(${element.account_id})" >Delete</span> 
+                  <span  data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="action-button" onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})' >Edit</span> | 
+                  <span class="action-button" onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
               </td>
           </tr>`;
         }
         table.innerHTML += template;
     });
-}
-function onClickEditMaterial(account_id) {
-  document.getElementById("account_form").reset();
-  document.getElementById("addUserModalLabel").innerText = "Update Account";
-  document.getElementById("create_account_submit").setAttribute("onclick","onUpdateAccount()");
-  let account_list = sessionStorage.getItem("account_list");
-  let json_account = JSON.parse(account_list);
-  json_account.forEach(element => {
-    if(element.account_id == account_id){
-      firstname_input.value = element.firstname;
-      lastname_input.value = element.lastname;
-      email_input.value = element.email;
-      employment_status_input.value = element.employement_status;
-      position_input.value = element.position;
-      department_input.value = element.department;
-      account_id_input.value = element.account_id;
-    }
-  });
 }
 function onChangeCategory() {
   let category =  $('#product_category').val();
@@ -524,42 +480,85 @@ function onClickAddMaterial() {
   generate(id);
 
 }
-function onUpdateMaterial() {
-  $('#account_form').validate({
+function onClickEditMaterial(product_code) {
+  document.getElementById("material_form").reset();
+  document.getElementById("addMaterialModalLabel").innerText = "Update Account";
+  document.getElementById("create_material_submit").setAttribute("onclick","onUpdateMaterial()");
+  let material_list = sessionStorage.getItem("material_list");
+  let json_material = JSON.parse(material_list);
+  json_material.forEach(element => {
+    if(element.product_code == product_code){
+      product_code_input.value = element.product_code;
+      product_category_input.value = element.product_category;
+      product_name_input.value = element.product_name;
+      product_description_input.value = element.product_description;
+      product_unit_input.value = element.product_unit;
+      product_quantity_input.value = element.product_quantity;
+      product_location_input.value = element.product_location;
+      product_person_incharge_input.value = element.product_person_incharge;
+      product_inventory_date_input.value = element.product_inventory_date;
+      product_recieved_date_input.value = element.product_recieved_date;
+      product_remarks_input.value = element.product_remarks;
+      product_status_input.value = element.product_status;
+      generate(element.product_code);
+    }
+  });
+}
+function onCreateMaterial() {
+  /* document.getElementById('qr-download').click(); */
+  $('#material_form').validate({
     rules: {
-      firstname: { required: true },
-      lastname: { required: true },
-      position : { required: true }
+      product_name: { required: true },
+      product_description: { required: true },
+      product_quantity: { required: true },
+      product_quantity: { required: true },
+      product_person_incharge : { required: true }
     },
     submitHandler: function (form) {
+        $.ajax({  
+          url:"../php/materialcreate.php",  
+          method:"POST",  
+          data: $('#material_form').serialize(), 
+          dataType: "json",
+          encode: true, 
+        }).done(function (response) {
+          if(response.success){
+            alert(response.success_msg)
+            window.location.reload();
+          }else{
+            alert(response.error_msg)
+          }
+        }).fail(function (response){
+          console.log(response.responseText);
+        });
+    }
+  });
+}
+function onUpdateMaterial() {
       $.ajax({  
-        url:"../php/accountupdate.php",  
+        url:"../php/materialupdate.php",  
         method:"POST",  
-        data: $('#account_form').serialize(), 
+        data: $('#material_form').serialize(), 
         dataType: "json",
         encode: true, 
       }).done(function (response) {
         if(response.success){
           alert(response.success_msg);
-          // $('#addUserModal').modal('hide');
           window.location.reload();
         }else{
           alert(response.error_msg);
-
         }
       }).fail(function (response){
         console.log(response.responseText);
       });
-    }
-    });
 }
-function onDeleteMaterial(account_id) {
-  let text = "Do you want to delete the account?";
+function onDeleteMaterial(product_code) {
+  let text = "Do you want to delete the record?";
   if (confirm(text)) {
     $.ajax({  
-      url:"../php/accountdelete.php",  
+      url:"../php/materialdelete.php",  
       method:"POST",  
-      data: {account_id:account_id}, 
+      data: {product_code:product_code}, 
       dataType: "json",
       encode: true, 
     }).done(function (response) {
@@ -576,10 +575,6 @@ function onDeleteMaterial(account_id) {
 }
 
 
-
-
-
-
 function sendMail(email,subject,body) {
   $.ajax({  
          url:"../php/sendemail.php",  
@@ -594,5 +589,3 @@ function sendMail(email,subject,body) {
          }  
      }); 
 }
-
-

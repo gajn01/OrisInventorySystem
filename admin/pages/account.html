@@ -78,10 +78,7 @@
                       <table class="table" >
                         <thead>
                             <th>#</th>
-                            <th>Name</th>
                             <th>Department</th>
-                            <th>Position</th>
-                            <th>Employment Status</th>
                             <th>Action</th>
                         </thead>
                         <tbody class="table-group-divider"> </tbody>
@@ -120,7 +117,7 @@
             </section>
             <!-- Modal -->
             <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-dialog modal-dialog-centered modal-sm">
                 <form id="account_form">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -130,36 +127,17 @@
                     <div class="modal-body">
                       <input class="form-control mb-3 d-none"   type="text"  id="account_id" name="account_id" >
                         <div class="row">
-                          <div class="col-md-4 col-sm-12">
-                            <label for="firstname" class="col-sm-12 col-md-12 col-form-label">Firstname <span class="require"> * </span></label>
-                            <input class="form-control mb-3"  type="text"  id="firstname" name="firstname" required >
-                          </div>
-                          <div class="col-md-4 col-sm-12">
-                            <label for="lastname" class="col-sm-12 col-md-12 col-form-label">Lastname  <span class="require"> * </span></label>
-                            <input class="form-control mb-3"  type="text"  id="lastname" name="lastname" required >
-                          </div>
-                          <div class="col-md-4 col-sm-12">
+                          <div class="col-md-12 col-sm-12">
                             <label for="email" class="col-sm-12 col-md-12 col-form-label">Email Address  <span class="require"> * </span></label>
                             <input class="form-control mb-3"  type="text"  id="email" name="email" required>
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-md-4 col-sm-12">
+                          <div class="col-md-12 col-sm-12">
                             <label for="department" class="col-sm-12  col-md-12 col-form-label">Department  <span class="require"> * </span></label>
                             <select class="form-select form-control" aria-label="Default select example" id="department" name="department" required >
                               <option value="IT" selected >IT</option>
                               <option value="Science">Science</option>
-                            </select>
-                          </div>
-                          <div class="col-md-4 col-sm-12">
-                            <label for="position" class="col-sm-12 col-md-12 col-form-label">Position  <span class="require"> * </span></label>
-                            <input class="form-control mb-3"  type="text"  id="position" name="position" required >
-                          </div>
-                          <div class="col-md-4 col-sm-12">
-                            <label for="employment_status" class="col-sm-12 col-md-12 col-form-label">Employment Status  <span class="require"> * </span></label>
-                            <select class="form-select form-control" aria-label="Default select example" id="employment_status" name="employment_status" required >
-                              <option value="Full Time" selected >Full Time</option>
-                              <option value="Part Time">Part Time</option>
                             </select>
                           </div>
                         </div>
