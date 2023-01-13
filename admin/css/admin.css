@@ -309,6 +309,14 @@ table tbody{
     text-indent: .4rem !important;
 }
 
+.qr-code{
+    gap: 1rem;
+    display: flex;
+}
+.qr_btn{
+    height: fit-content;
+}
+
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */

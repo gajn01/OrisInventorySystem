@@ -81,21 +81,7 @@
               </nav>
               <div class="table-content table-responsive-md">
                 <table class="table" >
-                  <thead>
-                    <th>#</th>
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Quantity</th>
-                    <th>Unit</th>
-                    <th>Location</th>
-                    <th>Person-in-charge</th>
-                    <th>Inventory Date</th>
-                    <th>Received Date</th>
-                    <th onclick.delegate="onClickEditMaterial(ss)">Action</th>
-                  </thead>
                   <tbody class="table-group-divider"></tbody>
-
               </table>
               </div>
               <div class="pagination-container mt-4">
@@ -171,9 +157,9 @@
                               <div class="col-md-6 col-sm-12">
                                 <label for="product_unit" class="col-sm-12 col-md-12 col-form-label">Units</label>
                                 <select class="form-select form-control" aria-label="Default select example" id="product_unit" name="product_unit" >
-                                  <option value="1" selected >Box</option>
-                                  <option value="2">Gallons</option>
-                                  <option value="3">Pcs</option>
+                                  <option value="Box" selected >Box</option>
+                                  <option value="Gallons">Gallons</option>
+                                  <option value="Pcs">Pcs</option>
                                 </select>
                               </div>
                             </div>
@@ -206,8 +192,8 @@
                               <div class="col-sm-12 col-lg-6 d-none" id="status_div">
                                 <label for="product_status" class="col-sm-12 col-md-12 col-form-label">Status</label>
                                 <select class="form-select form-control" aria-label="Default select example" id="product_status" name="product_status" >
-                                  <option value="1" selected >Working</option>
-                                  <option value="2">Not Working</option>
+                                  <option value="Working" selected >Working</option>
+                                  <option value="Not Working">Not Working</option>
                                 </select>
                               </div>
                               <div class="col-md-12 col-sm-12">

@@ -29,8 +29,7 @@ const product_status_input = document.getElementById("product_status");
 
 product_inventory_date_input.max = new Date().toISOString().split("T")[0];
 product_recieved_date_input.max = new Date().toISOString().split("T")[0];
-product_inventory_date_input.value = new Date().toISOString().split("T")[0];
-product_recieved_date_input.value = new Date().toISOString().split("T")[0];
+
 
 function onSelectLimit(table) {
   page = 0;
@@ -339,6 +338,7 @@ function onViewMaterialList(category_id) {
             <th>Name</th>
             <th>Description</th>
             <th>Quantity</th>
+            <th>Unit</th>
             <th>Location</th>
             <th>Person-in-charge</th>
             <th>Status</th>
@@ -353,6 +353,7 @@ function onViewMaterialList(category_id) {
             <th>Code</th>
             <th>Name</th>
             <th>Quantity</th>
+            <th>Unit</th>
             <th>Location</th>
             <th>Person-in-charge</th>
             <th>Status</th>
@@ -464,21 +465,14 @@ function onChangeCategory() {
   
 }
 function onClickAddMaterial() {
+  document.getElementById("material_form").reset();
+  product_inventory_date_input.value = new Date().toISOString().split("T")[0];
+  product_recieved_date_input.value = new Date().toISOString().split("T")[0];
   var id = btoa(Math.random()).slice(0, 9);
   product_code_input.value = id;
-  /* document.getElementById("material_form").reset(); */
   document.getElementById("addMaterialModalLabel").innerText = "Add Material";
   document.getElementById("create_material_submit").setAttribute("onclick","onCreateMaterial()"); 
-/*   let product_category =  $('#category').val();
-  let product_name =  $('#product_name').val();
-  let qr_data = {
-    product_category : product_category,
-    product_name : product_name,
-    product_code : id,
-  };
-  console.log("data: ", JSON.stringify(qr_data)); */
-  generate(id);
-
+  generate(id,1);
 }
 function onClickEditMaterial(product_code) {
   document.getElementById("material_form").reset();
@@ -500,12 +494,11 @@ function onClickEditMaterial(product_code) {
       product_recieved_date_input.value = element.product_recieved_date;
       product_remarks_input.value = element.product_remarks;
       product_status_input.value = element.product_status;
-      generate(element.product_code);
+      generate(element.product_code,2);
     }
   });
 }
 function onCreateMaterial() {
-  /* document.getElementById('qr-download').click(); */
   $('#material_form').validate({
     rules: {
       product_name: { required: true },
@@ -524,6 +517,10 @@ function onCreateMaterial() {
         }).done(function (response) {
           if(response.success){
             alert(response.success_msg)
+            let text = "Do you want to donwload qr code?";
+            if (confirm(text)) {
+              document.getElementById('qr-download').click();
+            }
             window.location.reload();
           }else{
             alert(response.error_msg)
@@ -573,7 +570,6 @@ function onDeleteMaterial(product_code) {
     });
   }
 }
-
 
 function sendMail(email,subject,body) {
   $.ajax({  
