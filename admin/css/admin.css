@@ -62,6 +62,10 @@ h1,h2{
     border-bottom-left-radius: 55px;
 }
 .btn-logout{
+    align-items: center !important;
+    display: flex !important;
+    justify-content: center !important;
+
     margin-top: 9rem;
     width: 70%;
     background-color: #4B80EC !important;

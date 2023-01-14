@@ -9,15 +9,17 @@ var table_selected = 1;
 const product_code_input = document.getElementById("product_code");
 const product_category_input = document.getElementById("product_category");
 const product_name_input = document.getElementById("product_name");
-const product_description_input = document.getElementById("product_description");
-const product_unit_input = document.getElementById("product_unit");
 const product_quantity_input = document.getElementById("product_quantity");
 const product_location_input = document.getElementById("product_location");
 const product_person_incharge_input = document.getElementById("product_person_incharge");
-const product_inventory_date_input = document.getElementById("product_inventory_date");
-const product_recieved_date_input = document.getElementById("product_recieved_date");
-const product_remarks_input = document.getElementById("product_remarks");
-const product_status_input = document.getElementById("product_status");
+const date_requested_input = document.getElementById("date_requested");
+const date_return_input = document.getElementById("date_return");
+const date_to_claim_input = document.getElementById("date_to_claim");
+const name_input = document.getElementById("name");
+const position_input = document.getElementById("position");
+const purpose_input = document.getElementById("purpose");
+const department_input = document.getElementById("department");
+
 
 
 function onSelectLimit() {
@@ -73,23 +75,24 @@ function onPage(params) {
   }
 }
 function onLogin() {
-  $('#admin_login_form').validate({
+  $('#login_form').validate({
     rules: {
-      username: { required: true },
+      email: { required: true,email:true },
       password: { required: true, minlength: 5 },
     },
     submitHandler: function (form) {
         $.ajax({  
-          url:"php/loginadmin.php",  
+          url:"php/login.php",  
           method:"POST",  
-          data: $('#admin_login_form').serialize(), 
+          data: $('#login_form').serialize(), 
           dataType: "json",
           encode: true, 
         }).done(function (response) {
           if(response.success){
+            console.log("res:",response);
             sessionStorage.setItem("account",JSON.stringify(response.data));
             alert(response.success_msg);
-            location.href = '../admin/pages/dashboard.html'
+            location.href = 'pages/landing.html'
           }else{
             alert(response.error_msg);
           }
@@ -98,6 +101,13 @@ function onLogin() {
         });
     }
   });
+}
+function onLogout() {
+  let text = "Are you sure you want to logout?";
+  if (confirm(text)) {
+      localStorage.clear();
+      location.href = '../index.html';
+  }
 }
 /* Material Functions */
 function onViewMaterialList(category_id) {
@@ -215,7 +225,7 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td>
-                  <span  data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})'>Request</span>
+                  <span  data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(${JSON.stringify(element.product_code)})'>Request</span>
               </td>
           </tr>`;
         }else if(parseInt(category_id) == 2){
@@ -230,7 +240,7 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td>
-                  <span data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="action-button" onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})' >Borrow</span>
+                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(${JSON.stringify(element.product_code)})' >Borrow</span>
               </td>
           </tr>`;
         }
@@ -249,42 +259,38 @@ function onClickAddMaterial() {
   document.getElementById("create_material_submit").setAttribute("onclick","onCreateMaterial()"); 
   generate(id,1);
 }
-function onClickEditMaterial(product_code) {
-  document.getElementById("material_form").reset();
-  document.getElementById("addMaterialModalLabel").innerText = "Update Account";
-  document.getElementById("create_material_submit").setAttribute("onclick","onUpdateMaterial()");
+function onClickRequest(product_code) {
+  document.getElementById("request_form").reset();
+  date_requested_input.min = new Date().toISOString().split("T")[0];
+  date_to_claim_input.min = new Date().toISOString().split("T")[0];
+  date_return_input.min = new Date().toISOString().split("T")[0];
+  date_requested_input.value = new Date().toISOString().split("T")[0];
+  date_to_claim_input.value = new Date().toISOString().split("T")[0];
+  date_return_input.value = new Date().toISOString().split("T")[0];
+  document.getElementById("requestModalLabel").innerText = "Request";
+  document.getElementById("request_submit").setAttribute("onclick","onUpdateMaterial()");
   let material_list = sessionStorage.getItem("material_list");
   let json_material = JSON.parse(material_list);
   json_material.forEach(element => {
     if(element.product_code == product_code){
+      if(parseInt(element.product_category)  == 1){
+        product_category_input.value = "Supplies";
+      }else{
+        product_category_input.value = "Fixed Assets";
+      }
       product_code_input.value = element.product_code;
-      product_category_input.value = element.product_category;
       product_name_input.value = element.product_name;
-      product_description_input.value = element.product_description;
-      product_unit_input.value = element.product_unit;
-      product_quantity_input.value = element.product_quantity;
-      product_location_input.value = element.product_location;
-      product_person_incharge_input.value = element.product_person_incharge;
-      product_inventory_date_input.value = element.product_inventory_date;
-      product_recieved_date_input.value = element.product_recieved_date;
-      product_remarks_input.value = element.product_remarks;
-      product_status_input.value = element.product_status;
-      generate(element.product_code,2);
     }
   });
+  onChangeCategory();
 }
-
 function onChangeCategory() {
   let category =  $('#product_category').val();
-  if(category == 1){
-    document.getElementById("requested_div").setAttribute("class", "col-lg-12");
+  if(category == "Supplies"){
     document.getElementById("returned_div").setAttribute("class","d-none"); 
   }else{
-    document.getElementById("requested_div").setAttribute("class","col-lg-6");
-    document.getElementById("returned_div").setAttribute("class","col-lg-6");
     document.getElementById("returned_div").classList.remove("d-none"); 
   }
-  
 }
 
 function sendMail(email,subject,body) {

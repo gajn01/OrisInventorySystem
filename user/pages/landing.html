@@ -15,12 +15,15 @@
         window.onload = function () {
           onViewMaterialList(1);
 
+          let account = sessionStorage.getItem("account");
+          let json_account = JSON.parse(account);
+          document.getElementById('account_label').innerText =  json_account.department;
+          console.log("user: ",json_account);
            /*  let user_account = localStorage.getItem("user_account");
             if(!user_account){
                 location.href = '../index.html';
             }else{
                 var jsonData = JSON.parse(user_account);
-                document.getElementById('account_name_label').innerText =  jsonData.data.firstname + " " + jsonData.data.lastname;
                 onViewSubject();
                 onGenerateDropListSchool();
                 let subject_list = localStorage.getItem("subject_list");
@@ -41,9 +44,9 @@
             <p class="cursor-pointer link-label txt-primary " id="history" onclick="onViewMaterialList(3)">Requisition History</p>
           </div>
           <div class="account-container">
-            <p class="cursor-pointer link-label txt-primary dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">Name</p>
+            <p class="cursor-pointer link-label txt-primary dropdown-toggle" id="account_label" data-bs-toggle="dropdown" aria-expanded="false">Name</p>
             <ul class="dropdown-menu" aria-labelledby="account_dropdown">
-              <li><a class="dropdown-item" href="#" onClick="onLogoutUser()">Logout</a></li>
+              <li><a class="dropdown-item" href="#" onClick="onLogout()">Logout</a></li>
             </ul>
           </div>
       </nav>
@@ -114,15 +117,12 @@
               <h2 class="modal-title fs-5" id="requestModalLabel" >Request</h2>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="material_form">
+            <form id="request_form">
               <div class="modal-body">
                   <div class="row">
                     <div class="col-md-6 col-sm-12">
                       <label for="product_category" class="col-sm-12 col-md-12 col-form-label">Category</label>
-                      <select class="form-select form-control" aria-label="Default select example" readonly id="product_category" name="product_category" onchange="onChangeCategory()">
-                        <option value="1" selected >Supplies</option>
-                        <option value="2">Fixed Assets</option>
-                      </select>
+                      <input class="form-control mb-3" type="text" id="product_category" name="product_code" readonly >
                     </div>
                     <div class="col-md-6 col-sm-12">
                       <label for="product_code" class="col-sm-12 col-md-12 col-form-label">Product Code</label>
@@ -160,25 +160,24 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-sm-12" id="requested_div">
+                    <div class="col-sm-12 col-md-6" >
                       <label for="date_requested" class="col-sm-12  col-md-12 col-form-label">Date Request </label>
                       <input class="form-control mb-3" type="date" id="date_requested" name="date_requested" >
                     </div>
+                    <div class="col-sm-12 col-md-6 ">
+                      <label for="date_to_claim" class="col-sm-12  col-md-12 col-form-label">Date to Claim </label>
+                      <input class="form-control mb-3" type="date" id="date_to_claim" name="date_to_claim" >
+                    </div>
+                  </div>
+                  <div class="row">
                     <div class="col-sm-12 d-none" id="returned_div">
                       <label for="date_return" class="col-sm-12 col-md-12 col-form-label">Date Return</label>
                       <input class="form-control mb-3" type="date" id="date_return" name="date_return" >
                     </div>
                   </div>
-                  <div class="row">
-                    <div class=" col-12 col-sm-12">
-                      <label for="date_to_claim" class="col-sm-12  col-md-12 col-form-label">Date to Claim </label>
-                      <input class="form-control mb-3" type="date" id="date_to_claim" name="date_to_claim" >
-                    </div>
-                  
-                  </div>
               </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-add" id="create_material_submit">Submit</button>
+                <button type="submit" class="btn btn-add" id="request_submit" >Submit</button>
               </div>
             </form>
           </div>

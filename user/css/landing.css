@@ -52,7 +52,7 @@ footer{
 .btn-add{
     background-color: #3264C6 !important;
     border: none;
-    color: #e0e8f8;
+    color: #e0e8f8 !important;
 }
 .btn-add:hover{
     opacity: .8 !important;
