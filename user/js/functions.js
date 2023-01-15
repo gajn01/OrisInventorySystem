@@ -4,8 +4,12 @@ let page = 0;
 let items = 0;
 let limit = 0;
 
+let account = sessionStorage.getItem("account");
+let json_account = JSON.parse(account);
+
 /* Material Fields */
 var table_selected = 1;
+const account_id_input = document.getElementById("account_id");
 const product_code_input = document.getElementById("product_code");
 const product_category_input = document.getElementById("product_category");
 const product_name_input = document.getElementById("product_name");
@@ -20,8 +24,6 @@ const position_input = document.getElementById("position");
 const purpose_input = document.getElementById("purpose");
 const department_input = document.getElementById("department");
 
-
-
 function onSelectLimit() {
   page = 0;
   ctr  = 0;
@@ -31,6 +33,8 @@ function onSelectLimit() {
     onViewMaterialList(1);
   }else if(table_selected == '2'){
     onViewMaterialList(2);
+  }else{
+    onViewHistoryList();
   }
 }
 function onSearch() {
@@ -40,6 +44,8 @@ function onSearch() {
     onViewMaterialList(1);
   }else if(table_selected == '2'){
     onViewMaterialList(2);
+  }else{
+    onViewHistoryList();
   }
 }
 function onPage(params) {
@@ -72,6 +78,8 @@ function onPage(params) {
     onViewMaterialList(1);
   }else if(table_selected == '2'){
     onViewMaterialList(2);
+  }else{
+    onViewHistoryList();
   }
 }
 function onLogin() {
@@ -109,21 +117,17 @@ function onLogout() {
       location.href = '../index.html';
   }
 }
+function goTo(params) {
+  if(params == 1){
+    window.location.href = "../pages/landing.html";
+  }else if(params == 2){
+    window.location.href = "../pages/assets.html";
+  }else{
+    window.location.href = "../pages/history.html";
+  }
+}
 /* Material Functions */
 function onViewMaterialList(category_id) {
-  if(category_id == 1){
-    document.getElementById("supplies").classList.add("active");
-    document.getElementById("assets").classList.remove("active");
-    document.getElementById("history").classList.remove("active");
-  }else if(category_id == 2){
-    document.getElementById("assets").classList.add("active");
-    document.getElementById("supplies").classList.remove("active");
-    document.getElementById("history").classList.remove("active");
-  }else{
-    document.getElementById("history").classList.add("active");
-    document.getElementById("supplies").classList.remove("active");
-    document.getElementById("assets").classList.remove("active");
-  }
   table_selected = category_id;
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
@@ -142,7 +146,7 @@ function onViewMaterialList(category_id) {
       if( setPage % 1){
           totalPage = totalPage +1
       }
-      if(parseInt(limit) > parseInt(items)){
+      if(parseInt(limit) > parseInt(items) || parseInt(limit) == parseInt(items)){
         document.getElementById("next").style.display = "none";
         document.getElementById("prev").style.display = "none";
       }else{
@@ -208,8 +212,80 @@ function onViewMaterialList(category_id) {
     console.log(response.responseText);
   });
 }
+function onViewHistoryList() {
+  table_selected = 3;
+  limit =  $('#page_limit').val();
+  search =  $('#searchbar').val();
+  account_id = json_account.account_id;
+  $.ajax({  
+    url:"../php/historyview.php",  
+    method:"POST",  
+    data: {limit:limit,page:page*limit,search:search,account_id:account_id},  
+    dataType: "json",
+    encode: true, 
+  }).done(function (response) {
+    var table = document.querySelector("table");
+    if(response.success){
+      console.log(response);
+      items = response.page_limit[0].ctr;
+        let setPage = items / limit
+      let totalPage = Math.trunc(items / limit)
+      if( setPage % 1){
+          totalPage = totalPage +1
+      }
+      if(parseInt(limit) > parseInt(items) || parseInt(limit) == parseInt(items)){
+        document.getElementById("next").style.display = "none";
+        document.getElementById("prev").style.display = "none";
+      }else{
+          if(page <= 0){
+              document.getElementById("prev").style.display = "none";
+              document.getElementById("next").style.display = "block";
+
+          }else if(totalPage <= page+1){
+              document.getElementById("next").style.display = "none";
+              document.getElementById("prev").style.display = "block";
+          }
+      }
+      table.innerHTML =  "";
+        var template =`
+          <thead>
+            <th>#</th>
+            <th>Category</th>
+            <th>Full Name</th>
+            <th>Position</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Action</th>
+          </thead>`;
+      table.innerHTML += template;
+      onGenerateMaterialList(response.data,3);
+      sessionStorage.setItem("history_list",JSON.stringify(response.data));
+    }else{
+      table.innerHTML ="";
+      var template =`
+          <thead>
+            <th>#</th>
+            <th>Category</th>
+            <th>Full Name</th>
+            <th>Position</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Action</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="12">No records found!</td>
+            </tr>
+          </tbody>`;
+      table.innerHTML += template;
+    }
+  }).fail(function (response){
+    console.log(response.responseText);
+  });
+}
 function onGenerateMaterialList(data,category_id) {
-  ctr = 0;
   let table = document.querySelector("table");
   let template;
     data.forEach(element => {
@@ -225,7 +301,7 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td>
-                  <span  data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(1,${JSON.stringify(element.product_code)})'>Request</span>
+                  <span  data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(${JSON.stringify(element.product_code)})'>Request</span>
               </td>
           </tr>`;
         }else if(parseInt(category_id) == 2){
@@ -240,20 +316,43 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td>
-                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(2,${JSON.stringify(element.product_code)})' >Borrow</span>
+                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(${JSON.stringify(element.product_code)})' >Borrow</span>
+              </td>
+          </tr>`;
+        }else if(parseInt(category_id) == 3){
+          ctr = ctr + 1;
+          if(element.status == 1){
+            element.status = "Pending";
+          }else if(element.status == 2){
+            element.status = "Approved";
+          }else{
+            element.status = "Rejected";
+          }
+          if(element.product_category == 1){
+            element.product_category = "Supplies";
+          }else{
+            element.product_category = "Fixed Assets";
+          }
+          template = 
+          `<tr>
+              <td>${ctr}</td>
+              <td>${element.product_category}</td>
+              <td>${element.full_name}</td>
+              <td>${element.position}</td>
+              <td>${element.product_name}</td>
+              <td>${element.product_quantity}</td>
+              <td>${element.status}</td>
+              <td>
+                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickViewHistory(${JSON.stringify(element)})' >View</span>
               </td>
           </tr>`;
         }
         table.innerHTML += template;
     });
+
 }
-function onClickRequest(category,product_code) {
+function onClickRequest(product_code) {
   document.getElementById("request_form").reset();
-  if(category == 1){
-    document.getElementById("requestModalLabel").innerText = "Request";
-  }else if(category == 2){
-    document.getElementById("requestModalLabel").innerText = "Borrow";
-  }
   date_requested_input.min = new Date().toISOString().split("T")[0];
   date_to_claim_input.min = new Date().toISOString().split("T")[0];
   date_return_input.min = new Date().toISOString().split("T")[0];
@@ -269,12 +368,32 @@ function onClickRequest(category,product_code) {
       }else{
         product_category_input.value = "Fixed Assets";
       }
+      account_id_input.value = json_account.account_id;
       product_code_input.value = element.product_code;
       product_name_input.value = element.product_name;
       department_input.value = document.getElementById("account_label").innerText;
     }
   });
   onChangeCategory();
+}
+function onClickViewHistory(history) {
+  console.log('res',history);
+  document.getElementById("product_category").value = history.product_category ;
+  document.getElementById("product_code").value = history.product_code ;
+  document.getElementById("product_name").value = history.product_name ;
+  document.getElementById("product_quantity").value = history.product_quantity ;
+  document.getElementById("full_name").value = history.full_name ;
+  document.getElementById("position").value = history.position ;
+  document.getElementById("purpose").value = history.purpose ;
+  document.getElementById("date_requested").value = history.date_requested ;
+  document.getElementById("date_to_claim").value = history.date_to_claim ;
+  document.getElementById("status").value = history.status ;
+  document.getElementById("note_by").value = history.noted_by;
+  document.getElementById("approved_by").value = history.approved_by ;
+  if(history.date_approved == null){
+    document.getElementById("date_approved").value = 00/00/0000 ;
+  }
+
 }
 function onChangeCategory() {
   let category =  $('#product_category').val();
@@ -301,9 +420,8 @@ function onRequest() {
           encode: true, 
         }).done(function (response) {
           if(response.success){
-            console.log(response);
             alert(response.success_msg)
-            /* window.location.reload(); */
+            window.location.reload();
           }else{
             alert(response.error_msg)
           }

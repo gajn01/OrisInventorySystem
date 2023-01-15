@@ -10,19 +10,19 @@
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
-    <title>Supplies | Oris Inventory System</title>
+    <title>Requisition History | Oris Inventory System</title>
     <script>
-      window.onload = function () {
-          let account = sessionStorage.getItem("account");
-          let json_account = JSON.parse(account);
-          if(!json_account){
-              location.href = '../index.html';
-          }else{
-              onViewMaterialList(1);
-              document.getElementById('account_label').innerText =  json_account.department;
-          }
-      }
-    </script>
+        window.onload = function () {
+            let account = sessionStorage.getItem("account");
+            let json_account = JSON.parse(account);
+            if(!json_account){
+                location.href = '../index.html';
+            }else{
+                onViewHistoryList();
+                document.getElementById('account_label').innerText =  json_account.department;
+            }
+        }
+      </script>
 </head>
 <body>
     <div class="wrapper">
@@ -31,9 +31,9 @@
             <img src="../assets/logo.png" width="100px" alt="">
           </div>
           <div class="link-container">
-            <p class="cursor-pointer link-label txt-primary active">  Supplies</p>
-            <p class="cursor-pointer link-label txt-primary " onclick="goTo(2)">Fixed Assets</p>
-            <p class="cursor-pointer link-label txt-primary " onclick="goTo(3)">Requisition History</p>
+            <p class="cursor-pointer link-label txt-primary "  onclick="goTo(1)">  Supplies</p>
+            <p class="cursor-pointer link-label txt-primary  " onclick="goTo(2)">Fixed Assets</p>
+            <p class="cursor-pointer link-label txt-primary active"  >Requisition History</p>
           </div>
           <div class="account-container">
             <p class="cursor-pointer link-label txt-primary dropdown-toggle" id="account_label" data-bs-toggle="dropdown" aria-expanded="false">Name</p>
@@ -106,13 +106,12 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h2 class="modal-title fs-5" id="requestModalLabel" >Request Form</h2>
+              <h2 class="modal-title fs-5" id="requestModalLabel" >Request Details</h2>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="request_form">
+            <form id="history_form">
               <div class="modal-body">
                   <div class="row">
-                    <input class="form-control mb-3 d-none"  type="text"  id="account_id" name="account_id" >
                     <div class="col-md-6 col-sm-12">
                       <label for="product_category" class="col-sm-12 col-md-12 col-form-label">Category</label>
                       <input class="form-control mb-3" type="text" id="product_category" name="product_category" readonly >
@@ -128,49 +127,63 @@
                       <input class="form-control mb-3"  type="text"  id="product_name" name="product_name" readonly >
                     </div>
                     <div class="col-md-6 col-sm-12">
-                      <label for="product_quantity" class="col-sm-12  col-md-12 col-form-label">Quantity  <span class="require"> * </span></label>
-                      <input class="form-control mb-3" type="number" id="product_quantity" min="1" value="1" name="product_quantity" >
+                      <label for="product_quantity" class="col-sm-12  col-md-12 col-form-label">Quantity  </label>
+                      <input class="form-control mb-3" type="number" id="product_quantity" min="1" value="1" name="product_quantity" readonly >
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6 col-sm-12">
-                      <label for="full_name" class="col-sm-12 col-md-12 col-form-label">Full Name <span class="require"> * </span> </label>
-                      <input class="form-control mb-3"  type="text"  id="full_name" name="full_name" >
+                      <label for="full_name" class="col-sm-12 col-md-12 col-form-label">Full Name  </label>
+                      <input class="form-control mb-3"  type="text"  id="full_name" name="full_name" readonly >
                     </div>
                     <div class="col-md-6 col-sm-12">
-                      <label for="position" class="col-sm-12  col-md-12 col-form-label">Position <span class="require"> * </span> </label>
-                      <input class="form-control mb-3" type="text" id="position"  name="position" >
+                      <label for="position" class="col-sm-12  col-md-12 col-form-label">Position  </label>
+                      <input class="form-control mb-3" type="text" id="position"  name="position" readonly>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-6 col-sm-12">
-                      <label for="department" class="col-sm-12  col-md-12 col-form-label">Department  </label>
-                      <input class="form-control mb-3" type="text" id="department"  name="department" readonly >
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                      <label for="purpose" class="col-sm-12 col-md-12 col-form-label">Purpose <span class="require"> * </span></label>
-                      <textarea class="form-control mb-3" id="purpose" name="purpose" ></textarea>
+                    <div class="col-md-12 col-sm-12">
+                      <label for="purpose" class="col-sm-12 col-md-12 col-form-label">Purpose </label>
+                      <textarea class="form-control mb-3" id="purpose" name="purpose" readonly ></textarea>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-sm-12 col-md-6" >
                       <label for="date_requested" class="col-sm-12  col-md-12 col-form-label">Date Request </label>
-                      <input class="form-control mb-3" type="date" id="date_requested" name="date_requested" >
+                      <input class="form-control mb-3" type="date" id="date_requested" name="date_requested" readonly>
                     </div>
                     <div class="col-sm-12 col-md-6 ">
                       <label for="date_to_claim" class="col-sm-12  col-md-12 col-form-label">Date to Claim </label>
-                      <input class="form-control mb-3" type="date" id="date_to_claim" name="date_to_claim" >
+                      <input class="form-control mb-3" type="date" id="date_to_claim" name="date_to_claim" readonly>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-sm-12 d-none" id="returned_div">
                       <label for="date_return" class="col-sm-12 col-md-12 col-form-label">Date Return</label>
-                      <input class="form-control mb-3" type="date" id="date_return" name="date_return" >
+                      <input class="form-control mb-3" type="date" id="date_return" name="date_return" readonly>
                     </div>
                   </div>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-add" id="request_submit" onclick="onRequest()">Submit</button>
+                  <div class="row">
+                  
+                    <div class="col-sm-12 col-md-6 ">
+                      <label for="approved_by" class="col-sm-12  col-md-12 col-form-label">Approved By </label>
+                      <input class="form-control mb-3" type="text" id="approved_by" name="approved_by" readonly>
+                    </div>
+                    <div class="col-sm-12 col-md-6" >
+                        <label for="note_by" class="col-sm-12  col-md-12 col-form-label">Noted By </label>
+                        <input class="form-control mb-3" type="text" id="note_by" name="note_by" readonly>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6" >
+                        <label for="date_approved" class="col-sm-12  col-md-12 col-form-label">Date Approved </label>
+                        <input class="form-control mb-3" type="date" id="date_approved" name="date_approved" readonly>
+                      </div>
+                    <div class="col-sm-12 col-md-6 ">
+                      <label for="status" class="col-sm-12  col-md-12 col-form-label">Status </label>
+                      <input class="form-control mb-3" type="text" id="status" name="status" readonly>
+                    </div>
+                  </div>
               </div>
             </form>
           </div>

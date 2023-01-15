@@ -1,6 +1,7 @@
 <?php
 include("connection.php"); //Establishing connection with our database
  
+    $account_id = $_POST['account_id']; 
     $product_code = $_POST['product_code']; 
     $product_category = $_POST['product_category']; 
     $product_name= $_POST['product_name'];
@@ -42,8 +43,8 @@ include("connection.php"); //Establishing connection with our database
     $date_requested = mysqli_real_escape_string($db,$date_requested);
     $date_to_claim = mysqli_real_escape_string($db,$date_to_claim);
 
-    $sql=("INSERT INTO tbl_history (product_category,product_name,product_code,product_quantity,purpose,full_name,department,position,date_requested,date_return,date_to_claim,status) 
-    VALUES ('$product_category','$product_name','$product_code','$product_quantity','$purpose','$full_name','$department','$position','$date_requested','$date_return','$date_to_claim','1')");
+    $sql=("INSERT INTO tbl_history (account_id,product_category,product_name,product_code,product_quantity,purpose,full_name,department,position,date_requested,date_return,date_to_claim,status) 
+    VALUES ('$account_id','$product_category','$product_name','$product_code','$product_quantity','$purpose','$full_name','$department','$position','$date_requested','$date_return','$date_to_claim','1')");
         if (mysqli_query($db, $sql)) {
         $form_data['success'] = true;
         if($product_category == 1){

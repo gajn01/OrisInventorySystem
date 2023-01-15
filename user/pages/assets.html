@@ -10,19 +10,19 @@
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
-    <title>Supplies | Oris Inventory System</title>
+    <title>Fixed Assets | Oris Inventory System</title>
     <script>
-      window.onload = function () {
-          let account = sessionStorage.getItem("account");
-          let json_account = JSON.parse(account);
-          if(!json_account){
-              location.href = '../index.html';
-          }else{
-              onViewMaterialList(1);
-              document.getElementById('account_label').innerText =  json_account.department;
-          }
-      }
-    </script>
+        window.onload = function () {
+            let account = sessionStorage.getItem("account");
+            let json_account = JSON.parse(account);
+            if(!json_account){
+                location.href = '../index.html';
+            }else{
+                onViewMaterialList(2);
+                document.getElementById('account_label').innerText =  json_account.department;
+            }
+        }
+      </script>
 </head>
 <body>
     <div class="wrapper">
@@ -31,9 +31,9 @@
             <img src="../assets/logo.png" width="100px" alt="">
           </div>
           <div class="link-container">
-            <p class="cursor-pointer link-label txt-primary active">  Supplies</p>
-            <p class="cursor-pointer link-label txt-primary " onclick="goTo(2)">Fixed Assets</p>
-            <p class="cursor-pointer link-label txt-primary " onclick="goTo(3)">Requisition History</p>
+            <p class="cursor-pointer link-label txt-primary "  onclick="goTo(1)">  Supplies</p>
+            <p class="cursor-pointer link-label txt-primary active " >Fixed Assets</p>
+            <p class="cursor-pointer link-label txt-primary "  onclick="goTo(3)">Requisition History</p>
           </div>
           <div class="account-container">
             <p class="cursor-pointer link-label txt-primary dropdown-toggle" id="account_label" data-bs-toggle="dropdown" aria-expanded="false">Name</p>
@@ -106,7 +106,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h2 class="modal-title fs-5" id="requestModalLabel" >Request Form</h2>
+              <h2 class="modal-title fs-5" id="requestModalLabel" >Borrow Form</h2>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="request_form">
