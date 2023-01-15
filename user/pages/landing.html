@@ -122,7 +122,7 @@
                   <div class="row">
                     <div class="col-md-6 col-sm-12">
                       <label for="product_category" class="col-sm-12 col-md-12 col-form-label">Category</label>
-                      <input class="form-control mb-3" type="text" id="product_category" name="product_code" readonly >
+                      <input class="form-control mb-3" type="text" id="product_category" name="product_category" readonly >
                     </div>
                     <div class="col-md-6 col-sm-12">
                       <label for="product_code" class="col-sm-12 col-md-12 col-form-label">Product Code</label>
@@ -141,8 +141,8 @@
                   </div>
                   <div class="row">
                     <div class="col-md-6 col-sm-12">
-                      <label for="name" class="col-sm-12 col-md-12 col-form-label">Full Name <span class="require"> * </span> </label>
-                      <input class="form-control mb-3"  type="text"  id="name" name="name" >
+                      <label for="full_name" class="col-sm-12 col-md-12 col-form-label">Full Name <span class="require"> * </span> </label>
+                      <input class="form-control mb-3"  type="text"  id="full_name" name="full_name" >
                     </div>
                     <div class="col-md-6 col-sm-12">
                       <label for="position" class="col-sm-12  col-md-12 col-form-label">Position <span class="require"> * </span> </label>
@@ -177,7 +177,7 @@
                   </div>
               </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-add" id="request_submit" >Submit</button>
+                <button type="submit" class="btn btn-add" id="request_submit" onclick="onRequest()">Submit</button>
               </div>
             </form>
           </div>

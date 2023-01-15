@@ -225,7 +225,7 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td>
-                  <span  data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(${JSON.stringify(element.product_code)})'>Request</span>
+                  <span  data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(1,${JSON.stringify(element.product_code)})'>Request</span>
               </td>
           </tr>`;
         }else if(parseInt(category_id) == 2){
@@ -240,35 +240,26 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td>
-                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(${JSON.stringify(element.product_code)})' >Borrow</span>
+                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(2,${JSON.stringify(element.product_code)})' >Borrow</span>
               </td>
           </tr>`;
         }
         table.innerHTML += template;
     });
 }
-function onClickAddMaterial() {
-  document.getElementById("material_form").reset();
-  product_inventory_date_input.max = new Date().toISOString().split("T")[0];
-  product_recieved_date_input.max = new Date().toISOString().split("T")[0];
-  product_inventory_date_input.value = new Date().toISOString().split("T")[0];
-  product_recieved_date_input.value = new Date().toISOString().split("T")[0];
-  var id = btoa(Math.random()).slice(0, 9);
-  product_code_input.value = id;
-  document.getElementById("addMaterialModalLabel").innerText = "Add Material";
-  document.getElementById("create_material_submit").setAttribute("onclick","onCreateMaterial()"); 
-  generate(id,1);
-}
-function onClickRequest(product_code) {
+function onClickRequest(category,product_code) {
   document.getElementById("request_form").reset();
+  if(category == 1){
+    document.getElementById("requestModalLabel").innerText = "Request";
+  }else if(category == 2){
+    document.getElementById("requestModalLabel").innerText = "Borrow";
+  }
   date_requested_input.min = new Date().toISOString().split("T")[0];
   date_to_claim_input.min = new Date().toISOString().split("T")[0];
   date_return_input.min = new Date().toISOString().split("T")[0];
   date_requested_input.value = new Date().toISOString().split("T")[0];
   date_to_claim_input.value = new Date().toISOString().split("T")[0];
   date_return_input.value = new Date().toISOString().split("T")[0];
-  document.getElementById("requestModalLabel").innerText = "Request";
-  document.getElementById("request_submit").setAttribute("onclick","onUpdateMaterial()");
   let material_list = sessionStorage.getItem("material_list");
   let json_material = JSON.parse(material_list);
   json_material.forEach(element => {
@@ -280,6 +271,7 @@ function onClickRequest(product_code) {
       }
       product_code_input.value = element.product_code;
       product_name_input.value = element.product_name;
+      department_input.value = document.getElementById("account_label").innerText;
     }
   });
   onChangeCategory();
@@ -291,6 +283,36 @@ function onChangeCategory() {
   }else{
     document.getElementById("returned_div").classList.remove("d-none"); 
   }
+}
+function onRequest() {
+  $('#request_form').validate({
+    rules: {
+      full_name: { required: true },
+      product_quantity: { required: true },
+      position: { required: true },
+      purpose : { required: true }
+    },
+    submitHandler: function (form) {
+        $.ajax({  
+          url:"../php/requestcreate.php",  
+          method:"POST",  
+          data: $('#request_form').serialize(), 
+          dataType: "json",
+          encode: true, 
+        }).done(function (response) {
+          if(response.success){
+            console.log(response);
+            alert(response.success_msg)
+            /* window.location.reload(); */
+          }else{
+            alert(response.error_msg)
+          }
+        }).fail(function (response){
+          console.log(response.responseText);
+        });
+    }
+  });
+  
 }
 
 function sendMail(email,subject,body) {
