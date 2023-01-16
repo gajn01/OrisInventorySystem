@@ -19,14 +19,14 @@ h1,h2{
     text-align: center;
 }
 #sidebar img{
-    margin-top: 1.3rem;
+    margin-top: .8rem;
     margin-bottom: 1rem;
 }
 .circle{
-    height: 130px;
+    height: 100px;
     background: #e0e8f8;
     border-radius: 50%;
-    width: 130px;
+    width: 100px;
     padding: 0;
     margin: 0 auto;
     position: relative;
@@ -194,7 +194,9 @@ table tbody{
     margin-right: 5px !important;
 }
 .pagination-container{
-    display: flex;
+    
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     justify-content: space-between;
     gap: 1rem;
     align-items: baseline;
@@ -204,12 +206,14 @@ table tbody{
     color: #315CB0;
 }
 .pager{
+    position: relative;
+    top: -15px;
     display: flex;
     align-items: baseline;
     gap: 1rem;
 }
 .page-number{
-    width: 75px !important;
+    width: 95px !important;
     border: 1px solid #3264C6 !important;
     border-radius: 30px !important;
 }
@@ -267,9 +271,10 @@ table tbody{
     background: #315CB0 !important;
 }
 .topbar-content{
-    margin-top: 4rem;
+    margin-top: 2em;
     display: grid !important;
     justify-content: center !important;
+    margin-bottom: 100px
 }
 .topbar-content a{
     font-size: 1.6rem;
@@ -294,7 +299,7 @@ table tbody{
     position: absolute;
     bottom: 1rem;
     width: 210px;
-    left: 5.6rem;
+    left: 4.7rem;
 }
 
 /* Modal */
@@ -324,17 +329,34 @@ table tbody{
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
-@media (max-width: 412px) {
- .table-content{
-    max-width: 380px !important;
- }
-}
 
-@media (max-width: 576px) {
-    .table-content{
-       max-width: 380px !important;
+
+@media (max-width: 425px) {
+    .header-button{
+        display: grid;
+        grid-template-columns: 1fr;
+        margin-top: 1rem;
+    }
+    .btn-add{
+        order: -1;
+        justify-content: center;
+        display: flex;
+    }
+    .pagination-container {
+        grid-template-columns: 1fr;
+        justify-content: center;
+    }
+    .pager{
+        justify-content: center;
+    }
+    .bottom-pagination{
+        display: flex;
+        justify-content: center;
     }
 }
+
+
+
 
 @media (max-width: 992px) {
     #sidebar{
@@ -346,11 +368,13 @@ table tbody{
     html{
         overflow-y: auto;
     }
-    .table-content .table{
-        display: block !important;
-        max-width: fit-content !important;
+    .circle{
+        top: 0 !important;
     }
-
+    .topbar-content{
+        margin-top: 0 !important;
+    }
+   
 }
 
 

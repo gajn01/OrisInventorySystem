@@ -129,91 +129,102 @@
               </div>
             </section>
                 <!-- Modal -->
-                <div class="modal fade" id="addMaterialModal" tabindex="-1" aria-labelledby="addMaterialModalLabel" aria-hidden="true">
+                <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h2 class="modal-title fs-5" id="addMaterialModalLabel">Add Material</h2>
+                        <h2 class="modal-title fs-5" id="requestModalLabel" >Request Details</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-                      <div class="modal-body">
-                        <form action="" method="post">
-                          <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                              <label for="category" class="col-sm-12 col-md-12 col-form-label">Category</label>
-                              <select class="form-select form-control" aria-label="Default select example" id="category" name="category" >
-                                <option value="1" selected >Supplies</option>
-                                <option value="2">Fixed Assets</option>
-                                <option value="3">Obsolete</option>
-                              </select>
+                      <form id="history_form">
+                        <div class="modal-body">
+                          <input class="form-control mb-3 d-none" type="text" id="request_id" name="request_id"  >
+                            <div class="row">
+                              <div class="col-md-6 col-sm-12">
+                                <label for="product_category" class="col-sm-12 col-md-12 col-form-label">Category</label>
+                                <input class="form-control mb-3" type="text" id="product_category" name="product_category" readonly >
+                              </div>
+                              <div class="col-md-6 col-sm-12">
+                                <label for="product_code" class="col-sm-12 col-md-12 col-form-label">Product Code</label>
+                                <input class="form-control mb-3" type="text" id="product_code" name="product_code" readonly >
+                              </div>
                             </div>
-                            <div class="col-md-6 col-sm-12">
-                              <label for="item_code" class="col-sm-12 col-md-12 col-form-label">Item Code</label>
-                              <input class="form-control mb-3" disabled type="text"   id="item_code" name="item_code" >
+                            <div class="row">
+                              <div class="col-md-6 col-sm-12">
+                                <label for="product_name" class="col-sm-12 col-md-12 col-form-label">Product Name </label>
+                                <input class="form-control mb-3"  type="text"  id="product_name" name="product_name" readonly >
+                              </div>
+                              <div class="col-md-6 col-sm-12">
+                                <label for="product_quantity" class="col-sm-12  col-md-12 col-form-label">Quantity  </label>
+                                <input class="form-control mb-3" type="number" id="product_quantity" min="1" value="1" name="product_quantity" readonly >
+                              </div>
                             </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-12 col-sm-12">
-                              <label for="product_name" class="col-sm-12 col-md-12 col-form-label">Product Name</label>
-                              <input class="form-control mb-3"  type="text"  id="product_name" name="product_name" >
+                            <div class="row">
+                              <div class="col-md-6 col-sm-12">
+                                <label for="full_name" class="col-sm-12 col-md-12 col-form-label">Full Name  </label>
+                                <input class="form-control mb-3"  type="text"  id="full_name" name="full_name" readonly >
+                              </div>
+                              <div class="col-md-6 col-sm-12">
+                                <label for="position" class="col-sm-12  col-md-12 col-form-label">Position  </label>
+                                <input class="form-control mb-3" type="text" id="position"  name="position" readonly>
+                              </div>
                             </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-12 col-sm-12">
-                              <label for="product_description" class="col-sm-12 col-md-12 col-form-label">Product Description</label>
-                              <textarea class="form-control mb-3" id="exampleFormControlTextarea1" ></textarea>
+                            <div class="row">
+                              <div class="col-md-12 col-sm-12">
+                                <label for="purpose" class="col-sm-12 col-md-12 col-form-label">Purpose </label>
+                                <textarea class="form-control mb-3" id="purpose" name="purpose" readonly ></textarea>
+                              </div>
                             </div>
-                          </div>
-    
-                          <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                              <label for="quantity" class="col-sm-12  col-md-12 col-form-label">Quantity</label>
-                              <input class="form-control mb-3" type="number" id="quantity" name="quantity" >
+                            <div class="row">
+                              <div class="col-sm-12 col-md-6" >
+                                <label for="date_requested" class="col-sm-12  col-md-12 col-form-label">Date Request </label>
+                                <input class="form-control mb-3" type="date" id="date_requested" name="date_requested" readonly>
+                              </div>
+                              <div class="col-sm-12 col-md-6 ">
+                                <label for="date_to_claim" class="col-sm-12  col-md-12 col-form-label">Date to Claim </label>
+                                <input class="form-control mb-3" type="date" id="date_to_claim" name="date_to_claim" readonly>
+                              </div>
                             </div>
-                            <div class="col-md-6 col-sm-12">
-                              <label for="unit" class="col-sm-12 col-md-12 col-form-label">Units</label>
-                              <select class="form-select form-control" aria-label="Default select example" id="unit" name="unit" >
-                                <option value="1" selected >Box</option>
-                                <option value="2">Gallons</option>
-                                <option value="3">Pcs</option>
-                              </select>
+                            <div class="row">
+                              <div class="col-sm-12 d-none" id="returned_div">
+                                <label for="date_return" class="col-sm-12 col-md-12 col-form-label">Date Return</label>
+                                <input class="form-control mb-3" type="date" id="date_return" name="date_return" readonly>
+                              </div>
                             </div>
-                          </div>
-
-                          <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                              <label for="location" class="col-sm-12  col-md-12 col-form-label">Location</label>
-                              <input class="form-control mb-3" type="text" id="location" name="location" >
+                            <div class="row">
+                            
+                              <div class="col-sm-12 col-md-6 ">
+                                <label for="approved_by" class="col-sm-12  col-md-12 col-form-label" id="approved_label">Approved by </label>
+                                <input class="form-control mb-3" type="text" id="approved_by" name="approved_by" >
+                              </div>
+                              <div class="col-sm-12 col-md-6" >
+                                  <label for="note_by" class="col-sm-12  col-md-12 col-form-label">Noted by </label>
+                                  <input class="form-control mb-3" type="text" id="note_by" name="note_by" >
+                                </div>
                             </div>
-                            <div class="col-md-6 col-sm-12">
-                              <label for="person_charge" class="col-sm-12 col-md-12 col-form-label">Person in Charge</label>
-                              <select class="form-select form-control" aria-label="Default select example" id="person_charge" name="person_charge" >
-                                <option value="1" selected >Admin</option>
-                                <option value="2">Head</option>
-                                <option value="3">Guard</option>
-                              </select>
+                            <div class="row">
+                              <div class="col-sm-12 col-md-6 ">
+                                <label for="status" class="col-sm-12  col-md-12 col-form-label">Status </label>
+                                <select class="form-select form-control" aria-label="Default select example" id="status" name="status" onchange="onUpdateStatus()" >
+                                  <option value="1" selected >Pending</option>
+                                  <option value="2" selected >Approve</option>
+                                  <option value="3" selected >Reject</option>
+                                </select>
+                              </div>
+                              <div class="col-sm-12 col-md-6" >
+                                  <label for="date_approved" class="col-sm-12  col-md-12 col-form-label" id="status_label">Date Approved  </label>
+                                  <input class="form-control mb-3" type="date" id="date_approved" name="date_approved" >
+                                </div>
                             </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                              <label for="inventory_date" class="col-sm-12  col-md-12 col-form-label">Inventory Date</label>
-                              <input class="form-control mb-3" type="date" id="inventory_date" name="inventory_date" >
-                            </div>
-                            <div class="col-md-6 col-sm-12">
-                              <label for="receiving_date" class="col-sm-12 col-md-12 col-form-label">Receiving Date</label>
-                              <input class="form-control mb-3" type="date" id="receiving_date" name="receiving_date" >
-                            </div>
-                          </div>
-
-
-                        </form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Submit</button>
-                      </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-add"  onclick="onUpdateRequest()">Submit</button>
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>
+          
           </div>
         </div>
     </div>

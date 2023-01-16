@@ -22,7 +22,7 @@
         <nav id="sidebar" >
             <div class="sidebar-nav">
                 <div class="circle">
-                    <img src="../assets/logo.png"  width="100px" alt="">
+                    <img src="../assets/logo.png"  width="80px" alt="">
                 </div>
                 <div class="sidebar-content">
                     <a href="../pages/dashboard.html" >Dashboard</a>
@@ -46,7 +46,7 @@
               <div class="offcanvas-body text-center">
                 <div class="text-center">
                   <div class="circle">
-                    <img class="mt-3" src="../assets/logo.png"  width="100px" alt="">
+                    <img class="mt-3" src="../assets/logo.png"  width="80px" alt="">
                   </div>
                   <div class="topbar-content">
                     <a href="../pages/dashboard.html" >Dashboard</a>
@@ -64,14 +64,21 @@
               <h1>Accounts</h1>
               <!-- Table -->
               <section>
-                <div class="header-button mt-5">
-                  <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch('account')">
-                  <!-- <button type="button" class="btn btn-primary btn-add">Filter</button> -->
-                  <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addUserModal" onclick="onClickAddAccount()">Add Account</button>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="header-button mt-5">
+                      <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch('account')">
+                      <!-- <button type="button" class="btn btn-primary btn-add">Filter</button> -->
+                      <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addUserModal" onclick="onClickAddAccount()">Add Account</button>
+                    </div>
                   </div>
+                </div>
+                
+              
               </section>
             <!-- Table data -->
             <section >
+              <div class="container-fluid">
                 <div class="row">
                   <div class="col-12">
                     <div class="table-content table-responsive-md mt-5">
@@ -114,6 +121,8 @@
                     </div>
                   </div>
                 </div>
+              </div>
+                
             </section>
             <!-- Modal -->
             <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">

@@ -498,7 +498,7 @@ function onClickAddMaterial() {
 }
 function onClickEditMaterial(product_code) {
   document.getElementById("material_form").reset();
-  document.getElementById("addMaterialModalLabel").innerText = "Update Account";
+  document.getElementById("addMaterialModalLabel").innerText = "Update Material";
   document.getElementById("create_material_submit").setAttribute("onclick","onUpdateMaterial()");
   let material_list = sessionStorage.getItem("material_list");
   let json_material = JSON.parse(material_list);
@@ -599,7 +599,7 @@ function onViewHistoryList() {
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
   $.ajax({  
-    url:"../php/historyview.php",  
+    url:"../php/requestview.php",  
     method:"POST",  
     data: {limit:limit,page:page*limit,search:search},  
     dataType: "json",
@@ -671,10 +671,11 @@ function onGenerateHistoryList(data) {
   let template;
     data.forEach(element => {
           ctr = ctr + 1;
+          let status = "";
           if(element.status == 1){
-            element.status = "Pending";
+            status = "Pending";
           }else if(element.status == 2){
-            element.status = "Approved";
+            status = "Approved";
           }else{
             element.status = "Rejected";
           }
@@ -691,7 +692,7 @@ function onGenerateHistoryList(data) {
               <td>${element.position}</td>
               <td>${element.product_name}</td>
               <td>${element.product_quantity}</td>
-              <td>${element.status}</td>
+              <td>${status}</td>
               <td>
                   <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickViewHistory(${JSON.stringify(element)})' >View</span>
               </td>
@@ -699,6 +700,66 @@ function onGenerateHistoryList(data) {
         table.innerHTML += template;
     });
 
+}
+function onClickViewHistory(history) {
+  date_approved = document.getElementById("date_approved");
+  date_approved.min = new Date().toISOString().split("T")[0];
+  document.getElementById("product_category").value = history.product_category ;
+  document.getElementById("product_code").value = history.product_code ;
+  document.getElementById("product_name").value = history.product_name ;
+  document.getElementById("product_quantity").value = history.product_quantity ;
+  document.getElementById("full_name").value = history.full_name ;
+  document.getElementById("position").value = history.position ;
+  document.getElementById("purpose").value = history.purpose ;
+  document.getElementById("date_requested").value = history.date_requested ;
+  document.getElementById("date_to_claim").value = history.date_to_claim ;
+  document.getElementById("status").value = history.status ;
+  document.getElementById("approved_by").value = history.approved_by;
+  document.getElementById("note_by").value = history.noted_by;
+  document.getElementById("request_id").value = history.id;
+  date_approved.value = history.date_approved ;
+
+}
+function onUpdateRequest() {
+  $.ajax({  
+    url:"../php/requestupdate.php",  
+    method:"POST",  
+    data: $('#history_form').serialize(), 
+    dataType: "json",
+    encode: true, 
+  }).done(function (response) {
+    if(response.success){
+      console.log("res:",response);
+      alert(response.success_msg);
+      /* window.location.reload(); */
+    }else{
+      alert(response.error_msg);
+    }
+  }).fail(function (response){
+    console.log(response.responseText);
+  });
+}
+function onUpdateStatus(params) {
+  let status = document.getElementById("status").value;
+  console.log(status);
+  if(status  == 2){
+    document.getElementById("status_label").innerText = "Date Approved"
+    document.getElementById("approved_label").innerText = "Approved by"
+    document.getElementById("date_approved").value = new Date().toISOString().split("T")[0];
+  }else if(status == 3){
+    document.getElementById("status_label").innerText = "Date Rejected"
+    document.getElementById("approved_label").innerText = "Rejected by"
+    document.getElementById("date_approved").value = new Date().toISOString().split("T")[0];
+  }else{
+    document.getElementById("approved_label").innerText = "Approved by"
+    document.getElementById("approved_label").innerText = "Approved by"
+    document.getElementById("date_approved").value = null;
+
+  }
+  
+  
+
+  
 }
 function sendMail(email,subject,body) {
   $.ajax({  

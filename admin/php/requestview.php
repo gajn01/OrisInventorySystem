@@ -4,6 +4,14 @@
     $page = $_POST['page'];
     $search = $_POST['search'];
     $form_data = array();
+
+    if($search == "pending" || $search == "Pending"){
+        $search = 1;
+    }else if($search == "approved" || $search == "Approved"){
+        $search = 2;
+    }else if($search == "rejected" || $search == "Rejected"){
+        $search = 3;
+    }
     /* get total items  */
     $sql=("SELECT COUNT(id) AS ctr FROM tbl_history");
     $result = mysqli_query($db, $sql);
@@ -17,7 +25,7 @@
     }
 
     /* Fetch module based on subject and teacher ID */
-    $sql=("SELECT * FROM tbl_history WHERE (product_category LIKE '$search%' OR product_name LIKE '$search%' OR full_name LIKE '$search%' )  LIMIT $limit OFFSET $page ");
+    $sql=("SELECT * FROM tbl_history  WHERE (product_category LIKE '$search%' OR product_name LIKE '$search%' OR full_name LIKE '$search%' OR status LIKE '$search%' ) ORDER BY status ASC , date_requested ASC LIMIT $limit OFFSET $page  ");
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
     if($fetch){
