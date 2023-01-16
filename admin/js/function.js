@@ -30,26 +30,31 @@ const product_status_input = document.getElementById("product_status");
 
 
 
-function onSelectLimit(table) {
+function onSelectLimit() {
   page = 0;
   ctr  = 0;
   document.getElementById("page_number").innerText = page+1;
-  if(table == 'account'){
+
+  if(table_selected == 0){
     onViewAccountList();
-  }else if(table == 'material'){
-      onViewMaterialList(table_selected);
+  }else if(table_selected == 4){
+    onViewHistoryList();
+  }else{
+    onViewMaterialList(table_selected);
   }
 }
-function onSearch(table) {
+function onSearch() {
   ctr =0;
   page = 0;
-  if(table == 'account'){
+  if(table_selected == 0){
     onViewAccountList();
-  }else if(table == 'material'){
-      onViewMaterialList(table_selected);
+  }else if(table_selected == 4){
+    onViewHistoryList();
+  }else{
+    onViewMaterialList(table_selected);
   }
 }
-function onPage(params,table) {
+function onPage(params) {
   limit =  $('#page_limit').val();
   setPage = items / limit
   totalPage = Math.trunc(items / limit)
@@ -75,10 +80,12 @@ function onPage(params,table) {
           document.getElementById("prev").style.display = "block";
       }
   }
-  if(table == 'account'){
-      onViewAccountList();
-  }else if(table == 'material'){
-      onViewMaterialList(table_selected);
+  if(table_selected == 0){
+    onViewAccountList();
+  }else if(table_selected == 4){
+    onViewHistoryList();
+  }else{
+    onViewMaterialList(table_selected);
   }
 }
 function onLogin() {
@@ -107,6 +114,17 @@ function onLogin() {
         });
     }
   });
+}
+function onChangeTab(params) {
+  page = 0;
+  ctr = 0;
+  document.getElementById("page_number").innerText = 1;
+  table_selected = params;
+  if(table_selected == 0){
+    onViewAccountList();
+  }else{
+    onViewMaterialList(table_selected);
+  }
 }
 /* Account Functions */
 function onCreateAccount() {
@@ -139,6 +157,7 @@ function onCreateAccount() {
   });
 }
 function onViewAccountList() {
+  table_selected = 0;
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
   $.ajax({  
@@ -156,7 +175,7 @@ function onViewAccountList() {
       if( setPage % 1){
           totalPage = totalPage +1
       }
-      if(parseInt(limit) > parseInt(items)){
+      if(parseInt(limit) > parseInt(items) || parseInt(limit) == parseInt(items)){
         document.getElementById("next").style.display = "none";
         document.getElementById("prev").style.display = "none";
       }else{
@@ -288,19 +307,22 @@ function onViewMaterialList(category_id) {
   $.ajax({  
     url:"../php/materialview.php",  
     method:"POST",  
-    data: {limit:limit,page:page*limit,search:search,category_id:category_id},  
+    data: {limit:limit,page:page*limit,search:search,category_id:table_selected},  
     dataType: "json",
     encode: true, 
   }).done(function (response) {
     var table = document.querySelector("table");
     if(response.success){
+      console.log("table_selected: ",table_selected);
+
+      console.log("Res: ",response.data);
       items = response.page_limit[0].ctr;
       let setPage = items / limit
       let totalPage = Math.trunc(items / limit)
       if( setPage % 1){
           totalPage = totalPage +1
       }
-      if(parseInt(limit) > parseInt(items)){
+      if(parseInt(limit) > parseInt(items) || parseInt(limit) == parseInt(items)){
         document.getElementById("next").style.display = "none";
         document.getElementById("prev").style.display = "none";
       }else{
@@ -387,7 +409,6 @@ function onViewMaterialList(category_id) {
   });
 }
 function onGenerateMaterialList(data,category_id) {
-  ctr = 0;
   let table = document.querySelector("table");
   let template;
     data.forEach(element => {
@@ -572,6 +593,113 @@ function onDeleteMaterial(product_code) {
   }
 }
 
+/* Requisition */
+function onViewHistoryList() {
+  table_selected = 4;
+  limit =  $('#page_limit').val();
+  search =  $('#searchbar').val();
+  $.ajax({  
+    url:"../php/historyview.php",  
+    method:"POST",  
+    data: {limit:limit,page:page*limit,search:search},  
+    dataType: "json",
+    encode: true, 
+  }).done(function (response) {
+    var table = document.querySelector("table");
+    if(response.success){
+      console.log(response);
+      items = response.page_limit[0].ctr;
+        let setPage = items / limit
+      let totalPage = Math.trunc(items / limit)
+      if( setPage % 1){
+          totalPage = totalPage +1
+      }
+      if(parseInt(limit) > parseInt(items) || parseInt(limit) == parseInt(items)){
+        document.getElementById("next").style.display = "none";
+        document.getElementById("prev").style.display = "none";
+      }else{
+          if(page <= 0){
+              document.getElementById("prev").style.display = "none";
+              document.getElementById("next").style.display = "block";
+
+          }else if(totalPage <= page+1){
+              document.getElementById("next").style.display = "none";
+              document.getElementById("prev").style.display = "block";
+          }
+      }
+      table.innerHTML =  "";
+        var template =`
+          <thead>
+            <th>#</th>
+            <th>Category</th>
+            <th>Full Name</th>
+            <th>Position</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Action</th>
+          </thead>`;
+      table.innerHTML += template;
+      onGenerateHistoryList(response.data);
+      sessionStorage.setItem("history_list",JSON.stringify(response.data));
+    }else{
+      table.innerHTML ="";
+      var template =`
+          <thead>
+            <th>#</th>
+            <th>Category</th>
+            <th>Full Name</th>
+            <th>Position</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Action</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="12">No records found!</td>
+            </tr>
+          </tbody>`;
+      table.innerHTML += template;
+    }
+  }).fail(function (response){
+    console.log(response.responseText);
+  });
+}
+function onGenerateHistoryList(data) {
+  let table = document.querySelector("table");
+  let template;
+    data.forEach(element => {
+          ctr = ctr + 1;
+          if(element.status == 1){
+            element.status = "Pending";
+          }else if(element.status == 2){
+            element.status = "Approved";
+          }else{
+            element.status = "Rejected";
+          }
+          if(element.product_category == 1){
+            element.product_category = "Supplies";
+          }else{
+            element.product_category = "Fixed Assets";
+          }
+          template = 
+          `<tr>
+              <td>${ctr}</td>
+              <td>${element.product_category}</td>
+              <td>${element.full_name}</td>
+              <td>${element.position}</td>
+              <td>${element.product_name}</td>
+              <td>${element.product_quantity}</td>
+              <td>${element.status}</td>
+              <td>
+                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickViewHistory(${JSON.stringify(element)})' >View</span>
+              </td>
+          </tr>`;
+        table.innerHTML += template;
+    });
+
+}
 function sendMail(email,subject,body) {
   $.ajax({  
          url:"../php/sendemail.php",  

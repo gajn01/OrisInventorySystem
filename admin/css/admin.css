@@ -96,7 +96,7 @@ h1,h2{
     margin: 0 auto;
     width: 95%;
     overflow-y: auto;
-    height: 97vh;
+    height: 98vh;
 }
 
 /* Thumbnail */
@@ -164,7 +164,7 @@ table tbody{
 }
 .table-content{
     overflow-y: auto;
-    height: 63vh;
+    height: 55vh;
 }
 
 .action-button{
