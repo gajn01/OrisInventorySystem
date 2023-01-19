@@ -10,11 +10,6 @@
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
     <title>Dashboard | Oris Inventory System</title>
-    <script>
-        window.onload = function () {
-
-        }
-      </script>
 </head>
 <body>
     <div class="wrapper">
@@ -28,6 +23,8 @@
                     <a href="../pages/requisition.html">Requisitions</a>
                     <a href="../pages/material.html">Inventory</a>
                     <a href="../pages/account.html">Accounts</a>
+                    <a href="../pages/scan.html">Open Scanner</a>
+
                 </div>
                 <a class="btn btn-primary btn-logout" href="../index.html">Logout</a>
             </div>
@@ -53,6 +50,8 @@
                             <a href="../pages/requisition.html" >Requisitions</a>
                             <a href="../pages/material.html" >Inventory</a>
                             <a href="../pages/account.html" >Accounts</a>
+                            <a href="../pages/account.html">Accounts</a>
+
                         </div>
                         <a class="btn btn-primary btn-logout-mobile text-center" href="../index.html">Logout</a>
                         </div>
@@ -60,7 +59,11 @@
                     </div>
                   </div>
                 <h1>Dashboard</h1>
-       
+                
+                <video id="preview"></video>
+
+                <p>scan code</p>
+                <input type="text" name="text" id="text">
                   
 
                 <!-- Thumbnail -->

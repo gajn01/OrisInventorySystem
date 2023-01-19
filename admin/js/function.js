@@ -28,6 +28,19 @@ const product_remarks_input = document.getElementById("product_remarks");
 const product_status_input = document.getElementById("product_status");
 
 
+let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+scanner.addListener('scan', function (content) {
+    console.log(content);
+});
+Instascan.Camera.getCameras().then(function (cameras) {
+    if (cameras.length > 0) {
+        scanner.start(cameras[0]);
+    } else {
+        console.error('No cameras found.');
+    }
+}).catch(function (e) {
+    console.error(e);
+});
 
 
 function onSelectLimit() {
@@ -105,7 +118,7 @@ function onLogin() {
           if(response.success){
             sessionStorage.setItem("account",JSON.stringify(response.data));
             alert(response.success_msg);
-            location.href = '../admin/pages/dashboard.html'
+            location.href = '../pages/dashboard.html'
           }else{
             alert(response.error_msg);
           }
