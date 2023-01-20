@@ -75,6 +75,9 @@ function onScan() {
   document.getElementById("delete_btn").classList.add("d-none");
   document.getElementById("update_btn").classList.add("d-none");
 }
+function scanModalClose() {
+  scanner.stop();
+}
 
 function onSelectLimit() {
   page = 0;
@@ -562,20 +565,6 @@ function onClickEditMaterial(product_code) {
       product_recieved_date_input.value = element.product_recieved_date;
       product_remarks_input.value = element.product_remarks;
       product_status_input.value = element.product_status;
-
-      document.getElementById("product_code_scan").value = element.product_code;
-      document.getElementById("product_category_scan").value = element.product_category;
-      document.getElementById("product_name_scan").value = element.product_name;
-      document.getElementById("product_description_scan").value = element.product_description;
-      document.getElementById("product_unit_scan").value = element.product_unit;
-      document.getElementById("product_quantity_scan").value = element.product_quantity;
-      document.getElementById("product_location_scan").value = element.product_location;
-      document.getElementById("product_person_incharge_scan").value = element.product_person_incharge;
-      document.getElementById("product_inventory_date_scan").value = element.product_inventory_date;
-      document.getElementById("product_recieved_date_scan").value = element.product_recieved_date;
-      document.getElementById("product_remarks_scan").value = element.product_remarks;
-      document.getElementById("product_status_scan").value = element.product_status;
-      
       generate(element.product_code,2);
     }
   });
