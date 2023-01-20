@@ -30,7 +30,32 @@ const product_status_input = document.getElementById("product_status");
 
 let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
 scanner.addListener('scan', function (content) {
-    console.log(content);
+  let material_list = sessionStorage.getItem("material_list");
+  let json_material = JSON.parse(material_list);
+  json_material.forEach(element => {
+    if(element.product_code == content){
+      document.getElementById("product_code_scan").value = element.product_code;
+      document.getElementById("product_category_scan").value = element.product_category;
+      document.getElementById("product_name_scan").value = element.product_name;
+      document.getElementById("product_description_scan").value = element.product_description;
+      document.getElementById("product_unit_scan").value = element.product_unit;
+      document.getElementById("product_quantity_scan").value = element.product_quantity;
+      document.getElementById("product_location_scan").value = element.product_location;
+      document.getElementById("product_person_incharge_scan").value = element.product_person_incharge;
+      document.getElementById("product_inventory_date_scan").value = element.product_inventory_date;
+      document.getElementById("product_recieved_date_scan").value = element.product_recieved_date;
+      document.getElementById("product_remarks_scan").value = element.product_remarks;
+      document.getElementById("product_status_scan").value = element.product_status;
+
+      document.getElementById("preview").classList.add("d-none");
+      document.getElementById("product_details").classList.remove("d-none");
+      document.getElementById("scan_btn").classList.remove("d-none");
+      document.getElementById("delete_btn").classList.remove("d-none");
+      document.getElementById("update_btn").classList.remove("d-none");
+      scanner.stop();
+    }
+  });
+    
 });
 Instascan.Camera.getCameras().then(function (cameras) {
     if (cameras.length > 0) {
@@ -42,6 +67,14 @@ Instascan.Camera.getCameras().then(function (cameras) {
     console.error(e);
 });
 
+function onScan() {
+  scanner.start();
+  document.getElementById("preview").classList.remove("d-none");
+  document.getElementById("product_details").classList.add("d-none");
+  document.getElementById("scan_btn").classList.add("d-none");
+  document.getElementById("delete_btn").classList.add("d-none");
+  document.getElementById("update_btn").classList.add("d-none");
+}
 
 function onSelectLimit() {
   page = 0;
@@ -529,6 +562,20 @@ function onClickEditMaterial(product_code) {
       product_recieved_date_input.value = element.product_recieved_date;
       product_remarks_input.value = element.product_remarks;
       product_status_input.value = element.product_status;
+
+      document.getElementById("product_code_scan").value = element.product_code;
+      document.getElementById("product_category_scan").value = element.product_category;
+      document.getElementById("product_name_scan").value = element.product_name;
+      document.getElementById("product_description_scan").value = element.product_description;
+      document.getElementById("product_unit_scan").value = element.product_unit;
+      document.getElementById("product_quantity_scan").value = element.product_quantity;
+      document.getElementById("product_location_scan").value = element.product_location;
+      document.getElementById("product_person_incharge_scan").value = element.product_person_incharge;
+      document.getElementById("product_inventory_date_scan").value = element.product_inventory_date;
+      document.getElementById("product_recieved_date_scan").value = element.product_recieved_date;
+      document.getElementById("product_remarks_scan").value = element.product_remarks;
+      document.getElementById("product_status_scan").value = element.product_status;
+      
       generate(element.product_code,2);
     }
   });

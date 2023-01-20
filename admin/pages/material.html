@@ -238,96 +238,86 @@
                     </div>
                     <form id="material_form">
                       <div class="modal-body">
-                                 
-                        <video id="preview"></video>
+                        
+                        <div class="row">
+                          <div class="col-12">
+                            <video id="preview"></video>
+                          </div>
+                        </div>
+                        <div class="row d-none" id="product_details">
+                          <div class="col-md-6 col-sm-12">
+                            <label for="product_category_scan" class="col-sm-12 col-md-12 col-form-label p-0">Category</label>
+                            <select class="form-select form-control" aria-label="Default select example" id="product_category_scan" name="product_category_scan" onchange="onChangeCategory()" readonly>
+                              <option value="1" selected >Supplies</option>
+                              <option value="2">Fixed Assets</option>
+                              <option value="3">Obsolete</option>
+                            </select>
+                          </div>
+                          <div class="col-md-6 col-sm-12">
+                            <label for="product_code_scan" class="col-sm-12 col-md-12 col-form-label p-0">Product Code</label>
+                            <input class="form-control" type="text" id="product_code_scan" name="product_code_scan" readonly >
+                          </div>
+                          <div class="col-12">
+                            <label for="product_name_scan" class="col-sm-12 col-md-12 col-form-label p-0">Product Name  </label>
+                            <input class="form-control"  type="text"  id="product_name_scan" name="product_name_scan" readonly >
+                          </div>
 
-                        <p>scan code</p>
-                        <input type="text" name="text" id="text">
-                        <!--   <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                              <label for="product_category" class="col-sm-12 col-md-12 col-form-label">Category</label>
-                              <select class="form-select form-control" aria-label="Default select example" id="product_category" name="product_category" onchange="onChangeCategory()">
-                                <option value="1" selected >Supplies</option>
-                                <option value="2">Fixed Assets</option>
-                                <option value="3">Obsolete</option>
-                              </select>
-                            </div>
-                            <div class="col-md-6 col-sm-12">
-                              <label for="product_code" class="col-sm-12 col-md-12 col-form-label">Product Code</label>
-                              <input class="form-control mb-3" type="text" id="product_code" name="product_code" readonly >
-                            </div>
+
+                          <div class="col-12">
+                            <label for="product_description_scan" class="col-sm-12 col-md-12 col-form-label">Product Description  </label>
+                            <textarea class="form-control mb-3" id="product_description_scan" name="product_description_scan" ></textarea>
                           </div>
-                          <div class="row">
-                            <div class="col-md-12 col-sm-12">
-                              <label for="product_name" class="col-sm-12 col-md-12 col-form-label">Product Name  <span class="require"> * </span></label>
-                              <input class="form-control mb-3"  type="text"  id="product_name" name="product_name" >
-                            </div>
+
+                          <div class="col-md-6 col-sm-12">
+                            <label for="product_quantity_scan" class="col-sm-12  col-md-12 col-form-label">Quantity  </label>
+                            <input class="form-control mb-3" type="number" id="product_quantity_scan" min="1" value="1" name="product_quantity_scan" >
                           </div>
-                          <div class="row">
-                            <div class="col-md-12 col-sm-12">
-                              <label for="product_description" class="col-sm-12 col-md-12 col-form-label">Product Description  <span class="require"> * </span></label>
-                              <textarea class="form-control mb-3" id="product_description" name="product_description" ></textarea>
-                            </div>
+                          <div class="col-md-6 col-sm-12">
+                            <label for="product_unit_scan" class="col-sm-12 col-md-12 col-form-label">Units</label>
+                            <select class="form-select form-control" aria-label="Default select example" id="product_unit_scan" name="product_unit_scan" >
+                              <option value="Box" selected >Box</option>
+                              <option value="Gallons">Gallons</option>
+                              <option value="Pcs">Pcs</option>
+                            </select>
                           </div>
-                          <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                              <label for="product_quantity" class="col-sm-12  col-md-12 col-form-label">Quantity  <span class="require"> * </span></label>
-                              <input class="form-control mb-3" type="number" id="product_quantity" min="1" value="1" name="product_quantity" >
-                            </div>
-                            <div class="col-md-6 col-sm-12">
-                              <label for="product_unit" class="col-sm-12 col-md-12 col-form-label">Units</label>
-                              <select class="form-select form-control" aria-label="Default select example" id="product_unit" name="product_unit" >
-                                <option value="Box" selected >Box</option>
-                                <option value="Gallons">Gallons</option>
-                                <option value="Pcs">Pcs</option>
-                              </select>
-                            </div>
+
+                          <div class="col-md-6 col-sm-12">
+                            <label for="product_location_scan" class="col-sm-12  col-md-12 col-form-label">Location  </label>
+                            <input class="form-control mb-3" type="text" id="product_location_scan" name="product_location_scan" >
                           </div>
-                          <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                              <label for="product_location" class="col-sm-12  col-md-12 col-form-label">Location  <span class="require"> * </span></label>
-                              <input class="form-control mb-3" type="text" id="product_location" name="product_location" >
-                            </div>
-                            <div class="col-md-6 col-sm-12">
-                              <label for="product_person_incharge" class="col-sm-12 col-md-12 col-form-label">Person in Charge <span class="require"> * </span></label>
-                              <input class="form-control mb-3" type="text" id="product_person_incharge" name="product_person_incharge" >
-                            </div>
+                          <div class="col-md-6 col-sm-12">
+                            <label for="product_person_incharge_scan" class="col-sm-12 col-md-12 col-form-label">Person in Charge </label>
+                            <input class="form-control mb-3" type="text" id="product_person_incharge_scan" name="product_person_incharge_scan" >
                           </div>
-                          <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                              <label for="product_inventory_date" class="col-sm-12  col-md-12 col-form-label">Inventory Date</label>
-                              <input class="form-control mb-3" type="date" id="product_inventory_date" name="product_inventory_date" >
-                            </div>
-                            <div class="col-md-6 col-sm-12">
-                              <label for="product_recieved_date" class="col-sm-12 col-md-12 col-form-label">Receiving Date</label>
-                              <input class="form-control mb-3" type="date" id="product_recieved_date" name="product_recieved_date" >
-                            </div>
+
+                          <div class="col-md-6 col-sm-12">
+                            <label for="product_inventory_date_scan" class="col-sm-12  col-md-12 col-form-label">Inventory Date</label>
+                            <input class="form-control mb-3" type="date" id="product_inventory_date_scan" name="product_inventory_date_scan" >
                           </div>
-                          <div class="row">
-                            <div class="col-sm-12 col-lg-12" id="remarks_div">
-                              <label for="product_remarks" class="col-sm-12 col-md-12 col-form-label">Product Remarks</label>
-                              <input class="form-control mb-3" type="text" id="product_remarks" name="product_remarks" >
-                            </div>
-                            <div class="col-sm-12 col-lg-6 d-none" id="status_div">
-                              <label for="product_status" class="col-sm-12 col-md-12 col-form-label">Status</label>
-                              <select class="form-select form-control" aria-label="Default select example" id="product_status" name="product_status" >
-                                <option value="Working" selected >Working</option>
-                                <option value="Not Working">Not Working</option>
-                              </select>
-                            </div>
-                            <div class="col-md-12 col-sm-12">
-                              <label class="col-sm-12 col-md-12 col-form-label">Product QR Code</label>
-                              <div class="qr-code-container">
-                                <div class="qr-code" ></div>
-                              </div>
-                            </div>
-                          </div> -->
+                          <div class="col-md-6 col-sm-12">
+                            <label for="product_recieved_date_scan" class="col-sm-12 col-md-12 col-form-label">Receiving Date</label>
+                            <input class="form-control mb-3" type="date" id="product_recieved_date_scan" name="product_recieved_date_scan" >
+                          </div>
+                          
+                          <div class="col-sm-12 col-lg-12" id="remarks_div">
+                            <label for="product_remarks_scan" class="col-sm-12 col-md-12 col-form-label">Product Remarks</label>
+                            <input class="form-control mb-3" type="text" id="product_remarks_scan" name="product_remarks_scan" >
+                          </div>
+                          <div class="col-sm-12 col-lg-6 d-none" id="status_div">
+                            <label for="product_status_scan" class="col-sm-12 col-md-12 col-form-label">Status</label>
+                            <select class="form-select form-control" aria-label="Default select example" id="product_status_scan" name="product_status_scan" >
+                              <option value="Working" selected >Working</option>
+                              <option value="Not Working">Not Working</option>
+                            </select>
+                          </div>
+                        </div>
                       </div>
                       <div class="modal-footer">
-                        <button type="submit" class="btn btn-secondary" id="create_material_submit">Submit</button>
-                        
+                        <button type="submit" class="btn btn-danger d-none" id="delete_btn">Delete</button>
+                        <button type="submit" class="btn btn-secondary d-none" id="update_btn">Update</button>
                       </div>
                     </form>
+                    <button class="btn btn-primary scan-btn d-none" id="scan_btn" onclick="onScan()">Scan Again</button>
                   </div>
                 </div>
               </div>

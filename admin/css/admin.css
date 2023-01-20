@@ -322,7 +322,19 @@ table tbody{
 .qr_btn{
     height: fit-content;
 }
-
+#preview{
+    height: 100%;
+    width: 100%;
+}
+.scan-btn{
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+}
+/* #product_details,#scan_btn,#delete_btn,#update_btn{
+    display: none;
+}
+ */
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
