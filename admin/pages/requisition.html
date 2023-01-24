@@ -9,18 +9,22 @@
     <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
     <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
     <title>Requisition | Oris Inventory System</title>
     <script>
-      window.onload = function () {
-
-          let account = sessionStorage.getItem("account");
-          let json_account = JSON.parse(account);
-          if(!json_account){
-              location.href = '../index.html';
-          }else{
-            onViewHistoryList();
-          }
+        window.onload = function () {
+            let account = sessionStorage.getItem("account");
+            let json_account = JSON.parse(account);
+            if(!json_account){
+                location.href = '../index.html';
+            }else{
+              onViewHistoryList();
+            }
+          
       }
     </script>
 </head>
@@ -29,7 +33,7 @@
         <nav id="sidebar">
             <div class="sidebar-nav">
                 <div class="circle">
-                    <img src="../assets/logo.png"  width="100px" alt="">
+                    <img src="../assets/logo.png"  width="80px" alt="">
                 </div>
                 <div class="sidebar-content">
                     <a href="../pages/dashboard.html" >Dashboard</a>
@@ -72,6 +76,7 @@
             <section>
               <div class="header-button mb-3 ">
                 <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch()">
+                <button type="button" class="btn btn-primary btn-add"  onclick="onDownlaodPDF()">Download PDF</button>
                 <!-- <button type="button" class="btn btn-primary btn-add">Filter</button> -->
                 </div>
             </section>
@@ -81,7 +86,7 @@
                 <div class="row">
                   <div class="col-12">
                     <div class="table-content table-responsive-md ">
-                      <table class="table" >
+                      <table class="table"  id="table_content" >
                         <thead>
                           <th>#</th>
                           <th>Code</th>
@@ -229,7 +234,7 @@
         </div>
     </div>
 
-
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script> -->
     <script src="../js/function.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>

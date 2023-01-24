@@ -10,24 +10,20 @@
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
-
-
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
-
-   
-
-    
     <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
     <title>Material | Oris Inventory System</title>
     <script>
       window.onload = function () {
-        
         onViewMaterialList(1);
+       /*  onViewAllMaterial(); */
+      
       }
     </script>
 </head>
@@ -36,7 +32,7 @@
         <nav id="sidebar">
             <div class="sidebar-nav">
                 <div class="circle">
-                    <img src="../assets/logo.png"  width="100px" alt="">
+                    <img src="../assets/logo.png"  width="80px" alt="">
                 </div>
                 <div class="sidebar-content">
                     <a href="../pages/dashboard.html" >Dashboard</a>
@@ -60,7 +56,7 @@
               <div class="offcanvas-body text-center">
                 <div class="text-center">
                   <div class="circle">
-                    <img class="mt-3" src="../assets/logo.png"  width="100px" alt="">
+                    <img class="mt-3" src="../assets/logo.png"  width="80px" alt="">
                   </div>
                   <div class="topbar-content">
                     <a href="../pages/dashboard.html" >Dashboard</a>
@@ -81,7 +77,9 @@
                 <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch()">
                 <!-- <button type="button" class="btn btn-primary btn-add">Filter</button> -->
                 <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addMaterialModal" onclick="onClickAddMaterial()">Add Material</button>
-                <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#openScannerModal" >Open Scanner</button>
+                <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#openScannerModal"  onclick="onStartScan()">Open Scanner</button>
+                <button type="button" class="btn btn-primary btn-add"  onclick="onDownloadPDFMaterial()">Download PDF</button>
+
                 </div>
             </section>
             <!-- Table -->
@@ -95,7 +93,7 @@
                 </div>
               </nav>
               <div class="table-content table-responsive-md">
-                <table class="table" >
+                <table class="table" id="table_material" >
                   <tbody class="table-group-divider"></tbody>
               </table>
               </div>
@@ -236,9 +234,8 @@
                       <h2 class="modal-title fs-5" id="openScannerModalLabel" >Material Information</h2>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="scanModalClose()"></button>
                     </div>
-                    <form id="material_form">
+                    <form id="scaned_material_form">
                       <div class="modal-body">
-                        
                         <div class="row">
                           <div class="col-12">
                             <video id="preview"></video>
@@ -259,7 +256,7 @@
                           </div>
                           <div class="col-12">
                             <label for="product_name_scan" class="col-sm-12 col-md-12 col-form-label p-0">Product Name  </label>
-                            <input class="form-control"  type="text"  id="product_name_scan" name="product_name_scan" readonly >
+                            <input class="form-control"  type="text"  id="product_name_scan" name="product_name_scan"  >
                           </div>
 
 
@@ -313,8 +310,8 @@
                         </div>
                       </div>
                       <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger d-none" id="delete_btn">Delete</button>
-                        <button type="submit" class="btn btn-secondary d-none" id="update_btn">Update</button>
+                        <button type="submit" class="btn btn-danger d-none" id="delete_btn" onclick="onScanDelete()" >Delete</button>
+                        <button type="submit" class="btn btn-secondary d-none" id="update_btn"  onclick="onUpdateMaterial(0)"  >Update</button>
                       </div>
                     </form>
                     <button class="btn btn-primary scan-btn d-none" id="scan_btn" onclick="onScan()">Scan Again</button>
@@ -324,8 +321,8 @@
           </div>
         </div>
     </div>
+
     <script src="../js/function.js"></script>
-    <script src="../js/generate-qr.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

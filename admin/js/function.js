@@ -30,22 +30,26 @@ const product_status_input = document.getElementById("product_status");
 
 let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
 scanner.addListener('scan', function (content) {
-  let material_list = sessionStorage.getItem("material_list");
-  let json_material = JSON.parse(material_list);
-  json_material.forEach(element => {
-    if(element.product_code == content){
-      document.getElementById("product_code_scan").value = element.product_code;
-      document.getElementById("product_category_scan").value = element.product_category;
-      document.getElementById("product_name_scan").value = element.product_name;
-      document.getElementById("product_description_scan").value = element.product_description;
-      document.getElementById("product_unit_scan").value = element.product_unit;
-      document.getElementById("product_quantity_scan").value = element.product_quantity;
-      document.getElementById("product_location_scan").value = element.product_location;
-      document.getElementById("product_person_incharge_scan").value = element.product_person_incharge;
-      document.getElementById("product_inventory_date_scan").value = element.product_inventory_date;
-      document.getElementById("product_recieved_date_scan").value = element.product_recieved_date;
-      document.getElementById("product_remarks_scan").value = element.product_remarks;
-      document.getElementById("product_status_scan").value = element.product_status;
+  $.ajax({  
+    url:"../php/materialallview.php",  
+    method:"POST",  
+    data: {product_code:content}, 
+    dataType: "json",
+    encode: true, 
+  }).done(function (response) {
+    if(response.success){
+      document.getElementById("product_code_scan").value = response.data.product_code;
+      document.getElementById("product_category_scan").value = response.data.product_category;
+      document.getElementById("product_name_scan").value = response.data.product_name;
+      document.getElementById("product_description_scan").value = response.data.product_description;
+      document.getElementById("product_unit_scan").value = response.data.product_unit;
+      document.getElementById("product_quantity_scan").value = response.data.product_quantity;
+      document.getElementById("product_location_scan").value = response.data.product_location;
+      document.getElementById("product_person_incharge_scan").value = response.data.product_person_incharge;
+      document.getElementById("product_inventory_date_scan").value = response.data.product_inventory_date;
+      document.getElementById("product_recieved_date_scan").value = response.data.product_recieved_date;
+      document.getElementById("product_remarks_scan").value = response.data.product_remarks;
+      document.getElementById("product_status_scan").value = response.data.product_status;
 
       document.getElementById("preview").classList.add("d-none");
       document.getElementById("product_details").classList.remove("d-none");
@@ -53,20 +57,29 @@ scanner.addListener('scan', function (content) {
       document.getElementById("delete_btn").classList.remove("d-none");
       document.getElementById("update_btn").classList.remove("d-none");
       scanner.stop();
+
+    }else{
+      alert("No record found!");
     }
+  }).fail(function (response){
+    console.log(response.responseText);
   });
-    
 });
-Instascan.Camera.getCameras().then(function (cameras) {
+
+function onStartScan() {
+ 
+  Instascan.Camera.getCameras().then(function (cameras) {
     if (cameras.length > 0) {
-        scanner.start(cameras[0]);
+      scanner.start(cameras[0]);
     } else {
         console.error('No cameras found.');
     }
-}).catch(function (e) {
-    console.error(e);
-});
-
+  }).catch(function (e) {
+      console.error(e);
+  });
+  
+ 
+}
 function onScan() {
   scanner.start();
   document.getElementById("preview").classList.remove("d-none");
@@ -154,7 +167,7 @@ function onLogin() {
           if(response.success){
             sessionStorage.setItem("account",JSON.stringify(response.data));
             alert(response.success_msg);
-            location.href = '../pages/dashboard.html'
+            location.href = '../admin/pages/dashboard.html'
           }else{
             alert(response.error_msg);
           }
@@ -175,6 +188,177 @@ function onChangeTab(params) {
     onViewMaterialList(table_selected);
   }
 }
+
+/* Dashboard */
+
+ function onChangeDateFilter() {
+  let date_filter =  $('#date_filter').val();
+  let date;
+  let date_end = moment().format("YYYY-MM-DD");
+  if(date_filter == 1 ){
+      date = moment().format("YYYY-MM-DD");
+  }else if(date_filter == 2 ){
+    let weekDates = [];
+    let startOfWeek = moment().startOf('week');
+    for (let i = 0; i < 7; i++) {
+      let currentDate = moment(startOfWeek);
+      currentDate.add(i, 'days');
+      let formattedDate = currentDate.format("YYYY-MM-DD");
+      weekDates.push(formattedDate);
+      date = weekDates;
+    }
+  }else if(date_filter == 3){
+    date = moment().format("YYYY-MM-DD");
+  }else if(date_filter == 4){
+    $(function() {
+      $('input[name="daterange"]').daterangepicker({
+          opens: 'right'
+      }, function(start, end, label) {
+        date = start.format('YYYY-MM-DD');
+        date_end = end.format('YYYY-MM-DD');
+        console.log("check",date);
+        console.log("date_end",date_end);
+
+      });
+    });
+
+  }
+  $.ajax({  
+    url:"../php/datefilter.php",  
+    method:"POST",  
+    data: {date_filtered:date, filter_type:date_filter,date_end:date_end}, 
+    dataType: "json",
+    encode: true, 
+  }).done(function (response) {
+    let dataPoints = [];
+    if(response.success){
+      console.log("response",response.date);
+      console.log("dates",date);
+    
+      if(date_filter == 1 ){
+        dataPoints.push({label:response.date[0].label,y: parseInt(response.date[0].y)});
+        document.getElementById("requesition_label").innerText = "Requisition per today";
+      }else if(date_filter == 2 ){
+        document.getElementById("requesition_label").innerText = "Requisition per week";
+
+        for (let i = 0; i < date.length; i++) {
+          let matchFound = false;
+          for (let j = 0; j < response.date.length; j++) {
+            if (response.date[j].label === date[i]) {
+              dataPoints.push({label: response.date[j].label, y: parseInt(response.date[j].y)});
+              matchFound = true;
+              break;
+            }
+          }
+          if (!matchFound) {
+            dataPoints.push({label: date[i], y: 0});
+          }
+        }
+      }else if(date_filter == 3){
+        document.getElementById("requesition_label").innerText = "Requisition per month";
+        let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        for (let i = 0; i < months.length; i++) {
+          let matchFound = false;
+          for (let j = 0; j < response.date.length; j++) {
+            if (response.date[j].month === months[i]) {
+              dataPoints.push({label: response.date[j].month, y: parseInt(response.date[j].total)});
+              matchFound = true;
+              break;
+            }
+          }
+          if (!matchFound) {
+            dataPoints.push({label: months[i], y: 0});
+          }
+        }
+      }else{
+        console.log("response",response.date);
+
+      }
+
+     /*  response.date.push({y: parseInt(element.y),label:element.label}); */
+      var chart = new CanvasJS.Chart("requisitionChartContainer", {
+        animationEnabled: true,
+        /* exportEnabled: true, */
+        backgroundColor: "#e0e8f8",
+        theme: "light1", // "light1", "light2", "dark1", "dark2"
+        data: [{
+          type: "column", //change type to bar, line, area, pie, etc
+          indexLabelFontColor: "#5A5757",
+          indexLabelFontSize: 16,
+          indexLabelPlacement: "outside",
+          dataPoints:dataPoints
+        }]
+      });
+      chart.render();
+
+    }else{
+     /*  alert("No record found!"); */
+    }
+  }).fail(function (response){
+   /*  alert("No record found!"); */
+    console.log(response.responseText);
+  });
+  
+
+
+ }
+
+function onViewDashboard() {
+  /* date_filter =  $('#daterange').val(); */
+  /*  */
+  $.ajax({  
+    url:"../php/dashboardview.php",  
+    method:"POST",  
+   /*  data: {date_filter:date_filter},  */
+    data: "", 
+    dataType: "json",
+    encode: true, 
+  }).done(function (response) {
+    if(response.success){
+      let materialData = [];
+      console.log("res",response);
+      document.getElementById("material_label").innerText = response.material[0].ctr
+      document.getElementById("account_label").innerText = response.account[0].ctr
+      document.getElementById("requisition_label").innerText = response.requisition[0].ctr
+      response.material_graph.forEach(element => {
+        if(element.label == 1){
+          element.label = "Supplies";
+        }else if(element.label == 2){
+          element.label = "Fixed Assets";
+        }else{
+          element.label = "Obsolete";
+        }
+        materialData.push({y: parseInt(element.y),label:element.label});
+      });
+
+      var chart = new CanvasJS.Chart("materailChartContainer", {
+        theme: "light2", // "light1", "light2", "dark1", "dark2"
+        animationEnabled: true,
+        backgroundColor: "#e0e8f8",
+        data: [{
+          type: "pie",
+          startAngle: 25,
+          toolTipContent: "<b>{label}</b>: {y}",
+          showInLegend: "true",
+          legendText: "{label}",
+          indexLabelFontSize: 16,
+          indexLabel: "{label} - {y}",
+          dataPoints: materialData
+        }]
+      });
+      chart.render();
+
+    }else{
+      alert("No record found!");
+    }
+  }).fail(function (response){
+    console.log(response.responseText);
+  });
+  
+}
+
+
+
 /* Account Functions */
 function onCreateAccount() {
   $('#account_form').validate({
@@ -548,7 +732,7 @@ function onClickAddMaterial() {
 function onClickEditMaterial(product_code) {
   document.getElementById("material_form").reset();
   document.getElementById("addMaterialModalLabel").innerText = "Update Material";
-  document.getElementById("create_material_submit").setAttribute("onclick","onUpdateMaterial()");
+  document.getElementById("create_material_submit").setAttribute("onclick","onUpdateMaterial(1)");
   let material_list = sessionStorage.getItem("material_list");
   let json_material = JSON.parse(material_list);
   json_material.forEach(element => {
@@ -602,23 +786,33 @@ function onCreateMaterial() {
     }
   });
 }
-function onUpdateMaterial() {
-      $.ajax({  
-        url:"../php/materialupdate.php",  
-        method:"POST",  
-        data: $('#material_form').serialize(), 
-        dataType: "json",
-        encode: true, 
-      }).done(function (response) {
-        if(response.success){
-          alert(response.success_msg);
-          window.location.reload();
-        }else{
-          alert(response.error_msg);
-        }
-      }).fail(function (response){
-        console.log(response.responseText);
-      });
+function onUpdateMaterial(form) {
+    let formData;
+    let url;
+    if (form == 1) {
+       formData = $('#material_form').serialize();
+       url = "../php/materialupdate.php";
+
+    }else{
+       formData = $('#scaned_material_form').serialize();
+       url = "../php/materialscanupdate.php";
+    }
+    $.ajax({  
+      url:url,  
+      method:"POST",  
+      data: formData, 
+      dataType: "json",
+      encode: true, 
+    }).done(function (response) {
+      if(response.success){
+        alert(response.success_msg);
+        window.location.reload();
+      }else{
+        alert(response.error_msg);
+      }
+    }).fail(function (response){
+      console.log(response.responseText);
+    });
 }
 function onDeleteMaterial(product_code) {
   let text = "Do you want to delete the record?";
@@ -641,6 +835,74 @@ function onDeleteMaterial(product_code) {
     });
   }
 }
+function onScanDelete() {
+  let product_code_scan =  $('#product_code_scan').val();
+  let text = "Do you want to delete the record?";
+  if (confirm(text)) {
+    $.ajax({  
+      url:"../php/materialdelete.php",  
+      method:"POST",  
+      data: {product_code:product_code_scan}, 
+      dataType: "json",
+      encode: true, 
+    }).done(function (response) {
+      if(response.success){
+        alert(response.success_msg);
+        window.location.reload();
+      }else{
+        alert(response.error_msg);
+      }
+    }).fail(function (response){
+      console.log(response.responseText);
+    });
+  }
+}
+function onDownloadPDFMaterial() {
+  let table_header = "Supplies";
+  let table_header_count = 10;
+  if(table_selected == 1 ){
+    table_header = "Inventory Record: Supplies";
+    table_header_count = 10;
+  }else if(table_selected == 2 ){
+    table_header = "Inventory Record: Fixed Assets";
+    table_header_count = 11;
+  }else if(table_selected == 3 ){
+    table_header = "Inventory Record: Obsolete";
+    table_header_count = 8;
+  }
+  // Select the table
+  var table = document.getElementById('table_material');
+  // Extract the data from the table
+  var data = [];
+  for (var i = 0; i < table.rows.length; i++) {
+      var row = table.rows[i];
+      var rowData = [];
+      for (var j = 0; j < table_header_count; j++) {
+          rowData.push(row.cells[j].innerHTML);
+      }
+      data.push(rowData);
+  }
+  var docDefinition = {
+    content: [
+      {text: table_header, fontSize: 21, bold: true, margin: [0, 20, 20, 8]},
+      {table: {
+          headerRows: 1,
+          widths: 'auto',
+          body: data  ,      
+        }
+      }
+    ],
+    defaultStyle: {
+      // alignment: 'justify'
+      fontSize: 9,
+    }
+  };
+  
+  // Download the PDF
+  pdfMake.createPdf(docDefinition).download();
+  
+  }
+  
 
 /* Requisition */
 function onViewHistoryList() {
@@ -685,6 +947,7 @@ function onViewHistoryList() {
             <th>Position</th>
             <th>Product Name</th>
             <th>Quantity</th>
+            <th>Date Requested</th>
             <th>Status</th>
             <th>Action</th>
           </thead>`;
@@ -701,6 +964,7 @@ function onViewHistoryList() {
             <th>Position</th>
             <th>Product Name</th>
             <th>Quantity</th>
+            <th>Date Requested</th>
             <th>Status</th>
             <th>Action</th>
           </thead>
@@ -741,6 +1005,7 @@ function onGenerateHistoryList(data) {
               <td>${element.position}</td>
               <td>${element.product_name}</td>
               <td>${element.product_quantity}</td>
+              <td>${element.date_requested}</td>
               <td>${status}</td>
               <td>
                   <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickViewHistory(${JSON.stringify(element)})' >View</span>
@@ -824,3 +1089,37 @@ function sendMail(email,subject,body) {
          }  
      }); 
 }
+function onDownlaodPDF() {
+// Select the table
+var table = document.getElementById('table_content');
+// Extract the data from the table
+var data = [];
+for (var i = 0; i < table.rows.length; i++) {
+    var row = table.rows[i];
+    var rowData = [];
+    for (var j = 0; j < 8; j++) {
+        rowData.push(row.cells[j].innerHTML);
+    }
+    data.push(rowData);
+}
+var docDefinition = {
+  content: [
+    {text: 'Requisition Record:', fontSize: 21, bold: true, margin: [0, 20, 20, 8]},
+    {
+      table: {
+ 
+        headerRows: 1,
+        widths:  ['auto', 'auto', 'auto','auto', 'auto', 'auto', 'auto', 'auto'],
+        body: data
+      }
+    }
+  ]
+};
+
+// Download the PDF
+pdfMake.createPdf(docDefinition).download();
+
+}
+
+
+

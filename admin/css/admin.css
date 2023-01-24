@@ -13,6 +13,8 @@ h1,h2{
 .wrapper{
     display: grid;
     grid-template-columns: 250px 1fr;
+    height: 100vh;
+
 }
 /* Sidebar */
 #sidebar{
@@ -33,7 +35,7 @@ h1,h2{
     top: 2rem;
 }
 .sidebar-nav{
-    height: 100vh;
+    height: 100%;
     background-color: #315CB0;
     border-radius: 5.46262px 95px 0 0;
 }
@@ -96,7 +98,6 @@ h1,h2{
     margin: 0 auto;
     width: 95%;
     overflow-y: auto;
-    height: 98vh;
 }
 
 /* Thumbnail */
