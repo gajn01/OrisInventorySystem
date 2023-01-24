@@ -7,7 +7,7 @@
     $form_data = array();
 
     /* get total items  */
-    $sql=("SELECT COUNT(id) AS ctr FROM tbl_inventory WHERE product_category = $category_id");
+    $sql=("SELECT COUNT(id) AS ctr FROM tbl_inventory WHERE product_category = '$category_id' AND  product_quantity != 0 ");
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
     if($fetch){
@@ -19,7 +19,7 @@
     }
 
     /* Fetch module based on subject and teacher ID */
-    $sql=("SELECT * FROM tbl_inventory WHERE product_category = $category_id AND (product_name LIKE '$search%' OR product_description LIKE '$search%' OR product_unit LIKE '$search%' OR product_location LIKE '$search%' OR product_person_incharge LIKE '$search%')  LIMIT $limit OFFSET $page ");
+    $sql=("SELECT * FROM tbl_inventory WHERE product_category = $category_id AND  product_quantity != 0  AND (product_name LIKE '$search%' OR product_description LIKE '$search%' OR product_unit LIKE '$search%' OR product_location LIKE '$search%' OR product_person_incharge LIKE '$search%')  LIMIT $limit OFFSET $page ");
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
     if($fetch){

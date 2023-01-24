@@ -278,7 +278,7 @@ function onChangeTab(params) {
      /*  response.date.push({y: parseInt(element.y),label:element.label}); */
       var chart = new CanvasJS.Chart("requisitionChartContainer", {
         animationEnabled: true,
-        /* exportEnabled: true, */
+        exportEnabled: true,
         backgroundColor: "#e0e8f8",
         theme: "light1", // "light1", "light2", "dark1", "dark2"
         data: [{
@@ -377,9 +377,16 @@ function onCreateAccount() {
             alert(response.success_msg)
             // $('#addUserModal').modal('hide');
             let subject = "Account Creation";
-            let body = "Greetings!, <br> <br> <a href='http://orisadmin.ezyro.com/'>Login here </a> " + $('#firstname').val() +" "+ $('#lastname').val() +" your password is: " + response.data;
-            sendMail($('#email').val(),subject,body);
-            // window.location.reload();
+            let template = `
+              Hi ${$('#email').val()}, <br><br>
+              Thanks for signing up in ORIS: An Online Requisition and Inventory System for City College of Calamba.<br>
+              Your account has been successfully created. Below is your account password information.<br>
+              Password: ${response.data} <br>
+              <a href='http://orisadmin.ezyro.com/'>Login here </a> <br>
+              Thanks and Regards,.<br>
+              ORIS`;
+            sendMail($('#email').val(),subject,template);
+             window.location.reload();
           }else{
             alert(response.error_msg)
           }
@@ -648,12 +655,12 @@ function onGenerateMaterialList(data,category_id) {
         if(parseInt(category_id)  == 1){
           ctr = ctr + 1;
           template = 
-          `<tr>
+          `<tr id="${element.product_code}">
               <td>${ctr}</td>
               <td>${element.product_code}</td>
               <td>${element.product_name}</td>
               <td>${element.product_description}</td>
-              <td>${element.product_quantity}</td>
+              <td>${element.product_quantity} <span class="d-block d-none warning" id="alert_quantity${element.product_code}">(Low)</span> </td>
               <td>${element.product_unit}</td>
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
@@ -664,10 +671,12 @@ function onGenerateMaterialList(data,category_id) {
                   <span class="action-button" onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
               </td>
           </tr>`;
+       
+  
         }else if(parseInt(category_id) == 2){
           ctr = ctr + 1;
           template = 
-          `<tr>
+          `<tr id="${element.product_code}">
               <td>${ctr}</td>
               <td>${element.product_code}</td>
               <td>${element.product_name}</td>
@@ -691,7 +700,7 @@ function onGenerateMaterialList(data,category_id) {
               <td>${ctr}</td>
               <td>${element.product_code}</td>
               <td>${element.product_name}</td>
-              <td>${element.product_quantity}</td>
+              <td>${element.product_quantity}  </td>
               <td>${element.product_unit}</td>
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
@@ -703,6 +712,14 @@ function onGenerateMaterialList(data,category_id) {
           </tr>`;
         }
         table.innerHTML += template;
+        if(element.product_quantity == 0){
+          document.getElementById(element.product_code).classList.add('danger');
+        }
+        if(element.product_quantity <= 5 && element.product_quantity > 1){
+          document.getElementById("alert_quantity"+element.product_code).classList.remove('d-none');
+          document.getElementById(element.product_code).classList.add('warning');
+        }
+      
     });
 }
 function onChangeCategory() {
@@ -997,8 +1014,10 @@ function onGenerateHistoryList(data) {
           }else{
             element.product_category = "Fixed Assets";
           }
+
+         
           template = 
-          `<tr>
+          `<tr id="${element.product_code}" >
               <td>${ctr}</td>
               <td>${element.product_category}</td>
               <td>${element.full_name}</td>
@@ -1011,7 +1030,9 @@ function onGenerateHistoryList(data) {
                   <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickViewHistory(${JSON.stringify(element)})' >View</span>
               </td>
           </tr>`;
+       
         table.innerHTML += template;
+     
     });
 
 }

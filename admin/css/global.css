@@ -38,7 +38,7 @@ label.error{
     color: red;
     font-size: .8rem;
 }
-.require{
+.require,.danger{
     color: red;
 }
 .cursor-pointer{
@@ -46,4 +46,7 @@ label.error{
 }
 .cursor-pointer:hover{
     opacity: 0.8;
+}
+.warning{
+    color: orange;
 }

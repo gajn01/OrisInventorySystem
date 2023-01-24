@@ -300,10 +300,11 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_unit}</td>
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
-              <td>
-                  <span  data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(${JSON.stringify(element.product_code)})'>Request</span>
+              <td  >
+                  <span  data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button " onClick='onClickRequest(${JSON.stringify(element)})'>Request</span>
               </td>
           </tr>`;
+      
         }else if(parseInt(category_id) == 2){
           ctr = ctr + 1;
           template = 
@@ -316,7 +317,7 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td>
-                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(${JSON.stringify(element.product_code)})' >Borrow</span>
+                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(${JSON.stringify(element)})' >Borrow</span>
               </td>
           </tr>`;
         }else if(parseInt(category_id) == 3){
@@ -351,7 +352,8 @@ function onGenerateMaterialList(data,category_id) {
     });
 
 }
-function onClickRequest(product_code) {
+function onClickRequest(product) {
+  console.log('check',product_code);
   document.getElementById("request_form").reset();
   date_requested_input.min = new Date().toISOString().split("T")[0];
   date_to_claim_input.min = new Date().toISOString().split("T")[0];
@@ -359,21 +361,15 @@ function onClickRequest(product_code) {
   date_requested_input.value = new Date().toISOString().split("T")[0];
   date_to_claim_input.value = new Date().toISOString().split("T")[0];
   date_return_input.value = new Date().toISOString().split("T")[0];
-  let material_list = sessionStorage.getItem("material_list");
-  let json_material = JSON.parse(material_list);
-  json_material.forEach(element => {
-    if(element.product_code == product_code){
-      if(parseInt(element.product_category)  == 1){
-        product_category_input.value = "Supplies";
-      }else{
-        product_category_input.value = "Fixed Assets";
-      }
-      account_id_input.value = json_account.account_id;
-      product_code_input.value = element.product_code;
-      product_name_input.value = element.product_name;
-      department_input.value = document.getElementById("account_label").innerText;
-    }
-  });
+  if(parseInt(product.product_category)  == 1){
+    product_category_input.value = "Supplies";
+  }else{
+    product_category_input.value = "Fixed Assets";
+  }
+  account_id_input.value = json_account.account_id;
+  product_code_input.value = product.product_code;
+  product_name_input.value = product.product_name;
+  department_input.value = document.getElementById("account_label").innerText;
   onChangeCategory();
 }
 function onClickViewHistory(history) {
