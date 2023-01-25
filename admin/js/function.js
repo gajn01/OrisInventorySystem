@@ -681,7 +681,7 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_code}</td>
               <td>${element.product_name}</td>
               <td>${element.product_description}</td>
-              <td>${element.product_quantity}</td>
+              <td>${element.product_quantity} <span class="d-block d-none warning" id="alert_quantity${element.product_code}">(Low)</span></td>
               <td>${element.product_unit}</td>
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
@@ -715,7 +715,7 @@ function onGenerateMaterialList(data,category_id) {
         if(element.product_quantity == 0){
           document.getElementById(element.product_code).classList.add('danger');
         }
-        if(element.product_quantity <= 5 && element.product_quantity > 1){
+        if(element.product_quantity <= 5 && element.product_quantity > 0){
           document.getElementById("alert_quantity"+element.product_code).classList.remove('d-none');
           document.getElementById(element.product_code).classList.add('warning');
         }

@@ -25,14 +25,9 @@ include("connection.php");
         WHERE id = '$request_id'");
         if (mysqli_query($db, $update_query)) {
             if($status == 2){
-                $update_query = ("UPDATE tbl_history SET 
-                approved_by = '$approved_by', 
-                noted_by = '$noted_by', 
-                date_approved = '$date_approved', 
-                remarks = '$remarks', 
-                product_quantity = '$product_quantity', 
-                status = '$status' 
-                WHERE id = '$request_id'");
+                $update_query = ("UPDATE tbl_inventory SET 
+                product_quantity =  product_quantity - '$product_quantity'
+                WHERE product_code = '$product_code' ");
                 if (mysqli_query($db, $update_query)) {
                     $form_data['success'] = true;
                     $form_data['success_msg'] = "Record updated successfully!";
@@ -44,11 +39,12 @@ include("connection.php");
                 $form_data['success'] = true;
                 $form_data['success_msg'] = "Record updated successfully!";
             }
+            $form_data['success'] = true;
+            $form_data['success_msg'] = "Record updated successfully!";
         } else {
             $form_data['success'] = false;
             $form_data['error_msg'] ="Failed to update record!";
         } 
-
     }else{
         $form_data['success'] = false;
         $form_data['error_msg'] = "Invalid quantity!";
