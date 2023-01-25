@@ -126,6 +126,42 @@ function goTo(params) {
     window.location.href = "../pages/history.html";
   }
 }
+
+function onChangePassword() {
+  let account = sessionStorage.getItem('account');
+  let json_account = JSON.parse(account);
+  let account_id = json_account.account_id;
+  let formData =  $('#changepass_form').serialize();
+  formData += "&account_id="+account_id;
+  $('#changepass_form').validate({
+    rules: {
+      old_password: { required: true},
+      new_password: { required: true, minlength: 5 },
+      confirm_password: { required: true, minlength: 5, equalTo: "#new_password" }
+    },
+    messages: { confirm_password: { equalTo: "The new password and confirm password fields must match." } },
+    submitHandler: function (form) {
+        $.ajax({  
+          url:"../php/changepassword.php",  
+          method:"POST",  
+          data: formData, 
+          dataType: "json",
+          encode: true, 
+        }).done(function (response) {
+          if(response.success){
+            alert(response.success_msg);
+            window.location.reload();
+          }else{
+            alert(response.error_msg);
+          }
+        }).fail(function (data){
+          console.log(data.responseText);
+        });
+    }
+  });
+
+}
+
 /* Material Functions */
 function onViewMaterialList(category_id) {
   table_selected = category_id;

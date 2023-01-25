@@ -47,7 +47,6 @@ include("connection.php"); //Establishing connection with our database
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
     if($fetch){
-
         $update_query = ("UPDATE tbl_inventory SET 
         product_quantity =  product_quantity - '$product_quantity'
         WHERE product_code = '$product_code' ");

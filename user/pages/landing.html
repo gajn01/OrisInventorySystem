@@ -18,6 +18,7 @@
           if(!json_account){
               location.href = '../index.html';
           }else{
+            console.log(json_account);
               onViewMaterialList(1);
               document.getElementById('account_label').innerText =  json_account.department;
           }
@@ -38,6 +39,7 @@
           <div class="account-container">
             <p class="cursor-pointer link-label txt-primary dropdown-toggle" id="account_label" data-bs-toggle="dropdown" aria-expanded="false">Name</p>
             <ul class="dropdown-menu" aria-labelledby="account_dropdown">
+              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal" >Change Password</a></li>
               <li><a class="dropdown-item" href="#" onClick="onLogout()">Logout</a></li>
             </ul>
           </div>
@@ -102,6 +104,7 @@
         </section>
       </div>
 
+      <!-- modal request -->
       <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
@@ -176,9 +179,38 @@
           </div>
         </div>
       </div>
-
-
-
+      <!-- modal change password -->
+      <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title fs-5" id="changePasswordModalLabel" >Change Password Form</h2>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="changepass_form">
+              <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                      <label for="old_password" class="col-sm-12 col-md-12 col-form-label">Old Password</label>
+                      <input class="form-control mb-3" type="text" id="old_password" name="old_password"  >
+                    </div>
+                    <div class="col-md-12 col-sm-12">
+                      <label for="new_password" class="col-sm-12 col-md-12 col-form-label">New Password</label>
+                      <input class="form-control mb-3" type="text" id="new_password" name="new_password"  >
+                    </div>
+                    <div class="col-md-12 col-sm-12">
+                      <label for="confirm_password" class="col-sm-12 col-md-12 col-form-label">Confirm Password</label>
+                      <input class="form-control mb-3" type="text" id="confirm_password" name="confirm_password"  >
+                    </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-add" id="request_submit" onclick="onChangePassword()">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
 
 
