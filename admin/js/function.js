@@ -302,7 +302,6 @@ function onChangeTab(params) {
 
 
  }
-
 function onViewDashboard() {
   /* date_filter =  $('#daterange').val(); */
   /*  */
@@ -919,7 +918,6 @@ function onDownloadPDFMaterial() {
   pdfMake.createPdf(docDefinition).download();
   
   }
-  
 
 /* Requisition */
 function onViewHistoryList() {
