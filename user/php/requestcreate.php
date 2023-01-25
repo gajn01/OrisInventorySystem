@@ -43,19 +43,35 @@ include("connection.php"); //Establishing connection with our database
     $date_requested = mysqli_real_escape_string($db,$date_requested);
     $date_to_claim = mysqli_real_escape_string($db,$date_to_claim);
 
-    $sql=("INSERT INTO tbl_history (account_id,product_category,product_name,product_code,product_quantity,purpose,full_name,department,position,date_requested,date_return,date_to_claim,status) 
-    VALUES ('$account_id','$product_category','$product_name','$product_code','$product_quantity','$purpose','$full_name','$department','$position','$date_requested','$date_return','$date_to_claim','1')");
-        if (mysqli_query($db, $sql)) {
-        $form_data['success'] = true;
-        if($product_category == 1){
-            $form_data['success_msg'] = "Request successful";
-        }else{
-            $form_data['success_msg'] = "Borrow successful";
-        }
+    $sql=("SELECT * FROM `tbl_inventory` WHERE product_code = '$product_code' AND product_quantity >= '$product_quantity' ");
+    $result = mysqli_query($db, $sql);
+    $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
+    if($fetch){
 
-    } else {
+        $update_query = ("UPDATE tbl_inventory SET 
+        product_quantity =  product_quantity - '$product_quantity'
+        WHERE product_code = '$product_code' ");
+        if (mysqli_query($db, $update_query)) {
+            $sql=("INSERT INTO tbl_history (account_id,product_category,product_name,product_code,product_quantity,purpose,full_name,department,position,date_requested,date_return,date_to_claim,status) 
+            VALUES ('$account_id','$product_category','$product_name','$product_code','$product_quantity','$purpose','$full_name','$department','$position','$date_requested','$date_return','$date_to_claim','1')");
+                if (mysqli_query($db, $sql)) {
+                $form_data['success'] = true;
+                if($product_category == 1){
+                    $form_data['success_msg'] = "Request successful";
+                }else{
+                    $form_data['success_msg'] = "Borrow successful";
+                }
+            } else {
+                $form_data['success'] = false;
+                $form_data['error_msg'] = "Action failed";
+            }
+        } else {
+            $form_data['success'] = false;
+            $form_data['error_msg'] ="Failed to update record!";
+        } 
+    }else{
         $form_data['success'] = false;
-        $form_data['error_msg'] = "Action failed";
+        $form_data['error_msg'] = "Invalid quantity!";
     }
 echo json_encode($form_data);
 $db->close();
