@@ -25,7 +25,7 @@
     }
 
     /* Fetch module based on subject and teacher ID */
-    $sql=("SELECT * FROM tbl_history  WHERE (product_category LIKE '$search%' OR product_name LIKE '$search%' OR full_name LIKE '$search%' OR status LIKE '$search%' ) ORDER BY status ASC , date_requested ASC LIMIT $limit OFFSET $page  ");
+    $sql=("SELECT * FROM tbl_history  WHERE (product_category LIKE '$search%' OR product_name LIKE '$search%' OR full_name LIKE '$search%' OR status LIKE '$search%' ) ORDER BY date_requested DESC , status ASC LIMIT $limit OFFSET $page  ");
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
     if($fetch){

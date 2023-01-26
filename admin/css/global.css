@@ -22,6 +22,9 @@
     margin-top: 24px;
     margin-left: 4px;
 }
+h1{
+    border-bottom: 2px solid #315CB0;
+}
 .txt-primary{
     color: #315CB0;
 }
@@ -50,6 +53,16 @@ label.error{
 .warning{
     color: orange;
 }
+.pending{
+    background-color: orange;
+}
 .approved{
-    color: green;
+    background-color: green;
+}
+.returned{
+    background-color: #315CB0;
+}
+.rejected{
+    background-color: red;
+
 }

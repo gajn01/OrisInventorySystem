@@ -188,6 +188,9 @@ function onChangeTab(params) {
     onViewMaterialList(table_selected);
   }
 }
+function navigateTo(url) {
+  location.href = '../pages/'+url;
+}
 
 /* Dashboard */
 
@@ -357,7 +360,6 @@ function onViewDashboard() {
 }
 
 
-
 /* Account Functions */
 function onCreateAccount() {
   $('#account_form').validate({
@@ -460,8 +462,8 @@ function onGenerateAccoutList(data) {
                 <td>${ctr}</td>
                 <td>${element.department}</td>
                 <td>
-                    <span  data-bs-toggle="modal" data-bs-target="#addUserModal" class="action-button" onClick="onClickEditAccount(${element.account_id})">Edit</span> | 
-                    <span class="action-button" onClick="onDeleteAccount(${element.account_id})" >Delete</span> 
+                    <span  data-bs-toggle="modal" data-bs-target="#addUserModal" class="btn btn-primary "  onClick="onClickEditAccount(${element.account_id})">Edit</span> 
+                    <span class="btn btn-primary "  onClick="onDeleteAccount(${element.account_id})" >Delete</span> 
                 </td>
             </tr>`;
         table.innerHTML += template;
@@ -552,9 +554,6 @@ function onViewMaterialList(category_id) {
   }).done(function (response) {
     var table = document.querySelector("table");
     if(response.success){
-      console.log("table_selected: ",table_selected);
-
-      console.log("Res: ",response.data);
       items = response.page_limit[0].ctr;
       let setPage = items / limit
       let totalPage = Math.trunc(items / limit)
@@ -659,19 +658,17 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_code}</td>
               <td>${element.product_name}</td>
               <td>${element.product_description}</td>
-              <td>${element.product_quantity} <span class="d-block d-none warning" id="alert_quantity${element.product_code}">(Low)</span> </td>
+              <td >${element.product_quantity} <span class="d-block d-none warning" id="alert_quantity${element.product_code}">(Low)</span> </td>
               <td>${element.product_unit}</td>
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td>${element.product_inventory_date}</td>
               <td  >${element.product_recieved_date}</td>
               <td>
-                  <span  data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="action-button" onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})'   >Edit</span> | 
-                  <span class="action-button" onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
+                  <span  data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="btn btn-primary " onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})'   >Edit</span> 
+                  <span class="btn btn-primary " onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
               </td>
           </tr>`;
-       
-  
         }else if(parseInt(category_id) == 2){
           ctr = ctr + 1;
           template = 
@@ -688,8 +685,8 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_inventory_date}</td>
               <td>${element.product_remarks}</td>
               <td>
-                  <span data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="action-button" onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})' >Edit</span> | 
-                  <span class="action-button" onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
+                  <span data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="btn btn-primary " onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})' >Edit</span>  
+                  <span class="btn btn-primary " onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
               </td>
           </tr>`;
         }else{
@@ -705,8 +702,8 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_person_incharge}</td>
               <td>${element.product_status}</td>
               <td>
-                  <span  data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="action-button" onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})' >Edit</span> | 
-                  <span class="action-button" onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
+                  <span  data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="btn btn-primary " onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})' >Edit</span>  
+                  <span class="btn btn-primary " onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
               </td>
           </tr>`;
         }
@@ -716,7 +713,8 @@ function onGenerateMaterialList(data,category_id) {
         }
         if(element.product_quantity <= 20 && element.product_quantity > 0){
           document.getElementById("alert_quantity"+element.product_code).classList.remove('d-none');
-          document.getElementById(element.product_code).classList.add('warning');
+          document.getElementById("alert_quantity"+element.product_code).classList.add('warning');
+        /*   document.getElementById(element.product_code).classList.add('warning'); */
         }
       
     });
@@ -731,10 +729,10 @@ function onChangeCategory() {
     document.getElementById("status_div").setAttribute("class","col-lg-6");
     document.getElementById("status_div").classList.remove("d-none"); 
   }
-  
 }
 function onClickAddMaterial() {
   document.getElementById("material_form").reset();
+  $("#product_category option[value='3']").remove();
   product_inventory_date_input.max = new Date().toISOString().split("T")[0];
   product_recieved_date_input.max = new Date().toISOString().split("T")[0];
   product_inventory_date_input.value = new Date().toISOString().split("T")[0];
@@ -747,6 +745,15 @@ function onClickAddMaterial() {
 }
 function onClickEditMaterial(product_code) {
   document.getElementById("material_form").reset();
+
+  var select = document.getElementById("product_category");
+  var option = document.createElement("option");
+  option.value = 3;
+  option.text = "Defective";
+  select.appendChild(option);
+  
+
+
   document.getElementById("addMaterialModalLabel").innerText = "Update Material";
   document.getElementById("create_material_submit").setAttribute("onclick","onUpdateMaterial(1)");
   let material_list = sessionStorage.getItem("material_list");
@@ -787,12 +794,9 @@ function onCreateMaterial() {
           encode: true, 
         }).done(function (response) {
           if(response.success){
-            alert(response.success_msg)
-            let text = "Do you want to donwload qr code?";
-            if (confirm(text)) {
+              alert(response.success_msg)
               document.getElementById('qr-download').click();
-            }
-            window.location.reload();
+              window.location.reload();
           }else{
             alert(response.error_msg)
           }
@@ -1007,7 +1011,7 @@ function onGenerateHistoryList(data) {
           }else if(element.status == 4){
             status = "Returned";
           }else{
-            element.status = "Rejected";
+            status = "Rejected";
           }
           if(element.product_category == 1){
             element.product_category = "Supplies";
@@ -1017,7 +1021,7 @@ function onGenerateHistoryList(data) {
 
          
           template = 
-          `<tr id="request${ctr}" >
+          `<tr >
               <td>${ctr}</td>
               <td>${element.product_category}</td>
               <td>${element.full_name}</td>
@@ -1025,27 +1029,48 @@ function onGenerateHistoryList(data) {
               <td>${element.product_name}</td>
               <td>${element.product_quantity}</td>
               <td>${element.date_requested}</td>
-              <td >${status}</td>
+              <td >  <span class="status" id="request${ctr}" > ${status} </span>  </td>
               <td>
-                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickViewHistory(${JSON.stringify(element)})' >View</span>
+                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="btn btn-primary " onClick='onClickViewHistory(${JSON.stringify(element)})' >View</span>
               </td>
           </tr>`;
        
         table.innerHTML += template;
 
         if(status == "Pending"){
-          document.getElementById("request"+ctr).classList.add('warning');
+          document.getElementById("request"+ctr).classList.add('pending');
         }
         if(status == "Approved"){
           document.getElementById("request"+ctr).classList.add('approved');
         }
+        if(status == "Returned"){
+          document.getElementById("request"+ctr).classList.add('returned');
+        }
         if(status == "Rejected"){
-          document.getElementById("request"+ctr).classList.add('danger');
+          document.getElementById("request"+ctr).classList.add('rejected');
         }
     });
 
 }
 function onClickViewHistory(history) {
+  $.ajax({  
+    url:"../php/materialallview.php",  
+    method:"POST",  
+    data: {product_code:history.product_code},  
+    dataType: "json",
+    encode: true, 
+  }).done(function (response) {
+    if(response.success){
+      console.log("req",response);
+      document.getElementById("on_hand").value = response.data.product_quantity ;
+    }else{
+    
+    }
+  }).fail(function (response){
+    console.log(response.responseText);
+  });
+
+
   date_approved = document.getElementById("date_approved");
   date_approved.min = new Date().toISOString().split("T")[0];
   document.getElementById("product_category").value = history.product_category ;
@@ -1063,8 +1088,29 @@ function onClickViewHistory(history) {
   document.getElementById("request_id").value = history.id;
   date_approved.value = history.date_approved ;
 
+  console.log(history);
+
+
+  if(history.product_category == "Fixed Assets"){
+    if(history.status == 2){
+      $("#history_form").find("select").prop("disabled", false);
+      $("#history_form").find("input").prop("disabled", true);
+      document.getElementById('submit-btn').classList.add('d-none');
+    } else if(history.status == 3){
+      $("#history_form").find("input").prop("disabled", true);
+      $("#history_form").find("select").prop("disabled", true);
+      document.getElementById('submit-btn').classList.add('d-none');
+    }
+  }else{
+    $("#history_form").find("select").prop("disabled", false);
+    $("#history_form").find("input").prop("disabled", false);
+    document.getElementById('submit-btn').classList.remove('d-none');
+  }
+
+
 }
 function onUpdateRequest() {
+  $("#product_code").removeAttr("disabled");
   $.ajax({  
     url:"../php/requestupdate.php",  
     method:"POST",  
@@ -1075,7 +1121,7 @@ function onUpdateRequest() {
     if(response.success){
       console.log("res:",response);
       alert(response.success_msg);
-      /* window.location.reload(); */
+      window.location.reload();
     }else{
       alert(response.error_msg);
     }

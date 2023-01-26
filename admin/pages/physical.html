@@ -18,7 +18,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
     <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
-    <title>Material | Oris Inventory System</title>
+    <title>Physical Inventory | Oris Inventory System</title>
     <script>
       window.onload = function () {
         onViewMaterialList(1);
@@ -37,8 +37,8 @@
                 <div class="sidebar-content">
                     <a href="../pages/dashboard.html" >Dashboard</a>
                     <a href="../pages/requisition.html">Requisitions</a>
-                    <a href="" class="active">Inventory</a>
-                    <a href="../pages/physical.html" >Physical Inventory</a>
+                    <a href="../pages/material.html" >Inventory</a>
+                    <a href=""class="active" >Physical Inventory</a>
                     <a href="../pages/activity.html" >Activity Log</a>
                     <a href="../pages/account.html" >Accounts</a>
                 </div>
@@ -63,8 +63,8 @@
                   <div class="topbar-content">
                     <a href="../pages/dashboard.html" >Dashboard</a>
                     <a href="../pages/requisition.html">Requisitions</a>
-                    <a href="" class="active">Inventory</a>
-                    <a href="../pages/physical.html" >Physical Inventory</a>
+                    <a href="../pages/material.html" >Inventory</a>
+                    <a href=""class="active" >Physical Inventory</a>
                     <a href="../pages/activity.html" >Activity Log</a>
                     <a href="../pages/account.html" >Accounts</a>
                 </div>
@@ -75,12 +75,12 @@
           </div>
           <!-- Mobile view button -->
           <div class="container-fluid">
-            <h1>Inventory</h1>
+            <h1>Physical Inventory</h1>
             <section>
-              <div class="header-button mb-3 ">
+              <div class="header-button mb-3 mt-3">
                 <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch()">
                 <!-- <button type="button" class="btn btn-primary btn-add">Filter</button> -->
-                <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addMaterialModal" onclick="onClickAddMaterial()">Add Material</button>
+                <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#openScannerModal"  onclick="onStartScan()">Open Scanner</button>
                 <button type="button" class="btn btn-primary btn-add"  onclick="onDownloadPDFMaterial()">Download PDF</button>
               </div>
             </section>
@@ -91,7 +91,7 @@
                 <div class="nav nav-tabs mt-5" id="nav-tab" role="tablist">
                   <button class="nav-link active"  data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-consumable" aria-selected="true" onclick="onChangeTab(1)">Supplies</button>
                   <button class="nav-link"  data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-non-consumable" aria-selected="false" onclick="onChangeTab(2)">Fixed Assets</button>
-                  <button class="nav-link"  data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-obsolete" aria-selected="false" onclick="onChangeTab(3)">Defective</button>
+                  <button class="nav-link"  data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-obsolete" aria-selected="false" onclick="onChangeTab(3)">Obsolete</button>
                 </div>
               </nav>
               <div class="table-content table-responsive-md">
@@ -220,6 +220,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="submit" class="btn btn-secondary" id="create_material_submit">Submit</button>
+                        
                       </div>
                     </form>
                   </div>
@@ -310,8 +311,8 @@
                         </div>
                       </div>
                       <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger d-none" id="delete_btn" onclick="onScanDelete()" >Delete</button>
-                        <button type="submit" class="btn btn-secondary d-none" id="update_btn"  onclick="onUpdateMaterial(0)"  >Update</button>
+                        <!-- <button type="submit" class="btn btn-danger d-none" id="delete_btn" onclick="onScanDelete()" >Delete</button> -->
+                        <button type="submit" class="btn btn-secondary d-none" id="update_btn"  onclick="onUpdateMaterial(0)"  >Register</button>
                       </div>
                     </form>
                     <button class="btn btn-primary scan-btn d-none" id="scan_btn" onclick="onScan()">Scan Again</button>

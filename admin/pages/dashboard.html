@@ -35,6 +35,8 @@
                     <a href="" class="active">Dashboard</a>
                     <a href="../pages/requisition.html">Requisitions</a>
                     <a href="../pages/material.html">Inventory</a>
+                    <a href="../pages/physical.html" >Physical Inventory</a>
+                    <a href="../pages/activity.html" >Activity Log</a>
                     <a href="../pages/account.html">Accounts</a>
                 </div>
                 <a class="btn btn-primary btn-logout" href="../index.html">Logout</a>
@@ -60,6 +62,8 @@
                             <a href="" class="active" >Dashboard</a>
                             <a href="../pages/requisition.html" >Requisitions</a>
                             <a href="../pages/material.html" >Inventory</a>
+                            <a href="../pages/physical.html" >Physical Inventory</a>
+                            <a href="../pages/activity.html" >Activity Log</a>
                             <a href="../pages/account.html" >Accounts</a>
                         </div>
                         <a class="btn btn-primary btn-logout-mobile text-center" href="../index.html">Logout</a>
@@ -73,20 +77,20 @@
                 <!-- Thumbnail -->
                 <section class="thumbnail">
                     <div class="container">
-                        <div class="card">
+                        <div class="card" onclick="navigateTo('material.html')">
                             <div class="info">
                                 <span id="material_label">20</span>
                                 <p>Material</p>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card" onclick="navigateTo('account.html')">
                            
                             <div class="info">
                                 <span id="account_label">74</span>
                                 <p>Active User</p>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class="card" onclick="navigateTo('requisition.html')">
                             <div class="info">
                                 <span id="requisition_label">359</span>
                                 <p>Requisition</p>

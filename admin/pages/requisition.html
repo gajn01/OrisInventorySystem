@@ -39,6 +39,8 @@
                     <a href="../pages/dashboard.html" >Dashboard</a>
                     <a href="" class="active">Requisitions</a>
                     <a href="../pages/material.html" >Inventory</a>
+                    <a href="../pages/physical.html" >Physical Inventory</a>
+                    <a href="../pages/activity.html" >Activity Log</a>
                     <a href="../pages/account.html" >Accounts</a>
                 </div>
                 <a class="btn btn-primary btn-logout" href="../index.html">Logout</a>
@@ -63,6 +65,8 @@
                     <a href="../pages/dashboard.html" >Dashboard</a>
                     <a href="" class="active">Requisitions</a>
                     <a href="../pages/material.html" >Inventory</a>
+                    <a href="../pages/physical.html" >Physical Inventory</a>
+                    <a href="../pages/activity.html" >Activity Log</a>
                     <a href="../pages/account.html" >Accounts</a>
                 </div>
                 <a class="btn btn-primary btn-logout-mobile text-center" href="../index.html">Logout</a>
@@ -147,53 +151,57 @@
                             <div class="row">
                               <div class="col-md-6 col-sm-12">
                                 <label for="product_category" class="col-sm-12 col-md-12 col-form-label">Category</label>
-                                <input class="form-control mb-3" type="text" id="product_category" name="product_category" readonly >
+                                <input class="form-control mb-3" type="text" id="product_category" name="product_category" disabled >
                               </div>
                               <div class="col-md-6 col-sm-12">
                                 <label for="product_code" class="col-sm-12 col-md-12 col-form-label">Product Code</label>
-                                <input class="form-control mb-3" type="text" id="product_code" name="product_code" readonly >
+                                <input class="form-control mb-3" type="text" id="product_code" name="product_code" disabled >
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-md-6 col-sm-12">
                                 <label for="product_name" class="col-sm-12 col-md-12 col-form-label">Product Name </label>
-                                <input class="form-control mb-3"  type="text"  id="product_name" name="product_name" readonly >
+                                <input class="form-control mb-3"  type="text"  id="product_name" name="product_name" disabled >
                               </div>
-                              <div class="col-md-6 col-sm-12">
+                              <div class="col-md-3 col-sm-12">
                                 <label for="product_quantity" class="col-sm-12  col-md-12 col-form-label">Quantity  </label>
                                 <input class="form-control mb-3" type="number" id="product_quantity" min="1" value="1" name="product_quantity"  >
+                              </div>
+                              <div class="col-md-3 col-sm-12">
+                                <label for="on_hand" class="col-sm-12  col-md-12 col-form-label">On-hand Quantity  </label>
+                                <input class="form-control mb-3" type="number" id="on_hand" min="1" value="1" name="on_hand" disabled >
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-md-6 col-sm-12">
                                 <label for="full_name" class="col-sm-12 col-md-12 col-form-label">Full Name  </label>
-                                <input class="form-control mb-3"  type="text"  id="full_name" name="full_name" readonly >
+                                <input class="form-control mb-3"  type="text"  id="full_name" name="full_name" disabled >
                               </div>
                               <div class="col-md-6 col-sm-12">
                                 <label for="position" class="col-sm-12  col-md-12 col-form-label">Position  </label>
-                                <input class="form-control mb-3" type="text" id="position"  name="position" readonly>
+                                <input class="form-control mb-3" type="text" id="position"  name="position" disabled>
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-md-12 col-sm-12">
                                 <label for="purpose" class="col-sm-12 col-md-12 col-form-label">Purpose </label>
-                                <textarea class="form-control mb-3" id="purpose" name="purpose" readonly ></textarea>
+                                <textarea class="form-control mb-3" id="purpose" name="purpose" disabled ></textarea>
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-sm-12 col-md-6" >
                                 <label for="date_requested" class="col-sm-12  col-md-12 col-form-label">Date Request </label>
-                                <input class="form-control mb-3" type="date" id="date_requested" name="date_requested" readonly>
+                                <input class="form-control mb-3" type="date" id="date_requested" name="date_requested" disabled>
                               </div>
                               <div class="col-sm-12 col-md-6 ">
                                 <label for="date_to_claim" class="col-sm-12  col-md-12 col-form-label">Date to Claim </label>
-                                <input class="form-control mb-3" type="date" id="date_to_claim" name="date_to_claim" readonly>
+                                <input class="form-control mb-3" type="date" id="date_to_claim" name="date_to_claim" disabled>
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-sm-12 d-none" id="returned_div">
                                 <label for="date_return" class="col-sm-12 col-md-12 col-form-label">Date Return</label>
-                                <input class="form-control mb-3" type="date" id="date_return" name="date_return" readonly>
+                                <input class="form-control mb-3" type="date" id="date_return" name="date_return" disabled>
                               </div>
                             </div>
                             <div class="row">
@@ -228,7 +236,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                          <button type="submit" class="btn btn-add"  onclick="onUpdateRequest()">Submit</button>
+                          <button type="submit" class="btn btn-add"  id="submit-btn" onclick="onUpdateRequest()">Submit</button>
                         </div>
                       </form>
                     </div>

@@ -14,7 +14,6 @@
         $form_data['error_msg'] = "No records!";
     }
 
-
     $sql=("SELECT * FROM tbl_inventory WHERE product_code = '$product_code'" );
     $result= mysqli_query($db,$sql);
     $form_data = array();

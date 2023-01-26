@@ -11,6 +11,8 @@ include("connection.php");
     $product_code= $_POST['product_code'];
     $remarks= $_POST['remarks'];
 
+
+
     $sql=("SELECT * FROM `tbl_inventory` WHERE product_code = '$product_code' AND product_quantity >= '$product_quantity' ");
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
