@@ -50,3 +50,6 @@ label.error{
 .warning{
     color: orange;
 }
+.approved{
+    color: green;
+}

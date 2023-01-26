@@ -70,7 +70,7 @@ body{
     outline: none;
 }
 .login-form a{
-    text-align: left !important;
+    text-align: left ;
     display: block;
     color: #8497BE;
     text-decoration: none;
@@ -92,6 +92,14 @@ body{
 .login-form button:hover{
     background-color: #1848d8;
     cursor: pointer;
+}
+.btn-add{
+    background-color: #3264C6 !important;
+    border: none;
+    color: #e0e8f8 !important;
+}
+.btn-add:hover{
+    opacity: .8 !important;
 }
 
 /* Meduim size */

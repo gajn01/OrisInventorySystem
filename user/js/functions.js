@@ -126,7 +126,6 @@ function goTo(params) {
     window.location.href = "../pages/history.html";
   }
 }
-
 function onChangePassword() {
   let account = sessionStorage.getItem('account');
   let json_account = JSON.parse(account);
@@ -160,6 +159,61 @@ function onChangePassword() {
     }
   });
 
+}
+function onBack() {
+  console.log('test');
+  document.getElementById('email_container').classList.remove('d-none');
+  document.getElementById('code_container').classList.add('d-none');
+  document.getElementById('btn_back').classList.add('d-none');
+  document.getElementById('btn_submit').classList.remove('d-none');
+}
+function onSubmitEmail() {
+  $('#forgot_form').validate({
+    rules: {
+      email_address: { required: true,email : true},
+      code: { required: true }
+    },
+    submitHandler: function (form) {
+        $.ajax({  
+          url:"php/forgotpassword.php",  
+          method:"POST",  
+          data: $('#forgot_form').serialize(), 
+          dataType: "json",
+          encode: true, 
+        }).done(function (response) {
+          if(response.success){
+            console.log(response);
+            document.getElementById('email_container').classList.add('d-none');
+            document.getElementById('code_container').classList.remove('d-none');
+            document.getElementById('btn_back').classList.remove('d-none');
+            document.getElementById('btn_submit').classList.add('d-none');
+
+            let subject = "Forgot Password Code";
+            let body = "Greetings!,<br> your code is: " + response.code;
+            sendMail(email,subject,body);
+            alert(response.success_msg);
+          }else{
+            alert(response.error_msg);
+          }
+         /*  if(response.success){
+            let subject = "Forgot Password Code";
+            let body = "Greetings!,<br> your code is: " + response.code;
+            sendMail(email,subject,body);
+            alert(response.success_msg);
+            document.getElementById('email_container').classList.add('d-none');
+            document.getElementById('code_container').classList.remove('d-none');
+            document.getElementById('btn_back').classList.remove('d-none');
+            document.getElementById('btn_submit').classList.add('d-none');
+            console.log(response);
+          }else{
+            alert(response.error_msg);
+          } */
+        }).fail(function (data){
+          console.log(data.responseText);
+        });
+    }
+  });
+  
 }
 
 /* Material Functions */
@@ -464,7 +518,6 @@ function onRequest() {
   });
   
 }
-
 function sendMail(email,subject,body) {
   $.ajax({  
          url:"../php/sendemail.php",  

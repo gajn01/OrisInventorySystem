@@ -714,7 +714,7 @@ function onGenerateMaterialList(data,category_id) {
         if(element.product_quantity == 0){
           document.getElementById(element.product_code).classList.add('danger');
         }
-        if(element.product_quantity <= 5 && element.product_quantity > 0){
+        if(element.product_quantity <= 20 && element.product_quantity > 0){
           document.getElementById("alert_quantity"+element.product_code).classList.remove('d-none');
           document.getElementById(element.product_code).classList.add('warning');
         }
@@ -1004,6 +1004,8 @@ function onGenerateHistoryList(data) {
             status = "Pending";
           }else if(element.status == 2){
             status = "Approved";
+          }else if(element.status == 4){
+            status = "Returned";
           }else{
             element.status = "Rejected";
           }
@@ -1015,7 +1017,7 @@ function onGenerateHistoryList(data) {
 
          
           template = 
-          `<tr id="${element.product_code}" >
+          `<tr id="request${ctr}" >
               <td>${ctr}</td>
               <td>${element.product_category}</td>
               <td>${element.full_name}</td>
@@ -1023,14 +1025,23 @@ function onGenerateHistoryList(data) {
               <td>${element.product_name}</td>
               <td>${element.product_quantity}</td>
               <td>${element.date_requested}</td>
-              <td>${status}</td>
+              <td >${status}</td>
               <td>
                   <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickViewHistory(${JSON.stringify(element)})' >View</span>
               </td>
           </tr>`;
        
         table.innerHTML += template;
-     
+
+        if(status == "Pending"){
+          document.getElementById("request"+ctr).classList.add('warning');
+        }
+        if(status == "Approved"){
+          document.getElementById("request"+ctr).classList.add('approved');
+        }
+        if(status == "Rejected"){
+          document.getElementById("request"+ctr).classList.add('danger');
+        }
     });
 
 }
@@ -1083,11 +1094,10 @@ function onUpdateStatus(params) {
     document.getElementById("status_label").innerText = "Date Rejected"
     document.getElementById("approved_label").innerText = "Rejected by"
     document.getElementById("date_approved").value = new Date().toISOString().split("T")[0];
-  }else{
-    document.getElementById("approved_label").innerText = "Approved by"
+  }else if(status == 4){
+    document.getElementById("status_label").innerText = "Date Returned"
     document.getElementById("approved_label").innerText = "Approved by"
     document.getElementById("date_approved").value = null;
-
   }
   
   

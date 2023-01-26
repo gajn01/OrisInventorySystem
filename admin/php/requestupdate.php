@@ -35,6 +35,17 @@ include("connection.php");
                     $form_data['success'] = false;
                     $form_data['error_msg'] ="Failed to update record!";
                 } 
+            }else if($status == 4){
+                $update_query = ("UPDATE tbl_inventory SET 
+                product_quantity =  product_quantity + '$product_quantity'
+                WHERE product_code = '$product_code' ");
+                if (mysqli_query($db, $update_query)) {
+                    $form_data['success'] = true;
+                    $form_data['success_msg'] = "Record updated successfully!";
+                } else {
+                    $form_data['success'] = false;
+                    $form_data['error_msg'] ="Failed to update record!";
+                } 
             }else{
                 $form_data['success'] = true;
                 $form_data['success_msg'] = "Record updated successfully!";
