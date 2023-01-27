@@ -64,5 +64,9 @@ label.error{
 }
 .rejected{
     background-color: red;
-
+}
+.filter{
+    position: relative;
+    top: 2.3rem;
+    left: 3rem;
 }

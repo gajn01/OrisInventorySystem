@@ -82,12 +82,50 @@
             <h1>Requisitions</h1>
             <section>
               <div class="header-button mb-3 ">
-                <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Bottom popover">
-                  Popover on bottom
-                </button>
+               
+                <button type="button" class="btn btn-primary btn-add" data-bs-toggle="collapse" href="#filterCollapse" role="button"  >Filter</button>
                 <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch()">
                 <button type="button" class="btn btn-primary btn-add"  onclick="onDownlaodPDF()">Download PDF</button>
                 <!-- <button type="button" class="btn btn-primary btn-add">Filter</button> -->
+                </div>
+                <div class="collapse" id="filterCollapse">
+                  <div class="card card-body">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-3 ">
+                        <label for="category_filter" class="col-sm-12  col-md-12 col-form-label">Category </label>
+                        <select class="form-select form-control" aria-label="Default select example" id="category_filter" name="category_filter"  >
+                          <option value="" selected >All</option>
+                          <option value="1"  >Supplies</option>
+                          <option value="2"  >Fixed Asset</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-12 col-md-3 ">
+                        <label for="status_filter" class="col-sm-12  col-md-12 col-form-label">Status </label>
+                        <select class="form-select form-control" aria-label="Default select example" id="status_filter" name="status_filter"  >
+                          <option value="" selected >All</option>
+                          <option value="1"  >Pending</option>
+                          <option value="2"  >Approve</option>
+                          <option value="3"  >Reject</option>
+                          <option value="4"  >Returned</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-12 col-md-3 ">
+                        <label for="date_requested_filter" class="col-sm-12  col-md-12 col-form-label">Date Requested </label>
+                        <input class="form-control mb-3 to-disable" type="date" id="date_requested_filter" name="date_requested_filter" >
+
+                      </div>
+                      <div class="col-sm-12 col-md-3 ">
+                        <button type="button" class="btn btn-primary filter " onclick="onViewFilteredHistoryList()">Apply</button>
+                        <button type="button" class="btn  btn-add filter" onclick="onViewHistoryList()" >Reset</button>
+
+                      </div>
+
+
+                    </div>
+                  
+                  </div>
+                   
+                  </div>
                 </div>
             </section>
             <!-- Table -->
@@ -157,87 +195,87 @@
                             <div class="row">
                               <div class="col-md-6 col-sm-12">
                                 <label for="product_category" class="col-sm-12 col-md-12 col-form-label">Category</label>
-                                <input class="form-control mb-3" type="text" id="product_category" name="product_category" disabled >
+                                <input class="form-control mb-3 disable" type="text" id="product_category" name="product_category" disabled >
                               </div>
                               <div class="col-md-6 col-sm-12">
                                 <label for="product_code" class="col-sm-12 col-md-12 col-form-label">Product Code</label>
-                                <input class="form-control mb-3" type="text" id="product_code" name="product_code" disabled >
+                                <input class="form-control mb-3 disable" type="text" id="product_code" name="product_code" disabled >
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-md-6 col-sm-12">
                                 <label for="product_name" class="col-sm-12 col-md-12 col-form-label">Product Name </label>
-                                <input class="form-control mb-3"  type="text"  id="product_name" name="product_name" disabled >
+                                <input class="form-control mb-3 disable"  type="text"  id="product_name" name="product_name" disabled >
                               </div>
                               <div class="col-md-3 col-sm-12">
                                 <label for="product_quantity" class="col-sm-12  col-md-12 col-form-label">Quantity  </label>
-                                <input class="form-control mb-3" type="number" id="product_quantity" min="1" value="1" name="product_quantity"  >
+                                <input class="form-control mb-3 to-disable " type="number" id="product_quantity" min="1" value="1" name="product_quantity"  >
                               </div>
                               <div class="col-md-3 col-sm-12">
                                 <label for="on_hand" class="col-sm-12  col-md-12 col-form-label">On-hand Quantity  </label>
-                                <input class="form-control mb-3" type="number" id="on_hand" min="1" value="1" name="on_hand" disabled >
+                                <input class="form-control mb-3 disable" type="number" id="on_hand" min="1" value="1" name="on_hand" disabled >
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-md-6 col-sm-12">
                                 <label for="full_name" class="col-sm-12 col-md-12 col-form-label">Full Name  </label>
-                                <input class="form-control mb-3"  type="text"  id="full_name" name="full_name" disabled >
+                                <input class="form-control mb-3 disable"  type="text"  id="full_name" name="full_name" disabled >
                               </div>
                               <div class="col-md-6 col-sm-12">
-                                <label for="position" class="col-sm-12  col-md-12 col-form-label">Position  </label>
-                                <input class="form-control mb-3" type="text" id="position"  name="position" disabled>
+                                <label for="department" class="col-sm-12  col-md-12 col-form-label">Department  </label>
+                                <input class="form-control mb-3 disable" type="text" id="department"  name="department" disabled>
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-md-12 col-sm-12">
                                 <label for="purpose" class="col-sm-12 col-md-12 col-form-label">Purpose </label>
-                                <textarea class="form-control mb-3" id="purpose" name="purpose" disabled ></textarea>
+                                <textarea class="form-control mb-3 disable" id="purpose" name="purpose" disabled ></textarea>
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-sm-12 col-md-6" >
                                 <label for="date_requested" class="col-sm-12  col-md-12 col-form-label">Date Request </label>
-                                <input class="form-control mb-3" type="date" id="date_requested" name="date_requested" disabled>
+                                <input class="form-control mb-3 disable" type="date" id="date_requested" name="date_requested" disabled>
                               </div>
                               <div class="col-sm-12 col-md-6 ">
                                 <label for="date_to_claim" class="col-sm-12  col-md-12 col-form-label">Date to Claim </label>
-                                <input class="form-control mb-3" type="date" id="date_to_claim" name="date_to_claim" disabled>
+                                <input class="form-control mb-3 disable" type="date" id="date_to_claim" name="date_to_claim" disabled>
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-sm-12 d-none" id="returned_div">
                                 <label for="date_return" class="col-sm-12 col-md-12 col-form-label">Date Return</label>
-                                <input class="form-control mb-3" type="date" id="date_return" name="date_return" disabled>
+                                <input class="form-control mb-3 disable" type="date" id="date_return" name="date_return" disabled>
                               </div>
                             </div>
                             <div class="row">
                             
                               <div class="col-sm-12 col-md-6 ">
                                 <label for="approved_by" class="col-sm-12  col-md-12 col-form-label" id="approved_label">Approved by </label>
-                                <input class="form-control mb-3" type="text" id="approved_by" name="approved_by" >
+                                <input class="form-control mb-3 to-disable" type="text" id="approved_by" name="approved_by" >
                               </div>
                               <div class="col-sm-12 col-md-6" >
                                   <label for="note_by" class="col-sm-12  col-md-12 col-form-label">Noted by </label>
-                                  <input class="form-control mb-3" type="text" id="note_by" name="note_by" >
+                                  <input class="form-control mb-3 to-disable" type="text" id="note_by" name="note_by" >
                                 </div>
                             </div>
                             <div class="row">
                               <div class="col-sm-12 col-md-6 ">
                                 <label for="status" class="col-sm-12  col-md-12 col-form-label">Status </label>
-                                <select class="form-select form-control" aria-label="Default select example" id="status" name="status" onchange="onUpdateStatus()" >
-                                  <option value="1" selected >Pending</option>
-                                  <option value="2" selected >Approve</option>
-                                  <option value="3" selected >Reject</option>
-                                  <option value="4" selected >Returned</option>
+                                <select class="form-select form-control " aria-label="Default select example" id="status" name="status" onchange="onUpdateStatus()" >
+                                  <option value="1"  >Pending</option>
+                                  <option value="2"  >Approve</option>
+                                  <option value="3"  >Reject</option>
+                                  <option value="4"  >Returned</option>
                                 </select>
                               </div>
                               <div class="col-sm-12 col-md-6" >
                                   <label for="date_approved" class="col-sm-12  col-md-12 col-form-label" id="status_label">Date Approved  </label>
-                                  <input class="form-control mb-3" type="date" id="date_approved" name="date_approved" >
+                                  <input class="form-control mb-3 to-disable" type="date" id="date_approved" name="date_approved" >
                                 </div>
                                 <div class="col-sm-12" >
                                   <label for="remarks" class="col-sm-12  col-md-12 col-form-label" id="status_label">Remarks  </label>
-                                  <input class="form-control mb-3" type="text" id="remarks" name="remarks" >
+                                  <input class="form-control mb-3 to-disable" type="text" id="remarks" name="remarks" >
                                 </div>
                             </div>
                         </div>

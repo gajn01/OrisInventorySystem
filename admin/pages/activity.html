@@ -84,7 +84,7 @@
                     <div class="pagination-container mt-4">
                       <div class="pager">
                         <p>Limit per Page</p>
-                        <select class="form-select page-number" id="page_limit" onchange="onSelectLimit('activity')" aria-label="Default select example">
+                        <select class="form-select page-number" id="page_limit" onchange="onSelectLimit()" aria-label="Default select example">
                           <option value="1">1</option>
                           <option value="5">5</option>
                           <option selected value="10">10</option>
@@ -96,13 +96,13 @@
                       <nav aria-label="Page navigation example" class="bottom-pagination">
                         <ul class="pagination justify-content-end">
                           <li class="page-item">
-                            <a class="page-link" href="#" onclick="onPage(0,'activity')" id="prev" aria-label="Previous">
+                            <a class="page-link" href="#" onclick="onPage(0)" id="prev" aria-label="Previous">
                               <span aria-hidden="true">&laquo;</span>
                             </a>
                           </li>
                           <li class="page-item "><a class="page-link" href="#" id="page_number">1</a></li>
                           <li class="page-item">
-                            <a class="page-link" href="#" onclick="onPage(1,'activity')" id="next" aria-label="Next">
+                            <a class="page-link" href="#" onclick="onPage(1)" id="next" aria-label="Next">
                               <span aria-hidden="true">&raquo;</span>
                             </a>
                           </li>

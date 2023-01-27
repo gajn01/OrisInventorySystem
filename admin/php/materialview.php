@@ -4,7 +4,9 @@
     $page = $_POST['page'];
     $search = $_POST['search'];
     $category_id = $_POST['category_id'];
+
     $form_data = array();
+
 
     /* get total items  */
     $sql=("SELECT COUNT(id) AS ctr FROM tbl_inventory WHERE product_category = $category_id");

@@ -18,7 +18,7 @@
     }
 
     /* Fetch module based on subject and teacher ID */
-    $sql=("SELECT * FROM tbl_activity_log ORDER BY date DESC  LIMIT $limit OFFSET $page ");
+    $sql=("SELECT * FROM tbl_activity_log ORDER BY date DESC LIMIT $limit OFFSET $page ");
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
     if($fetch){
