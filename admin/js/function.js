@@ -944,9 +944,6 @@ function onNotify() {
     encode: true, 
   }).done(function (response) {
     let notif_badge = document.getElementById('notification-badge');
-    console.log('session',json_history.length);
-    console.log('response.data.length',response.data.length);
-
     if(response.data.length == json_history.length){
       notif_badge.classList.add('d-none');
     }else{
