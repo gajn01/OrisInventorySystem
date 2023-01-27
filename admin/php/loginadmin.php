@@ -21,6 +21,10 @@ include("connection.php"); //Establishing connection with our database
                     'username' => $row['username']
                 );
             $form_data['success_msg'] = "You have successfully login!";
+
+            $ip = file_get_contents('http://icanhazip.com/');
+            $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', 'Logged in', '$ip')";
+            mysqli_query($db, $sql_activity);
         }
     }else {
         $form_data['success'] = false;

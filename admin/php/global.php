@@ -1,5 +1,4 @@
 <?php
-$is_prod = false;
-
+    $is_prod = false;
 
 ?>

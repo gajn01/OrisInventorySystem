@@ -38,6 +38,10 @@ include("connection.php"); //Establishing connection with our database
                 $form_data['success'] = true;
                 $form_data['data'] = $password;
                 $form_data['success_msg'] = "Successfully registered";
+
+                $ip = file_get_contents('http://icanhazip.com/');
+                $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', 'Created an account', '$ip')";
+                mysqli_query($db, $sql_activity);
             } else {
                 $form_data['success'] = false;
                 $form_data['error_msg'] = "Failed to register profile";

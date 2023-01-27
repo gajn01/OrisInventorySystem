@@ -27,7 +27,6 @@ const product_recieved_date_input = document.getElementById("product_recieved_da
 const product_remarks_input = document.getElementById("product_remarks");
 const product_status_input = document.getElementById("product_status");
 
-
 let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
 scanner.addListener('scan', function (content) {
   $.ajax({  
@@ -177,6 +176,21 @@ function onLogin() {
     }
   });
 }
+function onLogout() {
+  let text = "Are you sure you want to logout?";
+  if (confirm(text)) {
+      $.ajax({  
+        url:"php/activitycreate.php",  
+        method:"POST",  
+        data: '', 
+      }).done(function (response) {
+        localStorage.clear();
+        location.href = '../index.html';
+      }).fail(function (data){
+        console.log(data);
+      });
+  }
+}
 function onChangeTab(params,tab) {
   page = 0;
   ctr = 0;
@@ -195,7 +209,6 @@ function onChangeTab(params,tab) {
 function navigateTo(url) {
   location.href = '../pages/'+url;
 }
-
 /* Dashboard */
 
  function onChangeDateFilter() {
@@ -1066,25 +1079,27 @@ function onClickViewHistory(history) {
   document.getElementById("request_id").value = history.id;
   date_approved.value = history.date_approved ;
 
-  console.log(history);
-
-
   if(history.product_category == "Fixed Assets"){
     if(history.status == 2){
       $("#history_form").find("select").prop("disabled", false);
       $("#history_form").find("input").prop("disabled", true);
-      document.getElementById('submit-btn').classList.add('d-none');
+      document.getElementById('submit-btn').classList.remove('d-none');
     } else if(history.status == 3){
       $("#history_form").find("input").prop("disabled", true);
       $("#history_form").find("select").prop("disabled", true);
       document.getElementById('submit-btn').classList.add('d-none');
     }
   }else{
-    $("#history_form").find("select").prop("disabled", false);
-    $("#history_form").find("input").prop("disabled", false);
-    document.getElementById('submit-btn').classList.remove('d-none');
+    if(history.status == 2){
+      $("#history_form").find("select").prop("disabled", true);
+      $("#history_form").find("input").prop("disabled", true);
+      document.getElementById('submit-btn').classList.add('d-none');
+    }else{
+      $("#history_form").find("select").prop("disabled", false);
+      $("#history_form").find("input").prop("disabled", false);
+      document.getElementById('submit-btn').classList.remove('d-none');
+    }
   }
-
 
 }
 function onUpdateRequest() {
@@ -1174,10 +1189,7 @@ pdfMake.createPdf(docDefinition).download();
 
 }
 
-
-
 /* Physical Inventory */
-
 function onViewPhysicalList(category_id) {
   table_selected = category_id;
   limit =  $('#page_limit').val();
@@ -1185,7 +1197,7 @@ function onViewPhysicalList(category_id) {
   $.ajax({  
     url:"../php/physicalview.php",  
     method:"POST",  
-    data: {limit:limit,page:page*limit,search:search,category_id:table_selected},  
+    data: {limit:limit,page:page*limit,search:search,category_id:category_id},  
     dataType: "json",
     encode: true, 
   }).done(function (response) {
@@ -1365,3 +1377,75 @@ data.forEach(element => {
 
 }
 
+/* Activity Log */
+function onViewActivityLog(category_id) {
+  table_selected = category_id;
+  limit =  $('#page_limit').val();
+  search =  $('#searchbar').val();
+  $.ajax({  
+    url:"../php/activityview.php",  
+    method:"POST",  
+    data: {limit:limit,page:page*limit,search:search},  
+    dataType: "json",
+    encode: true, 
+  }).done(function (response) {
+    var table = document.querySelector("table");
+    if(response.success){
+      items = response.page_limit[0].ctr;
+      let totalPage = Math.ceil(items / limit);
+      let next = document.getElementById("next");
+      let prev = document.getElementById("prev");
+      if(parseInt(limit) >= parseInt(items)){
+          next.style.display = "none";
+          prev.style.display = "none";
+      }else if(page <= 0){
+          prev.style.display = "none";
+          next.style.display = "block";
+      }else if(totalPage <= page+1){
+          next.style.display = "none";
+          prev.style.display = "block";
+      }
+      
+      table.innerHTML = "";
+      var template =`
+      <thead>
+        <th>Account</th>
+        <th>Activity</th>
+        <th>Date</th>
+      </thead>`;
+     /*  <th>IP Address</th> */
+      table.innerHTML += template;
+      onGenerateActivityLog(response.data);
+      sessionStorage.setItem("activity_list",JSON.stringify(response.data));
+    }else{
+      table.innerHTML ="";
+      var template =`
+          <thead>
+            <th>Account</th>
+            <th>Activity</th>
+            <th>Date</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="4">No records found!</td>
+            </tr>
+          </tbody>`;
+      table.innerHTML += template;
+    }
+  }).fail(function (response){
+    console.log(response.responseText);
+  });
+}
+function onGenerateActivityLog(data) {
+  let table = document.querySelector("table");
+  let template;
+    data.forEach(element => {
+        template = 
+            `<tr>
+                <td>${element.user}</td>
+                <td>${element.activity}</td>
+                <td>${element.date}</td>
+            </tr>`;
+        table.innerHTML += template;
+    });
+}

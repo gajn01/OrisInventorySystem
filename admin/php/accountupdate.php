@@ -2,31 +2,24 @@
 include("connection.php"); 
 
     $account_id= $_POST['account_id'];
-    $firstname= $_POST['firstname'];
-    $lastname= $_POST['lastname'];
     $email= $_POST['email'];
-    $employment_status= $_POST['employment_status'];
-    $position= $_POST['position'];
     $department= $_POST['department'];
     if(isset($_POST['is_incharge']) ){
         $is_incharge = 1;
     }else{
         $is_incharge = 0;
     }
-
     $update_query = ("UPDATE tbl_account_profile SET 
-        firstname='$firstname', 
-        lastname='$lastname',  
         email='$email',  
-        employement_status='$employment_status',  
-        position='$position',  
-        department='$department',  
-        is_incharge='$is_incharge' 
+        department='$department'        
         WHERE account_id='$account_id'");
-
     if (mysqli_query($db, $update_query)) {
         $form_data['success'] = true;
         $form_data['success_msg'] = "Record updated successfully!";
+
+        $ip = file_get_contents('http://icanhazip.com/');
+        $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', 'Made changes to an account', '$ip')";
+        mysqli_query($db, $sql_activity);
     } else {
         $form_data['success'] = false;
         $form_data['error_msg'] ="Failed to update password!";
