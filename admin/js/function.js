@@ -934,7 +934,7 @@ function onNotify() {
   let category =  "";
   let status  =  "";
   let date  =  "";
-  limit = 999;
+  limit = 99999;
   search =  "";
   $.ajax({  
     url:"../php/requestview.php",  
@@ -944,20 +944,23 @@ function onNotify() {
     encode: true, 
   }).done(function (response) {
     let notif_badge = document.getElementById('notification-badge');
+    console.log('session',json_history.length);
+    console.log('response.data.length',response.data.length);
+
     if(response.data.length == json_history.length){
       notif_badge.classList.add('d-none');
     }else{
       notif_badge.classList.remove('d-none');
       notif_badge.innerText = (response.data.length - json_history.length);
     }
-   
+
   }).fail(function (response){
     console.log(response.responseText);
   });
 
 }
 function onViewHistoryList() {
-  ctr =0;
+  ctr = 0;
   table_selected = 4;
   let category =  "";
   let status  =  "";
@@ -974,7 +977,6 @@ function onViewHistoryList() {
   }).done(function (response) {
     var table = document.querySelector("table");
     if(response.success){
-      console.log(response);
       items = response.page_limit[0].ctr;
       let totalPage = Math.ceil(items / limit);
       let next = document.getElementById("next");
@@ -1005,7 +1007,6 @@ function onViewHistoryList() {
           </thead>`;
       table.innerHTML += template;
       onGenerateHistoryList(response.data);
-      sessionStorage.setItem("history_list",JSON.stringify(response.data));
     }else{
       table.innerHTML ="";
       var template =`
@@ -1031,6 +1032,22 @@ function onViewHistoryList() {
   }).fail(function (response){
     console.log(response.responseText);
   });
+}
+function onViewAllHistory() {
+  $.ajax({  
+    url:"../php/requestallview.php",  
+    method:"POST",  
+    data: '',  
+    dataType: "json",
+    encode: true, 
+  }).done(function (response) {
+    if(response.success){
+      sessionStorage.setItem("history_list",JSON.stringify(response.data));
+    }
+  }).fail(function (response){
+    console.log(response.responseText);
+  });
+  
 }
 function onViewFilteredHistoryList() {
   ctr =0;

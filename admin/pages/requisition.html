@@ -9,12 +9,10 @@
     <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-
 
     <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
     <title>Requisition | Oris Inventory System</title>
@@ -25,6 +23,7 @@
             if(!json_account){
                 location.href = '../index.html';
             }else{
+              onViewAllHistory();
               onViewHistoryList();
             }
           
@@ -76,7 +75,11 @@
                   </div>
                   <div class="topbar-content">
                     <a href="../pages/dashboard.html" >Dashboard</a>
-                    <a href="" class="active">Requisitions</a>
+                    <a href="" class="active position-relative">Requisitions 
+                      <span class="position-absolute top-0  start-75 translate-middle badge rounded-pill bg-danger d-none" id="notification-badge">
+                        0
+                      </span>
+                    </a> 
                     <a href="../pages/material.html" >Inventory</a>
                     <a href="../pages/physical.html" >Physical Inventory</a>
                     <a href="../pages/activity.html" >Activity Log</a>
@@ -165,10 +168,10 @@
                         <select class="form-select page-number" id="page_limit" onchange="onSelectLimit()" aria-label="Default select example">
                           <option value="1">1</option>
                           <option value="5">5</option>
-                          <option selected value="10">10</option>
+                          <option  value="10">10</option>
                           <option value="20">20</option>
                           <option value="50">50</option>
-                          <option value="1000000">All</option>
+                          <option selected value="1000000">All</option>
                         </select>
                       </div>
                       <nav aria-label="Page navigation example" class="bottom-pagination">
