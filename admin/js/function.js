@@ -559,7 +559,6 @@ function onViewMaterialList(category_id) {
     var table = document.querySelector("table");
     if(response.success){
       items = response.page_limit[0].ctr;
-      let setPage = items / limit;
       let totalPage = Math.ceil(items / limit);
       let next = document.getElementById("next");
       let prev = document.getElementById("prev");
@@ -573,51 +572,54 @@ function onViewMaterialList(category_id) {
           next.style.display = "none";
           prev.style.display = "block";
       }
-      table.innerHTML =  "";
-      if(parseInt(category_id) == 1){
-        var template =`
-          <thead>
-            <th>#</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Location</th>
-            <th>Person-in-charge</th>
-            <th>Inventory Date</th>
-            <th>Received Date</th>
-            <th>Action</th>
-          </thead>`;
-      }else if(parseInt(category_id) == 2){
-        var template =`
-          <thead>
-            <th>#</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Location</th>
-            <th>Person-in-charge</th>
-            <th>Status</th>
-            <th>Inventory Date</th>
-            <th>Remarks</th>
-            <th>Action</th>
-          </thead>`;
-      }else{
-        var template =`
-          <thead>
-            <th>#</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Location</th>
-            <th>Person-in-charge</th>
-            <th>Status</th>
-            <th>Action</th>
-          </thead>`;
+      table.innerHTML = "";
+      switch (parseInt(category_id)) {
+          case 1:
+              var template =`
+                <thead>
+                  <th>#</th>
+                  <th>Code</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Location</th>
+                  <th>Person-in-charge</th>
+                  <th>Inventory Date</th>
+                  <th>Received Date</th>
+                  <th>Action</th>
+                </thead>`;
+              break;
+          case 2:
+              var template =`
+                <thead>
+                  <th>#</th>
+                  <th>Code</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Location</th>
+                  <th>Person-in-charge</th>
+                  <th>Status</th>
+                  <th>Inventory Date</th>
+                  <th>Remarks</th>
+                  <th>Action</th>
+                </thead>`;
+              break;
+          default:
+              var template =`
+                <thead>
+                  <th>#</th>
+                  <th>Code</th>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Location</th>
+                  <th>Person-in-charge</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </thead>`;
       }
       table.innerHTML += template;
       onGenerateMaterialList(response.data,category_id);
@@ -649,75 +651,56 @@ function onViewMaterialList(category_id) {
 function onGenerateMaterialList(data,category_id) {
   let table = document.querySelector("table");
   let template;
-    data.forEach(element => {
-        if(parseInt(category_id)  == 1){
-          ctr = ctr + 1;
-          template = 
-          `<tr id="${element.product_code}">
-              <td>${ctr}</td>
-              <td>${element.product_code}</td>
-              <td>${element.product_name}</td>
-              <td>${element.product_description}</td>
-              <td >${element.product_quantity} <span class="d-block d-none warning" id="alert_quantity${element.product_code}">(Low)</span> </td>
-              <td>${element.product_unit}</td>
-              <td>${element.product_location}</td>
-              <td>${element.product_person_incharge}</td>
-              <td>${element.product_inventory_date}</td>
-              <td  >${element.product_recieved_date}</td>
-              <td>
-                  <span  data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="btn btn-primary " onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})'   >Edit</span> 
-                  <span class="btn btn-primary " onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
-              </td>
-          </tr>`;
-        }else if(parseInt(category_id) == 2){
-          ctr = ctr + 1;
-          template = 
-          `<tr id="${element.product_code}">
-              <td>${ctr}</td>
-              <td>${element.product_code}</td>
-              <td>${element.product_name}</td>
-              <td>${element.product_description}</td>
-              <td>${element.product_quantity} <span class="d-block d-none warning" id="alert_quantity${element.product_code}">(Low)</span></td>
-              <td>${element.product_unit}</td>
-              <td>${element.product_location}</td>
-              <td>${element.product_person_incharge}</td>
-              <td>${element.product_status}</td>
-              <td>${element.product_inventory_date}</td>
-              <td>${element.product_remarks}</td>
-              <td>
-                  <span data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="btn btn-primary " onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})' >Edit</span>  
-                  <span class="btn btn-primary " onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
-              </td>
-          </tr>`;
-        }else{
-          ctr = ctr + 1;
-          template = 
-          `<tr>
-              <td>${ctr}</td>
-              <td>${element.product_code}</td>
-              <td>${element.product_name}</td>
-              <td>${element.product_quantity}  </td>
-              <td>${element.product_unit}</td>
-              <td>${element.product_location}</td>
-              <td>${element.product_person_incharge}</td>
-              <td>${element.product_status}</td>
-              <td>
-                  <span  data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="btn btn-primary " onClick='onClickEditMaterial(${JSON.stringify(element.product_code)})' >Edit</span>  
-                  <span class="btn btn-primary " onClick='onDeleteMaterial(${JSON.stringify(element.product_code)})' >Delete</span> 
-              </td>
-          </tr>`;
-        }
-        table.innerHTML += template;
-        if(element.product_quantity == 0){
-          document.getElementById(element.product_code).classList.add('danger');
-        }
-        if(element.product_quantity <= 20 && element.product_quantity > 0){
-          document.getElementById("alert_quantity"+element.product_code).classList.remove('d-none');
-          document.getElementById("alert_quantity"+element.product_code).classList.add('warning');
-        /*   document.getElementById(element.product_code).classList.add('warning'); */
-        }
-      
-    });
+data.forEach(element => {
+    ctr++;
+    let productCode = element.product_code;
+    let productQuantity = element.product_quantity;
+    let row = `<tr id="${productCode}">`;
+    row += `<td>${ctr}</td>`;
+    row += `<td>${productCode}</td>`;
+    row += `<td>${element.product_name}</td>`;
+    if (parseInt(category_id) == 1) {
+        row += `<td>${element.product_description}</td>`;
+        row += `<td>${productQuantity} <span class="d-block d-none warning" id="alert_quantity${productCode}">(Low)</span></td>`;
+        row += `<td>${element.product_unit}</td>`;
+        row += `<td>${element.product_location}</td>`;
+        row += `<td>${element.product_person_incharge}</td>`;
+        row += `<td>${element.product_inventory_date}</td>`;
+        row += `<td>${element.product_recieved_date}</td>`;
+    } else if (parseInt(category_id) == 2) {
+        row += `<td>${element.product_description}</td>`;
+        row += `<td>${productQuantity} <span class="d-block d-none warning" id="alert_quantity${productCode}">(Low)</span></td>`;
+        row += `<td>${element.product_unit}</td>`;
+        row += `<td>${element.product_location}</td>`;
+        row += `<td>${element.product_person_incharge}</td>`;
+        row += `<td>${element.product_status}</td>`;
+        row += `<td>${element.product_inventory_date}</td>`;
+        row += `<td>${element.product_remarks}</td>`;
+    } else {
+        row += `<td>${productQuantity}</td>`;
+        row += `<td>${element.product_unit}</td>`;
+        row += `<td>${element.product_location}</td>`;
+        row += `<td>${element.product_person_incharge}</td>`;
+        row += `<td>${element.product_status}</td>`;
+    }
+    row += `<td>
+                <span data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="btn btn-primary" onClick='onClickEditMaterial(${JSON.stringify(productCode)})'>Edit</span>
+                <span class="btn btn-primary" onClick='onDeleteMaterial(${JSON.stringify(productCode)})'>Delete</span>
+            </td>`;
+
+    row += `</tr>`;
+    table.innerHTML += row;
+    if (parseInt(productQuantity) < 10) {
+    document.getElementById("alert_quantity"+productCode).classList.remove("d-none");
+    }
+  });
+    if (template == null) {
+      template = table.innerHTML;
+    }
+    if (data.length == 0) {
+      table.innerHTML = "<tr><td colspan='10' class='text-center'>No data found.</td></tr>";
+    }
+
 }
 function onChangeCategory() {
   let category =  $('#product_category').val();
@@ -1224,54 +1207,58 @@ function onViewPhysicalList(category_id) {
       }
       
       table.innerHTML =  "";
-      if(parseInt(category_id) == 1){
-        var template =`
-          <thead>
-            <th>#</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Location</th>
-            <th>Person-in-charge</th>
-            <th>Inventory Date</th>
-            <th>Received Date</th>
-            <th>Action</th>
-          </thead>`;
-      }else if(parseInt(category_id) == 2){
-        var template =`
-          <thead>
-            <th>#</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Location</th>
-            <th>Person-in-charge</th>
-            <th>Status</th>
-            <th>Inventory Date</th>
-            <th>Remarks</th>
-            <th>Action</th>
-          </thead>`;
-      }else{
-        var template =`
-          <thead>
-            <th>#</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Location</th>
-            <th>Person-in-charge</th>
-            <th>Status</th>
-            <th>Action</th>
-          </thead>`;
+      table.innerHTML = "";
+      switch (parseInt(category_id)) {
+          case 1:
+              var template =`
+                <thead>
+                  <th>#</th>
+                  <th>Code</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Location</th>
+                  <th>Person-in-charge</th>
+                  <th>Inventory Date</th>
+                  <th>Received Date</th>
+                  <th>Action</th>
+                </thead>`;
+              break;
+          case 2:
+              var template =`
+                <thead>
+                  <th>#</th>
+                  <th>Code</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Location</th>
+                  <th>Person-in-charge</th>
+                  <th>Status</th>
+                  <th>Inventory Date</th>
+                  <th>Remarks</th>
+                  <th>Action</th>
+                </thead>`;
+              break;
+          default:
+              var template =`
+                <thead>
+                  <th>#</th>
+                  <th>Code</th>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Location</th>
+                  <th>Person-in-charge</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </thead>`;
       }
       table.innerHTML += template;
-      onGenerateMaterialList(response.data,category_id);
-      sessionStorage.setItem("material_list",JSON.stringify(response.data));
+      onGeneratePhysicalList(response.data,category_id);
+      sessionStorage.setItem("physical_list",JSON.stringify(response.data));
     }else{
       table.innerHTML ="";
       var template =`
@@ -1297,6 +1284,8 @@ function onViewPhysicalList(category_id) {
   });
 }
 function onRegisterScanedItem() {
+  let qty = $('#product_quantity_scan').val;
+
   $('#scaned_material_form').validate({
     submitHandler: function (form) {
       $.ajax({  
@@ -1309,7 +1298,7 @@ function onRegisterScanedItem() {
         if(response.success){
           console.log("Ressult",response);
             alert(response.success_msg)
-            /* window.location.reload(); */
+            window.location.reload();
         }else{
           alert(response.error_msg)
             console.log("Ressult",response.error_msg);
@@ -1319,6 +1308,60 @@ function onRegisterScanedItem() {
       });
     }
   });
+
+}
+function onGeneratePhysicalList(data,category_id) {
+  let table = document.querySelector("table");
+  let template;
+data.forEach(element => {
+    ctr++;
+    let productCode = element.product_code;
+    let productQuantity = element.product_quantity;
+    let row = `<tr id="${productCode}">`;
+    row += `<td>${ctr}</td>`;
+    row += `<td>${productCode}</td>`;
+    row += `<td>${element.product_name}</td>`;
+    if (parseInt(category_id) == 1) {
+        row += `<td>${element.product_description}</td>`;
+        row += `<td>${productQuantity} <span class="d-block d-none warning" id="alert_quantity${productCode}">(Low)</span></td>`;
+        row += `<td>${element.product_unit}</td>`;
+        row += `<td>${element.product_location}</td>`;
+        row += `<td>${element.product_person_incharge}</td>`;
+        row += `<td>${element.product_inventory_date}</td>`;
+        row += `<td>${element.product_recieved_date}</td>`;
+    } else if (parseInt(category_id) == 2) {
+        row += `<td>${element.product_description}</td>`;
+        row += `<td>${productQuantity} <span class="d-block d-none warning" id="alert_quantity${productCode}">(Low)</span></td>`;
+        row += `<td>${element.product_unit}</td>`;
+        row += `<td>${element.product_location}</td>`;
+        row += `<td>${element.product_person_incharge}</td>`;
+        row += `<td>${element.product_status}</td>`;
+        row += `<td>${element.product_inventory_date}</td>`;
+        row += `<td>${element.product_remarks}</td>`;
+    } else {
+        row += `<td>${productQuantity}</td>`;
+        row += `<td>${element.product_unit}</td>`;
+        row += `<td>${element.product_location}</td>`;
+        row += `<td>${element.product_person_incharge}</td>`;
+        row += `<td>${element.product_status}</td>`;
+    }
+    {/* <span data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="btn btn-primary" onClick='onClickEditMaterial(${JSON.stringify(productCode)})'>Edit</span> */}
+    row += `<td>
+                <span class="btn btn-primary" onClick='onDeleteMaterial(${JSON.stringify(productCode)})'>Delete</span>
+            </td>`;
+
+    row += `</tr>`;
+    table.innerHTML += row;
+    if (parseInt(productQuantity) < 10) {
+    document.getElementById("alert_quantity"+productCode).classList.remove("d-none");
+    }
+  });
+    if (template == null) {
+      template = table.innerHTML;
+    }
+    if (data.length == 0) {
+      table.innerHTML = "<tr><td colspan='10' class='text-center'>No data found.</td></tr>";
+    }
 
 }
 

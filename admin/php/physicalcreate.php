@@ -44,16 +44,45 @@ include("connection.php"); //Establishing connection with our database
     $product_recieved_date = mysqli_real_escape_string($db,$product_recieved_date);
     $product_remarks = mysqli_real_escape_string($db,$product_remarks);
     $product_status = mysqli_real_escape_string($db,$product_status);
-
-    $sql=("INSERT INTO tbl_physical_inventory (product_code,product_category,product_name,product_description,product_quantity,product_unit,product_location,product_person_incharge,product_status,product_recieved_date,product_inventory_date,product_remarks) 
-    VALUES ('$product_code','$product_category','$product_name','$product_description','$product_quantity','$product_unit','$product_location','$product_person_incharge','$product_status','$product_recieved_date','$product_inventory_date','$product_remarks')");
-        if (mysqli_query($db, $sql)) {
-        $form_data['success'] = true;
-        $form_data['success_msg'] = "Successfully added product";
-    } else {
-        $form_data['success'] = false;
-        $form_data['error_msg'] = "Failed to add product";
+    
+    $sql=("SELECT * FROM tbl_physical_inventory WHERE product_code = '$product_code'" );
+    $result= mysqli_query($db,$sql);
+    $form_data = array();
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $update_query = ("UPDATE tbl_physical_inventory SET 
+            product_category = '$product_category', 
+            product_name = '$product_name', 
+            product_description = '$product_description', 
+            product_quantity = '$product_quantity', 
+            product_location = '$product_location', 
+            product_unit = '$product_unit', 
+            product_person_incharge = '$product_person_incharge', 
+            product_inventory_date = '$product_inventory_date', 
+            product_recieved_date = '$product_recieved_date', 
+            product_remarks = '$product_remarks', 
+            product_status = '$product_status' 
+            WHERE product_code = '$product_code'");
+             if (mysqli_query($db, $update_query)) {
+                $form_data['success'] = true;
+                $form_data['success_msg'] = $product_name." is now updated!";
+            } else {
+                $form_data['success'] = false;
+                $form_data['error_msg'] ="Failed to update record!";
+            }
+        }
+    }else {
+        $sql=("INSERT INTO tbl_physical_inventory (product_code,product_category,product_name,product_description,product_quantity,product_unit,product_location,product_person_incharge,product_status,product_recieved_date,product_inventory_date,product_remarks) 
+        VALUES ('$product_code','$product_category','$product_name','$product_description','$product_quantity','$product_unit','$product_location','$product_person_incharge','$product_status','$product_recieved_date','$product_inventory_date','$product_remarks')");
+            if (mysqli_query($db, $sql)) {
+            $form_data['success'] = true;
+            $form_data['success_msg'] = "Successfully added product";
+        } else {
+            $form_data['success'] = false;
+            $form_data['error_msg'] = "Failed to add product";
+        }
     }
+
 echo json_encode($form_data);
 $db->close();
 ?>
