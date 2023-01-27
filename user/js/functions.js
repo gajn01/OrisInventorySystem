@@ -14,6 +14,7 @@ const product_code_input = document.getElementById("product_code");
 const product_category_input = document.getElementById("product_category");
 const product_name_input = document.getElementById("product_name");
 const product_quantity_input = document.getElementById("product_quantity");
+const product_unit_input = document.getElementById("product_unit");
 const product_location_input = document.getElementById("product_location");
 const product_person_incharge_input = document.getElementById("product_person_incharge");
 const date_requested_input = document.getElementById("date_requested");
@@ -342,9 +343,10 @@ function onViewHistoryList() {
             <th>#</th>
             <th>Category</th>
             <th>Full Name</th>
-            <th>Position</th>
+            <th>Department</th>
             <th>Product Name</th>
             <th>Quantity</th>
+            <th>Unit</th>
             <th>Status</th>
             <th>Action</th>
           </thead>`;
@@ -358,9 +360,10 @@ function onViewHistoryList() {
             <th>#</th>
             <th>Category</th>
             <th>Full Name</th>
-            <th>Position</th>
+            <th>Department</th>
             <th>Product Name</th>
             <th>Quantity</th>
+            <th>Unit</th>
             <th>Status</th>
             <th>Action</th>
           </thead>
@@ -391,7 +394,7 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td  >
-                  <span  data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button " onClick='onClickRequest(${JSON.stringify(element)})'>Request</span>
+                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="btn btn-primary " onClick='onClickRequest(${JSON.stringify(element)})' >Request</span>
               </td>
           </tr>`;
       
@@ -407,7 +410,8 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td>
-                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickRequest(${JSON.stringify(element)})' >Borrow</span>
+                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="btn btn-primary " onClick='onClickRequest(${JSON.stringify(element)})' >Borrow</span>
+
               </td>
           </tr>`;
         }else if(parseInt(category_id) == 3){
@@ -429,16 +433,30 @@ function onGenerateMaterialList(data,category_id) {
               <td>${ctr}</td>
               <td>${element.product_category}</td>
               <td>${element.full_name}</td>
-              <td>${element.position}</td>
+              <td>${element.department}</td>
               <td>${element.product_name}</td>
               <td>${element.product_quantity}</td>
-              <td>${element.status}</td>
+              <td>${element.product_unit}</td>
+              <td >  <span class="status" id="request${ctr}" > ${element.status} </span>  </td>
+
               <td>
-                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="action-button" onClick='onClickViewHistory(${JSON.stringify(element)})' >View</span>
+                  <span data-bs-toggle="modal" data-bs-target="#requestModal" class="btn btn-primary " onClick='onClickViewHistory(${JSON.stringify(element)})' >View</span>
               </td>
           </tr>`;
         }
         table.innerHTML += template;
+        if(element.status == "Pending"){
+          document.getElementById("request"+ctr).classList.add('pending');
+        }
+        if(element.status == "Approved"){
+          document.getElementById("request"+ctr).classList.add('approved');
+        }
+        if(element.status == "Returned"){
+          document.getElementById("request"+ctr).classList.add('returned');
+        }
+        if(element.status == "Rejected"){
+          document.getElementById("request"+ctr).classList.add('rejected');
+        }
     });
 
 }
@@ -459,6 +477,8 @@ function onClickRequest(product) {
   account_id_input.value = json_account.account_id;
   product_code_input.value = product.product_code;
   product_name_input.value = product.product_name;
+  department_input.value = product.department;
+  product_unit_input.value = product.product_unit;
   department_input.value = document.getElementById("account_label").innerText;
   onChangeCategory();
 }

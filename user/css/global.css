@@ -22,8 +22,8 @@
     margin-top: 24px;
     margin-left: 4px;
 }
-.txt-black{
-    color: #000;
+h1{
+    border-bottom: 2px solid #315CB0;
 }
 .txt-primary{
     color: #315CB0;
@@ -41,7 +41,7 @@ label.error{
     color: red;
     font-size: .8rem;
 }
-.require{
+.require,.danger{
     color: red;
 }
 .cursor-pointer{
@@ -49,4 +49,24 @@ label.error{
 }
 .cursor-pointer:hover{
     opacity: 0.8;
+}
+.warning{
+    color: orange;
+}
+.pending{
+    background-color: orange;
+}
+.approved{
+    background-color: green;
+}
+.returned{
+    background-color: #315CB0;
+}
+.rejected{
+    background-color: red;
+}
+.filter{
+    position: relative;
+    top: 2.3rem;
+    left: 3rem;
 }

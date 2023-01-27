@@ -1098,7 +1098,6 @@ function onViewFilteredHistoryList() {
           </thead>`;
       table.innerHTML += template;
       onGenerateHistoryList(response.data);
-      sessionStorage.setItem("history_list",JSON.stringify(response.data));
     }else{
       table.innerHTML ="";
       var template =`
@@ -1163,7 +1162,6 @@ function onGenerateHistoryList(data) {
           </tr>`;
        
         table.innerHTML += template;
-
         if(status == "Pending"){
           document.getElementById("request"+ctr).classList.add('pending');
         }

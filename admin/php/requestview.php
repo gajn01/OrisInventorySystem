@@ -42,7 +42,7 @@
     $search_condition = "(product_name LIKE '$search%' OR full_name LIKE '$search%')";
     $conditions[] = $search_condition;
     $where_clause = join(" AND ", $conditions);
-    $sql = "SELECT * FROM tbl_history WHERE $where_clause ORDER BY date_requested DESC, status ASC LIMIT $limit OFFSET $page";
+    $sql = "SELECT * FROM tbl_history WHERE $where_clause ORDER BY date_requested DESC, status asc LIMIT $limit OFFSET $page";
     /* Fetch module based on subject and teacher ID */
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
