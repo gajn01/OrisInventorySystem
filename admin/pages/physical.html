@@ -21,7 +21,7 @@
     <title>Physical Inventory | Oris Inventory System</title>
     <script>
       window.onload = function () {
-        onViewMaterialList(1);
+        onViewPhysicalList(1);
        /*  onViewAllMaterial(); */
       
       }
@@ -89,9 +89,9 @@
               <!-- Tabs  button -->
               <nav>
                 <div class="nav nav-tabs mt-5" id="nav-tab" role="tablist">
-                  <button class="nav-link active"  data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-consumable" aria-selected="true" onclick="onChangeTab(1)">Supplies</button>
-                  <button class="nav-link"  data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-non-consumable" aria-selected="false" onclick="onChangeTab(2)">Fixed Assets</button>
-                  <button class="nav-link"  data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-obsolete" aria-selected="false" onclick="onChangeTab(3)">Obsolete</button>
+                  <button class="nav-link active"  data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-consumable" aria-selected="true" onclick="onChangeTab(1,'Physical')">Supplies</button>
+                  <button class="nav-link"  data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-non-consumable" aria-selected="false" onclick="onChangeTab(2,'Physical')">Fixed Assets</button>
+                  <button class="nav-link"  data-bs-toggle="tab"  type="button" role="tab" aria-controls="nav-obsolete" aria-selected="false" onclick="onChangeTab(3,'Physical')">Defective</button>
                 </div>
               </nav>
               <div class="table-content table-responsive-md">
@@ -248,7 +248,7 @@
                             <select class="form-select form-control" aria-label="Default select example" id="product_category_scan" name="product_category_scan" onchange="onChangeCategory()" readonly>
                               <option value="1" selected >Supplies</option>
                               <option value="2">Fixed Assets</option>
-                              <option value="3">Obsolete</option>
+                              <option value="3">Defective</option>
                             </select>
                           </div>
                           <div class="col-md-6 col-sm-12">
@@ -312,10 +312,10 @@
                       </div>
                       <div class="modal-footer">
                         <!-- <button type="submit" class="btn btn-danger d-none" id="delete_btn" onclick="onScanDelete()" >Delete</button> -->
-                        <button type="submit" class="btn btn-secondary d-none" id="update_btn"  onclick="onUpdateMaterial(0)"  >Register</button>
+                        <button type="submit" class="btn btn-primary d-none" id="update_btn"  onclick="onRegisterScanedItem()"  >Register</button>
                       </div>
                     </form>
-                    <button class="btn btn-primary scan-btn d-none" id="scan_btn" onclick="onScan()">Scan Again</button>
+                    <button class="btn btn-primary scan-btn d-none mt-5" id="scan_btn" onclick="onScan()">Scan Again</button>
                   </div>
                 </div>
               </div>

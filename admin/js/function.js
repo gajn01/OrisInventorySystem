@@ -54,7 +54,7 @@ scanner.addListener('scan', function (content) {
       document.getElementById("preview").classList.add("d-none");
       document.getElementById("product_details").classList.remove("d-none");
       document.getElementById("scan_btn").classList.remove("d-none");
-      document.getElementById("delete_btn").classList.remove("d-none");
+     /*  document.getElementById("delete_btn").classList.remove("d-none"); */
       document.getElementById("update_btn").classList.remove("d-none");
       scanner.stop();
 
@@ -177,7 +177,7 @@ function onLogin() {
     }
   });
 }
-function onChangeTab(params) {
+function onChangeTab(params,tab) {
   page = 0;
   ctr = 0;
   document.getElementById("page_number").innerText = 1;
@@ -185,7 +185,11 @@ function onChangeTab(params) {
   if(table_selected == 0){
     onViewAccountList();
   }else{
-    onViewMaterialList(table_selected);
+    if(tab == "Inventory"){
+      onViewMaterialList(table_selected);
+    }else{
+      onViewPhysicalList(table_selected);
+    }
   }
 }
 function navigateTo(url) {
@@ -555,23 +559,19 @@ function onViewMaterialList(category_id) {
     var table = document.querySelector("table");
     if(response.success){
       items = response.page_limit[0].ctr;
-      let setPage = items / limit
-      let totalPage = Math.trunc(items / limit)
-      if( setPage % 1){
-          totalPage = totalPage +1
-      }
-      if(parseInt(limit) > parseInt(items) || parseInt(limit) == parseInt(items)){
-        document.getElementById("next").style.display = "none";
-        document.getElementById("prev").style.display = "none";
-      }else{
-          if(page <= 0){
-              document.getElementById("prev").style.display = "none";
-              document.getElementById("next").style.display = "block";
-
-          }else if(totalPage <= page+1){
-              document.getElementById("next").style.display = "none";
-              document.getElementById("prev").style.display = "block";
-          }
+      let setPage = items / limit;
+      let totalPage = Math.ceil(items / limit);
+      let next = document.getElementById("next");
+      let prev = document.getElementById("prev");
+      if(parseInt(limit) >= parseInt(items)){
+          next.style.display = "none";
+          prev.style.display = "none";
+      }else if(page <= 0){
+          prev.style.display = "none";
+          next.style.display = "block";
+      }else if(totalPage <= page+1){
+          next.style.display = "none";
+          prev.style.display = "block";
       }
       table.innerHTML =  "";
       if(parseInt(category_id) == 1){
@@ -939,23 +939,18 @@ function onViewHistoryList() {
     if(response.success){
       console.log(response);
       items = response.page_limit[0].ctr;
-        let setPage = items / limit
-      let totalPage = Math.trunc(items / limit)
-      if( setPage % 1){
-          totalPage = totalPage +1
-      }
-      if(parseInt(limit) > parseInt(items) || parseInt(limit) == parseInt(items)){
-        document.getElementById("next").style.display = "none";
-        document.getElementById("prev").style.display = "none";
-      }else{
-          if(page <= 0){
-              document.getElementById("prev").style.display = "none";
-              document.getElementById("next").style.display = "block";
-
-          }else if(totalPage <= page+1){
-              document.getElementById("next").style.display = "none";
-              document.getElementById("prev").style.display = "block";
-          }
+      let totalPage = Math.ceil(items / limit);
+      let next = document.getElementById("next");
+      let prev = document.getElementById("prev");
+      if(parseInt(limit) >= parseInt(items)){
+          next.style.display = "none";
+          prev.style.display = "none";
+      }else if(page <= 0){
+          prev.style.display = "none";
+          next.style.display = "block";
+      }else if(totalPage <= page+1){
+          next.style.display = "none";
+          prev.style.display = "block";
       }
       table.innerHTML =  "";
         var template =`
@@ -1197,4 +1192,133 @@ pdfMake.createPdf(docDefinition).download();
 }
 
 
+
+/* Physical Inventory */
+
+function onViewPhysicalList(category_id) {
+  table_selected = category_id;
+  limit =  $('#page_limit').val();
+  search =  $('#searchbar').val();
+  $.ajax({  
+    url:"../php/physicalview.php",  
+    method:"POST",  
+    data: {limit:limit,page:page*limit,search:search,category_id:table_selected},  
+    dataType: "json",
+    encode: true, 
+  }).done(function (response) {
+    var table = document.querySelector("table");
+    if(response.success){
+      items = response.page_limit[0].ctr;
+      let totalPage = Math.ceil(items / limit);
+      let next = document.getElementById("next");
+      let prev = document.getElementById("prev");
+      if(parseInt(limit) >= parseInt(items)){
+          next.style.display = "none";
+          prev.style.display = "none";
+      }else if(page <= 0){
+          prev.style.display = "none";
+          next.style.display = "block";
+      }else if(totalPage <= page+1){
+          next.style.display = "none";
+          prev.style.display = "block";
+      }
+      
+      table.innerHTML =  "";
+      if(parseInt(category_id) == 1){
+        var template =`
+          <thead>
+            <th>#</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Location</th>
+            <th>Person-in-charge</th>
+            <th>Inventory Date</th>
+            <th>Received Date</th>
+            <th>Action</th>
+          </thead>`;
+      }else if(parseInt(category_id) == 2){
+        var template =`
+          <thead>
+            <th>#</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Location</th>
+            <th>Person-in-charge</th>
+            <th>Status</th>
+            <th>Inventory Date</th>
+            <th>Remarks</th>
+            <th>Action</th>
+          </thead>`;
+      }else{
+        var template =`
+          <thead>
+            <th>#</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Location</th>
+            <th>Person-in-charge</th>
+            <th>Status</th>
+            <th>Action</th>
+          </thead>`;
+      }
+      table.innerHTML += template;
+      onGenerateMaterialList(response.data,category_id);
+      sessionStorage.setItem("material_list",JSON.stringify(response.data));
+    }else{
+      table.innerHTML ="";
+      var template =`
+          <thead>
+            <th>#</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Location</th>
+            <th>Person-in-charge</th>
+            <th>Status</th>
+            <th>Action</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="12">No records found!</td>
+            </tr>
+          </tbody>`;
+      table.innerHTML += template;
+    }
+  }).fail(function (response){
+    console.log(response.responseText);
+  });
+}
+function onRegisterScanedItem() {
+  $('#scaned_material_form').validate({
+    submitHandler: function (form) {
+      $.ajax({  
+        url:"../php/physicalcreate.php",  
+        method:"POST",  
+        data: $('#scaned_material_form').serialize(), 
+        dataType: "json",
+        encode: true, 
+      }).done(function (response) {
+        if(response.success){
+          console.log("Ressult",response);
+            alert(response.success_msg)
+            /* window.location.reload(); */
+        }else{
+          alert(response.error_msg)
+            console.log("Ressult",response.error_msg);
+        }
+      }).fail(function (response){
+        console.log(response.responseText);
+      });
+    }
+  });
+
+}
 
