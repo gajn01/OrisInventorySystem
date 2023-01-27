@@ -11,8 +11,6 @@ include("connection.php");
     $product_code= $_POST['product_code'];
     $remarks= $_POST['remarks'];
 
-
-
     $sql=("SELECT * FROM `tbl_inventory` WHERE product_code = '$product_code' AND product_quantity >= '$product_quantity' ");
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
@@ -33,6 +31,10 @@ include("connection.php");
                 if (mysqli_query($db, $update_query)) {
                     $form_data['success'] = true;
                     $form_data['success_msg'] = "Record updated successfully!";
+
+                    $ip = file_get_contents('http://icanhazip.com/');
+                    $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', 'Update status to a request', '$ip')";
+                    mysqli_query($db, $sql_activity);
                 } else {
                     $form_data['success'] = false;
                     $form_data['error_msg'] ="Failed to update record!";
@@ -44,6 +46,9 @@ include("connection.php");
                 if (mysqli_query($db, $update_query)) {
                     $form_data['success'] = true;
                     $form_data['success_msg'] = "Record updated successfully!";
+                    $ip = file_get_contents('http://icanhazip.com/');
+                    $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', 'Update status to a request', '$ip')";
+                    mysqli_query($db, $sql_activity);
                 } else {
                     $form_data['success'] = false;
                     $form_data['error_msg'] ="Failed to update record!";
@@ -51,9 +56,15 @@ include("connection.php");
             }else{
                 $form_data['success'] = true;
                 $form_data['success_msg'] = "Record updated successfully!";
+                $ip = file_get_contents('http://icanhazip.com/');
+                    $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', 'Update status to a request', '$ip')";
+                    mysqli_query($db, $sql_activity);
             }
             $form_data['success'] = true;
             $form_data['success_msg'] = "Record updated successfully!";
+            $ip = file_get_contents('http://icanhazip.com/');
+                    $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', 'Update status to a request', '$ip')";
+                    mysqli_query($db, $sql_activity);
         } else {
             $form_data['success'] = false;
             $form_data['error_msg'] ="Failed to update record!";

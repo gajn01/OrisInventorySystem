@@ -7,6 +7,10 @@ include("connection.php");
     if (mysqli_query($db, $sql)) {
         $form_data['success'] = true;
         $form_data['success_msg'] = "Record successfully delete";
+
+        $ip = file_get_contents('http://icanhazip.com/');
+        $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', 'Deleted a material in inventory', '$ip')";
+        mysqli_query($db, $sql_activity);
     } else {
         $form_data['success'] = false;
         $form_data['error_msg'] = "Record failed to delete";

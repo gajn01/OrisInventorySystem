@@ -50,6 +50,11 @@ include("connection.php"); //Establishing connection with our database
         if (mysqli_query($db, $sql)) {
         $form_data['success'] = true;
         $form_data['success_msg'] = "Successfully added product";
+
+        $ip = file_get_contents('http://icanhazip.com/');
+        $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', 'Add a material in inventory', '$ip')";
+        mysqli_query($db, $sql_activity);
+        
     } else {
         $form_data['success'] = false;
         $form_data['error_msg'] = "Failed to add product";
