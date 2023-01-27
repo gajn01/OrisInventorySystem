@@ -928,6 +928,34 @@ function onDownloadPDFMaterial() {
   }
 
 /* Requisition */
+function onNotify() {
+  let sessionData = sessionStorage.getItem("history_list");
+  let json_history = JSON.parse(sessionData);
+  let category =  "";
+  let status  =  "";
+  let date  =  "";
+  limit = 999;
+  search =  "";
+  $.ajax({  
+    url:"../php/requestview.php",  
+    method:"POST",  
+    data: {limit:limit,page:page*limit,search:search,category:category,status:status,date:date},  
+    dataType: "json",
+    encode: true, 
+  }).done(function (response) {
+    let notif_badge = document.getElementById('notification-badge');
+    if(response.data.length == json_history.length){
+      notif_badge.classList.add('d-none');
+    }else{
+      notif_badge.classList.remove('d-none');
+      notif_badge.innerText = (response.data.length - json_history.length);
+    }
+   
+  }).fail(function (response){
+    console.log(response.responseText);
+  });
+
+}
 function onViewHistoryList() {
   ctr =0;
   table_selected = 4;
@@ -1317,6 +1345,7 @@ var docDefinition = {
 pdfMake.createPdf(docDefinition).download();
 
 }
+
 
 /* Physical Inventory */
 function onViewPhysicalList(category_id) {

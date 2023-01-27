@@ -29,6 +29,12 @@
             }
           
       }
+
+      setInterval(function() {
+        onNotify();
+      }, 1000);
+      
+     
     </script>
 </head>
 <body>
@@ -40,7 +46,11 @@
                 </div>
                 <div class="sidebar-content">
                     <a href="../pages/dashboard.html" >Dashboard</a>
-                    <a href="" class="active">Requisitions</a>
+                    <a href="" class="active position-relative">Requisitions 
+                      <span class="position-absolute top-0  start-75 translate-middle badge rounded-pill bg-danger d-none" id="notification-badge">
+                        0
+                      </span>
+                    </a> 
                     <a href="../pages/material.html" >Inventory</a>
                     <a href="../pages/physical.html" >Physical Inventory</a>
                     <a href="../pages/activity.html" >Activity Log</a>

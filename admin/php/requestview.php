@@ -4,7 +4,6 @@
     $page = $_POST['page'];
     $search = $_POST['search'];
 
-    
     $category = $_POST['category'];
     $status = $_POST['status'];
     $date = $_POST['date'];
