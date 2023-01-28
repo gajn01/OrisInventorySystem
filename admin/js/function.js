@@ -712,6 +712,10 @@ data.forEach(element => {
     if (parseInt(productQuantity) < 10) {
     document.getElementById("alert_quantity"+productCode).classList.remove("d-none");
     }
+    if (parseInt(productQuantity) == 0) {
+      document.getElementById("alert_quantity"+productCode).classList.add("d-none");
+      document.getElementById(productCode).classList.add("danger");
+      }
   });
     if (template == null) {
       template = table.innerHTML;
