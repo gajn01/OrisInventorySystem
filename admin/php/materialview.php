@@ -8,8 +8,6 @@
     $date_end = $_POST['dateEnd'];
     $form_data = array();
 
-    
-   
 
     /* get total items  */
     $sql=("SELECT COUNT(id) AS ctr FROM tbl_inventory WHERE product_category = $category_id");

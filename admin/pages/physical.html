@@ -13,6 +13,10 @@
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
@@ -25,6 +29,14 @@
        /*  onViewAllMaterial(); */
       
       }
+      $(function() {
+        $('input[name="inventory_date_filter"]').daterangepicker({
+          opens: 'left'
+        }, function(start, end, label) {
+          dateStart = start.format('YYYY-MM-DD');
+          dateEnd  =  end.format('YYYY-MM-DD');
+        });
+      });
       setInterval(function() {
         onNotify();
       }, 1000);
@@ -90,10 +102,26 @@
             <h1>Physical Inventory</h1>
             <section>
               <div class="header-button mb-3 mt-3">
+                <button type="button" class="btn btn-primary btn-add" data-bs-toggle="collapse" href="#filterCollapse" role="button"  >Filter</button>
                 <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch()">
-                <!-- <button type="button" class="btn btn-primary btn-add">Filter</button> -->
                 <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#openScannerModal"  onclick="onStartScan()">Open Scanner</button>
-                <button type="button" class="btn btn-primary btn-add"  onclick="onDownloadPDFMaterial()">Download PDF</button>
+                <button type="button" class="btn btn-primary btn-add"  onclick="onDownloadPDFPhysical()">Download PDF</button>
+              </div>
+              <div class="collapse" id="filterCollapse">
+                <div class="card card-body">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-3 ">
+                      <label for="inventory_date_filter" class="col-sm-12  col-md-12 col-form-label">Inventory Date </label>
+                      <input type="text" id="inventory_date_filter" name="inventory_date_filter" class="form-control mb-3 "  />
+                    <!--   <input class="form-control mb-3 to-disable" type="date" id="date_requested_filter" name="date_requested_filter" > -->
+
+                    </div>
+                    <div class="col-sm-12 col-md-3 ">
+                      <button type="button" class="btn btn-primary filter " onclick="onViewPhysicalList(1)">Apply</button>
+                      <button type="button" class="btn  btn-add filter" onclick="onResetPhysicalFilter()" >Reset</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </section>
             <!-- Table -->
