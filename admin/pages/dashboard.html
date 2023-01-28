@@ -47,7 +47,7 @@
                     <a href="../pages/activity.html" >Activity Log</a>
                     <a href="../pages/account.html">Accounts</a>
                 </div>
-                <a class="btn btn-primary btn-logout-mobile text-center" href="" onclick="onLogout()">Logout</a>
+                <a class="btn btn-primary btn-logout text-center" href="" onclick="onLogout()">Logout</a>
             </div>
         </nav>
         <div class="content">
@@ -91,20 +91,20 @@
                     <div class="container">
                         <div class="card" onclick="navigateTo('material.html')">
                             <div class="info">
-                                <span id="material_label">20</span>
+                                <span id="material_label">00</span>
                                 <p>Material</p>
                             </div>
                         </div>
                         <div class="card" onclick="navigateTo('account.html')">
                            
                             <div class="info">
-                                <span id="account_label">74</span>
-                                <p>Active User</p>
+                                <span id="account_label">00</span>
+                                <p>Account</p>
                             </div>
                         </div>
                         <div class="card" onclick="navigateTo('requisition.html')">
                             <div class="info">
-                                <span id="requisition_label">359</span>
+                                <span id="requisition_label">00</span>
                                 <p>Requisition</p>
                             </div>
                         </div>
@@ -114,10 +114,13 @@
 
                 <section id="graph">
                     <div class="row">
-                        <div class="col-12">
-                            <h4 class="mt-4" >Material per Category</h4>
-                            <div class="mt-2" id="materailChartContainer" style="height: 370px; width: 100%;"></div>
-
+                        <div class="col-6">
+                            <h4 class="mt-4" >Most Requested </h4>
+                            <div class="mt-2" id="materailChartContainer" style="height: 350px; width: 100%;"></div>
+                        </div>
+                        <div class="col-6">
+                            <h4 class="mt-4" >Most Borrowed </h4>
+                            <div class="mt-2" id="suppliesChart" style="height: 350px; width: 100%;"></div>
                         </div>
                     </div>
 

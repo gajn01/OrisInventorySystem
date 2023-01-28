@@ -38,8 +38,8 @@
          $form_data['error_msg'] = "No records!";
      }
 
-
-     $sql=("SELECT product_category as label , COUNT(id) as y FROM `tbl_inventory` GROUP BY product_category");
+     /* Fixed asset */
+     $sql=("SELECT product_name as label , COUNT(id) as y FROM `tbl_history` WHERE product_category = '1' GROUP BY product_name LIMIT 5");
      $result = mysqli_query($db, $sql);
      $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
      if($fetch){
@@ -49,6 +49,20 @@
          $form_data['success'] = false;
          $form_data['error_msg'] = "No record found!";
      }
+
+     /* Supplies */
+     $sql=("SELECT product_name as label , COUNT(id) as y FROM `tbl_history` WHERE product_category = '2' GROUP BY product_name LIMIT 5");
+     $result = mysqli_query($db, $sql);
+     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
+     if($fetch){
+         $form_data['success'] = true;
+         $form_data['supplies'] = $fetch;
+     }else{
+         $form_data['success'] = false;
+         $form_data['error_msg'] = "No record found!";
+     }
+
+
     echo json_encode($form_data);
 
    

@@ -24,6 +24,11 @@ include("connection.php");
         status = '$status' 
         WHERE id = '$request_id'");
         if (mysqli_query($db, $update_query)) {
+            $form_data['success'] = true;
+            $form_data['success_msg'] = "Record updated successfully!";
+            $ip = file_get_contents('http://icanhazip.com/');
+            $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', 'Update status to a request', '$ip')";
+            mysqli_query($db, $sql_activity);
             if($status == 2){
                 $update_query = ("UPDATE tbl_inventory SET 
                 product_quantity =  product_quantity - '$product_quantity'
@@ -31,7 +36,6 @@ include("connection.php");
                 if (mysqli_query($db, $update_query)) {
                     $form_data['success'] = true;
                     $form_data['success_msg'] = "Record updated successfully!";
-
                     $ip = file_get_contents('http://icanhazip.com/');
                     $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', 'Update status to a request', '$ip')";
                     mysqli_query($db, $sql_activity);

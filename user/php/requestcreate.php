@@ -45,27 +45,20 @@ include("connection.php"); //Establishing connection with our database
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
     if($fetch){
-        $update_query = ("UPDATE tbl_inventory SET 
-        product_quantity =  product_quantity - '$product_quantity'
-        WHERE product_code = '$product_code' ");
-        if (mysqli_query($db, $update_query)) {
-            $sql=("INSERT INTO tbl_history (account_id,product_category,product_name,product_code,product_quantity,product_unit,purpose,full_name,department,date_requested,date_return,date_to_claim,status) 
-            VALUES ('$account_id','$product_category','$product_name','$product_code','$product_quantity','$product_unit','$purpose','$full_name','$department','$date_requested','$date_return','$date_to_claim','1')");
-                if (mysqli_query($db, $sql)) {
-                $form_data['success'] = true;
-                if($product_category == 1){
-                    $form_data['success_msg'] = "Request successful";
-                }else{
-                    $form_data['success_msg'] = "Borrow successful";
-                }
-            } else {
-                $form_data['success'] = false;
-                $form_data['error_msg'] = "Action failed";
+        $sql=("INSERT INTO tbl_history (account_id,product_category,product_name,product_code,product_quantity,product_unit,purpose,full_name,department,date_requested,date_return,date_to_claim,status) 
+        VALUES ('$account_id','$product_category','$product_name','$product_code','$product_quantity','$product_unit','$purpose','$full_name','$department','$date_requested','$date_return','$date_to_claim','1')");
+            if (mysqli_query($db, $sql)) {
+            $form_data['success'] = true;
+            if($product_category == 1){
+                $form_data['success_msg'] = "Request successful";
+            }else{
+                $form_data['success_msg'] = "Borrow successful";
             }
         } else {
             $form_data['success'] = false;
-            $form_data['error_msg'] ="Failed to update record!";
-        } 
+            $form_data['error_msg'] = "Action failed";
+        }
+        
     }else{
         $form_data['success'] = false;
         $form_data['error_msg'] = "Invalid quantity!";

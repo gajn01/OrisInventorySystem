@@ -27,6 +27,10 @@ const product_recieved_date_input = document.getElementById("product_recieved_da
 const product_remarks_input = document.getElementById("product_remarks");
 const product_status_input = document.getElementById("product_status");
 
+
+let dateStart ='';
+let dateEnd =''
+
 let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
 scanner.addListener('scan', function (content) {
   $.ajax({  
@@ -341,19 +345,17 @@ function onViewDashboard() {
   }).done(function (response) {
     if(response.success){
       let materialData = [];
+      let suppliesData = [];
       console.log("res",response);
       document.getElementById("material_label").innerText = response.material[0].ctr
       document.getElementById("account_label").innerText = response.account[0].ctr
       document.getElementById("requisition_label").innerText = response.requisition[0].ctr
       response.material_graph.forEach(element => {
-        if(element.label == 1){
-          element.label = "Supplies";
-        }else if(element.label == 2){
-          element.label = "Fixed Assets";
-        }else{
-          element.label = "Obsolete";
-        }
         materialData.push({y: parseInt(element.y),label:element.label});
+      });
+
+      response.supplies.forEach(element => {
+        suppliesData.push({y: parseInt(element.y),label:element.label});
       });
 
       var chart = new CanvasJS.Chart("materailChartContainer", {
@@ -369,6 +371,23 @@ function onViewDashboard() {
           indexLabelFontSize: 16,
           indexLabel: "{label} - {y}",
           dataPoints: materialData
+        }]
+      });
+      chart.render();
+
+      var chart = new CanvasJS.Chart("suppliesChart", {
+        theme: "light1", // "light1", "light2", "dark1", "dark2"
+        animationEnabled: true,
+        backgroundColor: "#e0e8f8",
+        data: [{
+          type: "pie",
+          startAngle: 25,
+          toolTipContent: "<b>{label}</b>: {y}",
+          showInLegend: "true",
+          legendText: "{label}",
+          indexLabelFontSize: 16,
+          indexLabel: "{label} - {y}",
+          dataPoints: suppliesData
         }]
       });
       chart.render();
@@ -577,6 +596,7 @@ function onViewMaterialList(category_id) {
   }).done(function (response) {
     var table = document.querySelector("table");
     if(response.success){
+      console.log("result",response);
       items = response.page_limit[0].ctr;
       let totalPage = Math.ceil(items / limit);
       let next = document.getElementById("next");
@@ -697,7 +717,7 @@ data.forEach(element => {
         row += `<td>${element.product_remarks}</td>`;
     } else {
         row += `<td>${productQuantity}</td>`;
-        row += `<td>${element.product_unit}</td>`;
+        row += `<td>${element.product_unit}<span class="d-block d-none warning" id="alert_quantity${productCode}">(Low)</span></td>`;
         row += `<td>${element.product_location}</td>`;
         row += `<td>${element.product_person_incharge}</td>`;
         row += `<td>${element.product_status}</td>`;
@@ -710,7 +730,7 @@ data.forEach(element => {
     row += `</tr>`;
     table.innerHTML += row;
     if (parseInt(productQuantity) < 10) {
-    document.getElementById("alert_quantity"+productCode).classList.remove("d-none");
+      document.getElementById("alert_quantity"+productCode).classList.remove("d-none");
     }
     if (parseInt(productQuantity) == 0) {
       document.getElementById("alert_quantity"+productCode).classList.add("d-none");
@@ -932,25 +952,26 @@ function onDownloadPDFMaterial() {
   }
 
 /* Requisition */
+
 function onNotify() {
+
   let sessionData = sessionStorage.getItem("history_list");
   let json_history = JSON.parse(sessionData);
   let category =  "";
   let status  =  "";
-  let date  =  "";
   limit = 99999;
   search =  "";
   $.ajax({  
     url:"../php/requestview.php",  
     method:"POST",  
-    data: {limit:limit,page:page*limit,search:search,category:category,status:status,date:date},  
+    data: {limit:limit,page:page*limit,search:search,category:category,status:status,dateStart:dateStart,dateEnd:dateEnd},  
     dataType: "json",
     encode: true, 
   }).done(function (response) {
     let notif_badge = document.getElementById('notification-badge');
     if(response.data.length == json_history.length){
       notif_badge.classList.add('d-none');
-    }else{
+    }else if(response.data.length > json_history.length){
       notif_badge.classList.remove('d-none');
       notif_badge.innerText = (response.data.length - json_history.length);
     }
@@ -961,18 +982,18 @@ function onNotify() {
 
 }
 function onViewHistoryList() {
+  dateStart = '';
+  dateEnd ='';
   ctr = 0;
   table_selected = 4;
   let category =  "";
   let status  =  "";
-  let date  =  "";
-
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
   $.ajax({  
     url:"../php/requestview.php",  
     method:"POST",  
-    data: {limit:limit,page:page*limit,search:search,category:category,status:status,date:date},  
+    data: {limit:limit,page:page*limit,search:search,category:category,status:status,dateStart:dateStart,dateEnd:dateEnd},  
     dataType: "json",
     encode: true, 
   }).done(function (response) {
@@ -1055,14 +1076,12 @@ function onViewFilteredHistoryList() {
   table_selected = 4;
   let category =  $('#category_filter').val();
   let status  =  $('#status_filter').val();
-  let date  =  $('#date_requested_filter').val();
-
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
   $.ajax({  
     url:"../php/requestview.php",  
     method:"POST",  
-    data: {limit:limit,page:page*limit,search:search,category:category,status:status,date:date},  
+    data: {limit:limit,page:page*limit,search:search,category:category,status:status,dateStart:dateStart,dateEnd:dateEnd},  
     dataType: "json",
     encode: true, 
   }).done(function (response) {

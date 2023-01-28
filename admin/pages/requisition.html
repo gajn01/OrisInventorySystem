@@ -12,7 +12,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
     <title>Requisition | Oris Inventory System</title>
@@ -28,7 +32,16 @@
             }
           
       }
-
+      $(function() {
+        
+      $('input[name="date_requested_filter"]').daterangepicker({
+        opens: 'left'
+      }, function(start, end, label) {
+        dateStart = start.format('YYYY-MM-DD');
+        dateEnd  =  end.format('YYYY-MM-DD');
+      });
+    });
+      
       setInterval(function() {
         onNotify();
       }, 1000);
@@ -124,7 +137,8 @@
                       </div>
                       <div class="col-sm-12 col-md-3 ">
                         <label for="date_requested_filter" class="col-sm-12  col-md-12 col-form-label">Date Requested </label>
-                        <input class="form-control mb-3 to-disable" type="date" id="date_requested_filter" name="date_requested_filter" >
+                        <input type="text" id="date_requested_filter" name="date_requested_filter" class="form-control mb-3 "  />
+                      <!--   <input class="form-control mb-3 to-disable" type="date" id="date_requested_filter" name="date_requested_filter" > -->
 
                       </div>
                       <div class="col-sm-12 col-md-3 ">

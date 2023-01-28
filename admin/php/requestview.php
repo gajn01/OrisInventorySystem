@@ -6,7 +6,9 @@
 
     $category = $_POST['category'];
     $status = $_POST['status'];
-    $date = $_POST['date'];
+    $date_start = $_POST['dateStart'];
+    $date_end = $_POST['dateEnd'];
+
 
     $form_data = array();
 
@@ -36,13 +38,13 @@
     if($status != ""){
         $conditions[] = "status = '$status'";
     }
-    if($date != ""){
-        $conditions[] = "date_requested = '$date'";
+    if($date_start != "" && $date_end != ""){
+        $conditions[] = "date_requested BETWEEN '$date_start' AND '$date_end'";
     }
     $search_condition = "(product_name LIKE '$search%' OR full_name LIKE '$search%')";
     $conditions[] = $search_condition;
     $where_clause = join(" AND ", $conditions);
-    $sql = "SELECT * FROM tbl_history WHERE $where_clause ORDER BY date_requested DESC, status ASC LIMIT $limit OFFSET $page";
+    $sql = "SELECT * FROM tbl_history WHERE $where_clause ORDER BY status ASC , date_requested DESC,id DESC  LIMIT $limit OFFSET $page";
     /* Fetch module based on subject and teacher ID */
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
