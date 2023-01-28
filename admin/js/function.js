@@ -584,13 +584,13 @@ function onDeleteAccount(account_id) {
 
 /* Material Functions */
 function onViewMaterialList(category_id) {
-  table_selected = category_id;
+  ctr = 0;
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
   $.ajax({  
     url:"../php/materialview.php",  
     method:"POST",  
-    data: {limit:limit,page:page*limit,search:search,category_id:table_selected},  
+    data: {limit:limit,page:page*limit,search:search,category_id:table_selected,dateStart:dateStart,dateEnd:dateEnd},  
     dataType: "json",
     encode: true, 
   }).done(function (response) {
@@ -687,6 +687,12 @@ function onViewMaterialList(category_id) {
     console.log(response.responseText);
   });
 }
+function onResetFilter() {
+  dateStart = '';
+  dateEnd ='';
+  onViewMaterialList(table_selected);
+  
+}
 function onGenerateMaterialList(data,category_id) {
   let table = document.querySelector("table");
   let template;
@@ -723,7 +729,7 @@ data.forEach(element => {
         row += `<td>${element.product_status}</td>`;
     }
     row += `<td>
-                <span data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="btn btn-primary" onClick='onClickEditMaterial(${JSON.stringify(productCode)})'>Edit</span>
+                <span data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="btn btn-primary" onClick='onClickEditMaterial(${JSON.stringify(element)})'>Edit</span>
                 <span class="btn btn-primary" onClick='onDeleteMaterial(${JSON.stringify(productCode)})'>Delete</span>
             </td>`;
 
@@ -769,38 +775,49 @@ function onClickAddMaterial() {
   document.getElementById("create_material_submit").setAttribute("onclick","onCreateMaterial()"); 
   generate(id,1);
 }
-function onClickEditMaterial(product_code) {
+function onClickEditMaterial(product_details) {
   document.getElementById("material_form").reset();
 
   var select = document.getElementById("product_category");
   var option = document.createElement("option");
-  option.value = 3;
-  option.text = "Defective";
-  select.appendChild(option);
-  
 
+  console.log('product_code',product_details);
+  if(product_details.product_category == '2'){
+    option.value = 3;
+    option.text = "Defective";
+    select.appendChild(option);
+  }else{
+    for (var i = 0; i < select.length; i++) {
+      if (select.options[i].value == "3") {
+        select.remove(i);
+        break;
+      }
+    }
+  }
 
   document.getElementById("addMaterialModalLabel").innerText = "Update Material";
   document.getElementById("create_material_submit").setAttribute("onclick","onUpdateMaterial(1)");
-  let material_list = sessionStorage.getItem("material_list");
+  product_code_input.value = product_details.product_code;
+  product_category_input.value = product_details.product_category;
+  product_name_input.value = product_details.product_name;
+  product_description_input.value = product_details.product_description;
+  product_unit_input.value = product_details.product_unit;
+  product_quantity_input.value = product_details.product_quantity;
+  product_location_input.value = product_details.product_location;
+  product_person_incharge_input.value = product_details.product_person_incharge;
+  product_inventory_date_input.value = product_details.product_inventory_date;
+  product_recieved_date_input.value = product_details.product_recieved_date;
+  product_remarks_input.value = product_details.product_remarks;
+  product_status_input.value = product_details.product_status;
+  generate(product_details.product_code,2);
+
+ /*  let material_list = sessionStorage.getItem("material_list");
   let json_material = JSON.parse(material_list);
-  json_material.forEach(element => {
+  product_details.forEach(element => {
     if(element.product_code == product_code){
-      product_code_input.value = element.product_code;
-      product_category_input.value = element.product_category;
-      product_name_input.value = element.product_name;
-      product_description_input.value = element.product_description;
-      product_unit_input.value = element.product_unit;
-      product_quantity_input.value = element.product_quantity;
-      product_location_input.value = element.product_location;
-      product_person_incharge_input.value = element.product_person_incharge;
-      product_inventory_date_input.value = element.product_inventory_date;
-      product_recieved_date_input.value = element.product_recieved_date;
-      product_remarks_input.value = element.product_remarks;
-      product_status_input.value = element.product_status;
-      generate(element.product_code,2);
+     
     }
-  });
+  }); */
 }
 function onCreateMaterial() {
   $('#material_form').validate({
