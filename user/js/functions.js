@@ -218,7 +218,41 @@ function onSubmitEmail() {
 }
 
 /* Material Functions */
+function onNotify() {
+  ctr =0;
+  let sessionData = sessionStorage.getItem("history_list");
+  let json_history = JSON.parse(sessionData);
+  /* console.log("res",json_history); */
+  table_selected = 3;
+  limit =  '99999';
+  search =  '';
+  account_id = json_account.account_id;
+  $.ajax({  
+    url:"../php/historyview.php",  
+    method:"POST",  
+    data: {limit:limit,page:page*limit,search:search,account_id:account_id},  
+    dataType: "json",
+    encode: true, 
+  }).done(function (response) {
+    if(response.success){ 
+      let notif_badge = document.getElementById('notification-badge');
+      let not_matched = 0;
+      json_history.forEach((element, index) => {
+        if (element.status !== response.data[index].status) {
+          not_matched++;
+        }
+      });
+      if (not_matched > 0) {
+        notif_badge.classList.remove('d-none');
+        notif_badge.innerText = not_matched;
+      }
+    }
+  }).fail(function (response){
+    console.log(response.responseText);
+  });
+}
 function onViewMaterialList(category_id) {
+
   table_selected = category_id;
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
@@ -257,8 +291,6 @@ function onViewMaterialList(category_id) {
             <th>#</th>
             <th>Code</th>
             <th>Name</th>
-            <th>Quantity</th>
-            <th>Unit</th>
             <th>Location</th>
             <th>Person-in-charge</th>
             <th>Action</th>
@@ -269,8 +301,6 @@ function onViewMaterialList(category_id) {
             <th>#</th>
             <th>Code</th>
             <th>Name</th>
-            <th>Quantity</th>
-            <th>Unit</th>
             <th>Location</th>
             <th>Person-in-charge</th>
             <th>Action</th>
@@ -286,7 +316,6 @@ function onViewMaterialList(category_id) {
             <th>#</th>
             <th>Code</th>
             <th>Name</th>
-            <th>Quantity</th>
             <th>Location</th>
             <th>Person-in-charge</th>
             <th>Status</th>
@@ -303,7 +332,28 @@ function onViewMaterialList(category_id) {
     console.log(response.responseText);
   });
 }
+function onViewAllHistoryList() {
+  ctr = 0;
+  limit =  '9999';
+  search =  '';
+  account_id = json_account.account_id;
+  $.ajax({  
+    url:"../php/historyallview.php",  
+    method:"POST",  
+    data: {limit:limit,page:page*limit,search:search,account_id:account_id},  
+    dataType: "json",
+    encode: true, 
+  }).done(function (response) {
+    if(response.success){
+      sessionStorage.setItem("history_list",JSON.stringify(response.data));
+    }
+  }).fail(function (response){
+    console.log(response.responseText);
+  });
+}
 function onViewHistoryList() {
+  ctr = 0;
+
   table_selected = 3;
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
@@ -317,7 +367,6 @@ function onViewHistoryList() {
   }).done(function (response) {
     var table = document.querySelector("table");
     if(response.success){
-      console.log(response);
       items = response.page_limit[0].ctr;
         let setPage = items / limit
       let totalPage = Math.trunc(items / limit)
@@ -331,7 +380,6 @@ function onViewHistoryList() {
           if(page <= 0){
               document.getElementById("prev").style.display = "none";
               document.getElementById("next").style.display = "block";
-
           }else if(totalPage <= page+1){
               document.getElementById("next").style.display = "none";
               document.getElementById("prev").style.display = "block";
@@ -347,12 +395,13 @@ function onViewHistoryList() {
             <th>Product Name</th>
             <th>Quantity</th>
             <th>Unit</th>
+            <th>Date Requested</th>
+            <th>Date to Claim</th>
             <th>Status</th>
             <th>Action</th>
           </thead>`;
       table.innerHTML += template;
       onGenerateMaterialList(response.data,3);
-      sessionStorage.setItem("history_list",JSON.stringify(response.data));
     }else{
       table.innerHTML ="";
       var template =`
@@ -364,6 +413,8 @@ function onViewHistoryList() {
             <th>Product Name</th>
             <th>Quantity</th>
             <th>Unit</th>
+            <th>Date Requested</th>
+            <th>Date to Claim</th>
             <th>Status</th>
             <th>Action</th>
           </thead>
@@ -389,14 +440,14 @@ function onGenerateMaterialList(data,category_id) {
               <td>${ctr}</td>
               <td>${element.product_code}</td>
               <td>${element.product_name}</td>
-              <td>${element.product_quantity}</td>
-              <td>${element.product_unit}</td>
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td  >
                   <span data-bs-toggle="modal" data-bs-target="#requestModal" class="btn btn-primary " onClick='onClickRequest(${JSON.stringify(element)})' >Request</span>
               </td>
           </tr>`;
+         /*  <td>${element.product_unit}</td>
+          <td>${element.product_location}</td> */
       
         }else if(parseInt(category_id) == 2){
           ctr = ctr + 1;
@@ -405,8 +456,6 @@ function onGenerateMaterialList(data,category_id) {
               <td>${ctr}</td>
               <td>${element.product_code}</td>
               <td>${element.product_name}</td>
-              <td>${element.product_quantity}</td>
-              <td>${element.product_unit}</td>
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td>
@@ -420,9 +469,12 @@ function onGenerateMaterialList(data,category_id) {
             element.status = "Pending";
           }else if(element.status == 2){
             element.status = "Approved";
-          }else{
+          }else if(element.status == 3){
             element.status = "Rejected";
+          }else{
+            element.status = "Returned";
           }
+    
           if(element.product_category == 1){
             element.product_category = "Supplies";
           }else{
@@ -437,6 +489,8 @@ function onGenerateMaterialList(data,category_id) {
               <td>${element.product_name}</td>
               <td>${element.product_quantity}</td>
               <td>${element.product_unit}</td>
+              <td>${element.date_requested}</td>
+              <td>${element.date_to_claim}</td>
               <td >  <span class="status" id="request${ctr}" > ${element.status} </span>  </td>
 
               <td>
@@ -461,13 +515,12 @@ function onGenerateMaterialList(data,category_id) {
 
 }
 function onClickRequest(product) {
-  console.log('check',product_code);
   document.getElementById("request_form").reset();
   date_requested_input.min = new Date().toISOString().split("T")[0];
-  date_to_claim_input.min = new Date().toISOString().split("T")[0];
   date_return_input.min = new Date().toISOString().split("T")[0];
   date_requested_input.value = new Date().toISOString().split("T")[0];
-  date_to_claim_input.value = new Date().toISOString().split("T")[0];
+ /*  date_to_claim_input.min = new Date().toISOString().split("T")[0];
+  date_to_claim_input.value = new Date().toISOString().split("T")[0]; */
   date_return_input.value = new Date().toISOString().split("T")[0];
   if(parseInt(product.product_category)  == 1){
     product_category_input.value = "Supplies";
@@ -484,6 +537,13 @@ function onClickRequest(product) {
 }
 function onClickViewHistory(history) {
   console.log('res',history);
+
+
+  if(history.status == "Rejected"){
+    document.getElementById('date_approved_label').innerText = "Date Rejected";
+  }else{
+    document.getElementById('date_approved_label').innerText = "Date Approved";
+  }
   document.getElementById("product_category").value = history.product_category ;
   document.getElementById("product_code").value = history.product_code ;
   document.getElementById("product_name").value = history.product_name ;
@@ -498,6 +558,8 @@ function onClickViewHistory(history) {
   document.getElementById("approved_by").value = history.approved_by ;
   if(history.date_approved == null){
     document.getElementById("date_approved").value = 00/00/0000 ;
+  }else{
+    document.getElementById("date_approved").value = history.date_approved;
   }
 
 }
@@ -510,6 +572,7 @@ function onChangeCategory() {
   }
 }
 function onRequest() {
+  $("#request_form").find("input").prop("disabled", false);
   $('#request_form').validate({
     rules: {
       full_name: { required: true },

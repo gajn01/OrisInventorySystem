@@ -17,13 +17,15 @@
             if(!json_account){
                 location.href = '../index.html';
             }else{
+                onViewAllHistoryList();
                 onViewHistoryList();
                 document.getElementById('account_label').innerText =  json_account.department;
             }
       }
-    /*   setInterval(function() {
+      setInterval(function() {
           onNotify();
-        }, 1000); */
+          onViewHistoryList();
+        }, 1000);
     </script>
 </head>
 <body>
@@ -35,7 +37,7 @@
                 </div>
                 <div class="sidebar-content">
                     <a href="" class="active position-relative">Requisitions 
-                      <span class="position-absolute top-0  start-75 translate-middle badge rounded-pill bg-danger d-none" id="notification-badge">
+                      <span class="position-absolute top-0  start-75 translate-middle badge rounded-pill bg-danger d-none " id="notification-badge">
                         0
                       </span>
                     </a> 
@@ -223,7 +225,7 @@
                         </div>
                         <div class="row">
                           <div class="col-sm-12 col-md-6" >
-                              <label for="date_approved" class="col-sm-12  col-md-12 col-form-label">Date Approved </label>
+                              <label for="date_approved" class="col-sm-12  col-md-12 col-form-label" id="date_approved_label">Date Approved </label>
                               <input class="form-control mb-3" type="date" id="date_approved" name="date_approved" disabled>
                             </div>
                           <div class="col-sm-12 col-md-6 ">

@@ -10,14 +10,17 @@ include("connection.php");
     $approved_by= $_POST['approved_by'];
     $noted_by= $_POST['note_by'];
     $date_approved= $_POST['date_approved'];
+    $date_to_claim= $_POST['date_to_claim'];
     $remarks= $_POST['remarks'];
 
     $form_data = array();
     $update_query = "UPDATE tbl_history SET 
         date_approved = '$date_approved', 
+        date_to_claim = '$date_to_claim', 
         status = '$status',
         approved_by = '$approved_by', 
-        noted_by = '$noted_by'
+        noted_by = '$noted_by',
+        remarks = '$remarks'
         WHERE id = '$request_id' ";
         $update_inventory_query = "";
     if ($status == '2') {

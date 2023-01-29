@@ -994,7 +994,6 @@ function onDownloadPDFMaterial() {
 /* Requisition */
 
 function onNotify() {
-
   let sessionData = sessionStorage.getItem("history_list");
   let json_history = JSON.parse(sessionData);
   let category =  "";
@@ -1011,11 +1010,7 @@ function onNotify() {
     let notif_badge = document.getElementById('notification-badge');
     if(response.data.length == json_history.length){
       notif_badge.classList.add('d-none');
-    }else if(response.data.length > json_history.length){
-      notif_badge.classList.remove('d-none');
-      notif_badge.innerText = (response.data.length - json_history.length);
     }
-
   }).fail(function (response){
     console.log(response.responseText);
   });
@@ -1269,6 +1264,7 @@ function onClickViewHistory(history) {
   document.getElementById("approved_by").value = history.approved_by;
   document.getElementById("note_by").value = history.noted_by;
   document.getElementById("request_id").value = history.id;
+  document.getElementById("remarks").value = history.remarks;
   date_approved.value = history.date_approved ;
 
   if(history.product_category == "Fixed Assets"){
