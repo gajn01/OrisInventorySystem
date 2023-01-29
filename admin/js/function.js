@@ -1283,6 +1283,7 @@ function onClickViewHistory(history) {
       $("#history_form").find("select").prop("disabled", true);
       document.getElementById('submit-btn').classList.add('d-none');
     }else{
+      $("#history_form").find("select").prop("disabled", false);
       $("#history_form").find(".disable").prop("disabled", true);
       $("#history_form").find(".to-disable").prop("disabled", false);
       document.getElementById('submit-btn').classList.remove('d-none');
@@ -1303,28 +1304,29 @@ function onClickViewHistory(history) {
 
 }
 function onUpdateRequest() {
-  $("#product_code").removeAttr("disabled");
-  $.ajax({  
-    url:"../php/requestupdate.php",  
-    method:"POST",  
-    data: $('#history_form').serialize(), 
-    dataType: "json",
-    encode: true, 
-  }).done(function (response) {
-    if(response.success){
-      console.log("res:",response);
-      alert(response.success_msg);
-      window.location.reload();
-    }else{
-      alert(response.error_msg);
-    }
-  }).fail(function (response){
-    console.log(response.responseText);
-  });
+  $("#history_form").find("select").prop("disabled", false);
+  $("#history_form").find(".disable").prop("disabled", false);
+  $("#history_form").find(".to-disable").prop("disabled", false);
+    $.ajax({  
+      url:"../php/requestupdate.php",  
+      method:"POST",  
+      data: $('#history_form').serialize(), 
+      dataType: "json",
+      encode: true, 
+    }).done(function (response) {
+      if(response.success){
+        console.log("Ressult",response);
+          alert(response.success_msg)
+          /*  window.location.reload(); */
+      }else{
+        alert(response.error_msg)
+      }
+    }).fail(function (response){
+      console.log(response.responseText);
+    });
 }
 function onUpdateStatus(params) {
   let status = document.getElementById("status").value;
-  console.log(status);
   if(status  == 2){
     document.getElementById("status_label").innerText = "Date Approved"
     document.getElementById("approved_label").innerText = "Approved by"
@@ -1336,7 +1338,7 @@ function onUpdateStatus(params) {
   }else if(status == 4){
     document.getElementById("status_label").innerText = "Date Returned"
     document.getElementById("approved_label").innerText = "Approved by"
-    document.getElementById("date_approved").value = null;
+    document.getElementById("date_approved").value = new Date().toISOString().split("T")[0];
   }
   
   
