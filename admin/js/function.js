@@ -691,7 +691,6 @@ function onResetFilter() {
   dateStart = '';
   dateEnd ='';
   onViewMaterialList(table_selected);
-  
 }
 function onGenerateMaterialList(data,category_id) {
   let table = document.querySelector("table");

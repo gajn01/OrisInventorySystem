@@ -45,7 +45,6 @@
     $conditions[] = $search_condition;
     $where_clause = join(" AND ", $conditions);
     $sql = "SELECT * FROM tbl_history WHERE $where_clause ORDER BY status ASC , date_requested DESC,id DESC  LIMIT $limit OFFSET $page";
-    /* Fetch module based on subject and teacher ID */
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
     if($fetch){

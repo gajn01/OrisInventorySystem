@@ -4,6 +4,13 @@
     $page = $_POST['page'];
     $search = $_POST['search'];
     $account_id = $_POST['account_id'];
+
+    /* Filter */
+    $category = $_POST['category'];
+    $status = $_POST['status'];
+    $date_start = $_POST['dateStart'];
+    $date_end = $_POST['dateEnd'];
+
     $form_data = array();
     /* get total items  */
     $sql=("SELECT COUNT(id) AS ctr FROM tbl_history WHERE account_id = $account_id");
@@ -17,8 +24,21 @@
         $form_data['error_msg'] = "No records!";
     }
 
-    /* Fetch module based on subject and teacher ID */
-    $sql=("SELECT * FROM tbl_history WHERE account_id = $account_id AND (product_name LIKE '$search%' OR full_name LIKE '$search%' ) ORDER BY status ASC , date_requested DESC,id DESC  LIMIT $limit OFFSET $page ");
+
+    $conditions = array();
+    if($category != ""){
+        $conditions[] = "product_category = '$category'";
+    }
+    if($status != ""){
+        $conditions[] = "status = '$status'";
+    }
+    if($date_start != "" && $date_end != ""){
+        $conditions[] = "date_requested BETWEEN '$date_start' AND '$date_end'";
+    }
+    $search_condition = "(product_name LIKE '$search%' OR full_name LIKE '$search%')";
+    $conditions[] = $search_condition;
+    $where_clause = join(" AND ", $conditions);
+    $sql = "SELECT * FROM tbl_history WHERE  account_id = $account_id AND  $where_clause ORDER BY status ASC , date_requested DESC, id DESC  LIMIT $limit OFFSET $page";
     $result = mysqli_query($db, $sql);
     $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
     if($fetch){

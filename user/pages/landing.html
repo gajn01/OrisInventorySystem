@@ -8,6 +8,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
     <title>Requisition History | Oris Inventory System</title>
     <script>
@@ -22,6 +27,14 @@
                 document.getElementById('account_label').innerText =  json_account.department;
             }
       }
+      $(function() {
+        $('input[name="date_requested_filter"]').daterangepicker({
+          opens: 'left'
+        }, function(start, end, label) {
+          dateStart = start.format('YYYY-MM-DD');
+          dateEnd  =  end.format('YYYY-MM-DD');
+        });
+      });
       setInterval(function() {
           onNotify();
           onViewHistoryList();
@@ -94,8 +107,42 @@
                 <div class="container-fluid">
                   <div class="row">
                     <div class="header-button ">
+                      <button type="button" class="btn btn-primary btn-add" data-bs-toggle="collapse" href="#filterCollapse" role="button"  >Filter</button>
                       <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch('account')">
                       <!-- <button type="button" class="btn btn-primary btn-add">Filter</button> -->
+                    </div>
+                    <div class="collapse mt-3" id="filterCollapse">
+                      <div class="card card-body">
+                        <div class="row">
+                          <div class="col-sm-12 col-md-3 ">
+                            <label for="category_filter" class="col-sm-12  col-md-12 col-form-label">Category </label>
+                            <select class="form-select form-control" aria-label="Default select example" id="category_filter" name="category_filter"  >
+                              <option value="" selected >All</option>
+                              <option value="1"  >Supplies</option>
+                              <option value="2"  >Fixed Asset</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-12 col-md-3 ">
+                            <label for="status_filter" class="col-sm-12  col-md-12 col-form-label">Status </label>
+                            <select class="form-select form-control" aria-label="Default select example" id="status_filter" name="status_filter"  >
+                              <option value="" selected >All</option>
+                              <option value="1"  >Pending</option>
+                              <option value="2"  >Approve</option>
+                              <option value="3"  >Reject</option>
+                              <option value="4"  >Returned</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-12 col-md-3 ">
+                            <label for="date_requested_filter" class="col-sm-12  col-md-12 col-form-label">Date Requested </label>
+                            <input type="text" id="date_requested_filter" name="date_requested_filter" class="form-control mb-3 "  />
+    
+                          </div>
+                          <div class="col-sm-12 col-md-3 ">
+                            <!-- <button type="button" class="btn btn-primary filter " onclick="onViewHistoryList()">Apply</button> -->
+                            <button type="button" class="btn  btn-add filter" onclick="onResetFilter()" >Reset</button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

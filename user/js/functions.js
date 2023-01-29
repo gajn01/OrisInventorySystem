@@ -4,6 +4,11 @@ let page = 0;
 let items = 0;
 let limit = 0;
 
+
+let dateStart ='';
+let dateEnd =''
+
+
 let account = sessionStorage.getItem("account");
 let json_account = JSON.parse(account);
 
@@ -227,10 +232,12 @@ function onNotify() {
   limit =  '99999';
   search =  '';
   account_id = json_account.account_id;
+  let category =  '';
+  let status  =  '';
   $.ajax({  
     url:"../php/historyview.php",  
     method:"POST",  
-    data: {limit:limit,page:page*limit,search:search,account_id:account_id},  
+    data: {limit:limit,page:page*limit,search:search,account_id:account_id,category:category,status:status,dateStart:dateStart,dateEnd:dateEnd},  
     dataType: "json",
     encode: true, 
   }).done(function (response) {
@@ -353,15 +360,16 @@ function onViewAllHistoryList() {
 }
 function onViewHistoryList() {
   ctr = 0;
-
   table_selected = 3;
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
+  let category =  $('#category_filter').val();
+  let status  =  $('#status_filter').val();
   account_id = json_account.account_id;
   $.ajax({  
     url:"../php/historyview.php",  
     method:"POST",  
-    data: {limit:limit,page:page*limit,search:search,account_id:account_id},  
+    data: {limit:limit,page:page*limit,search:search,account_id:account_id,category:category,status:status,dateStart:dateStart,dateEnd:dateEnd},  
     dataType: "json",
     encode: true, 
   }).done(function (response) {
@@ -428,6 +436,11 @@ function onViewHistoryList() {
   }).fail(function (response){
     console.log(response.responseText);
   });
+}
+function onResetFilter() {
+  dateStart = '';
+  dateEnd ='';
+  onViewHistoryList();
 }
 function onGenerateMaterialList(data,category_id) {
   let table = document.querySelector("table");
