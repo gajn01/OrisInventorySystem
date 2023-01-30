@@ -13,7 +13,7 @@
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
@@ -25,9 +25,8 @@
     <title>Material | Oris Inventory System</title>
     <script>
       window.onload = function () {
-        onViewMaterialList(1);
        /*  onViewAllMaterial(); */
-      
+        onViewMaterialList(1);
       }
 
       $(function() {
@@ -196,7 +195,7 @@
                           <div class="row">
                             <div class="col-md-12 col-sm-12">
                               <label for="product_name" class="col-sm-12 col-md-12 col-form-label">Product Name  <span class="require"> * </span></label>
-                              <input class="form-control mb-3"  type="text"  id="product_name" name="product_name" >
+                              <input class="form-control mb-3"  type="text"  id="product_name" name="product_name"  >
                             </div>
                           </div>
                           <div class="row">
@@ -227,8 +226,6 @@
                               </select>
                             </div>
                           </div>
- 
-
                           <div class="row">
                             <div class="col-md-6 col-sm-12">
                               <label for="product_location" class="col-sm-12  col-md-12 col-form-label">Location  <span class="require"> * </span></label>

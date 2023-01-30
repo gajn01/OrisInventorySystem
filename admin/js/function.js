@@ -850,7 +850,7 @@ function onCreateMaterial() {
           encode: true, 
         }).done(function (response) {
           if(response.success){
-              alert(response.success_msg)
+              alert(response.success_msg);
               document.getElementById('qr-download').click();
               window.location.reload();
           }else{
