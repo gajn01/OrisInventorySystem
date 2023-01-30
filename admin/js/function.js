@@ -190,7 +190,7 @@ function onLogin() {
           if(response.success){
             sessionStorage.setItem("account",JSON.stringify(response.data));
             alert(response.success_msg);
-            location.href = '../pages/dashboard.html'
+            location.href = '../admin/pages/dashboard.html'
           }else{
             alert(response.error_msg);
           }
@@ -1033,12 +1033,11 @@ function onNotify() {
 
 }
 function onViewHistoryList() {
-  dateStart = '';
-  dateEnd ='';
+ 
   ctr = 0;
   table_selected = 4;
-  let category =  "";
-  let status  =  "";
+  let category =  $('#category_filter').val();
+  let status  =  $('#status_filter').val();
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
   $.ajax({  
@@ -1122,78 +1121,11 @@ function onViewAllHistory() {
   });
   
 }
-function onViewFilteredHistoryList() {
-  ctr =0;
-  table_selected = 4;
-  let category =  $('#category_filter').val();
-  let status  =  $('#status_filter').val();
-  limit =  $('#page_limit').val();
-  search =  $('#searchbar').val();
-  $.ajax({  
-    url:"../php/requestview.php",  
-    method:"POST",  
-    data: {limit:limit,page:page*limit,search:search,category:category,status:status,dateStart:dateStart,dateEnd:dateEnd},  
-    dataType: "json",
-    encode: true, 
-  }).done(function (response) {
-    var table = document.querySelector("table");
-    if(response.success){
-      console.log(response);
-      items = response.page_limit[0].ctr;
-      let totalPage = Math.ceil(items / limit);
-      let next = document.getElementById("next");
-      let prev = document.getElementById("prev");
-      if(parseInt(limit) >= parseInt(items)){
-          next.style.display = "none";
-          prev.style.display = "none";
-      }else if(page <= 0){
-          prev.style.display = "none";
-          next.style.display = "block";
-      }else if(totalPage <= page+1){
-          next.style.display = "none";
-          prev.style.display = "block";
-      }
-      table.innerHTML =  "";
-        var template =`
-          <thead>
-            <th>#</th>
-            <th>Category</th>
-            <th>Full Name</th>
-            <th>Department</th>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Date Requested</th>
-            <th>Status</th>
-            <th>Action</th>
-          </thead>`;
-      table.innerHTML += template;
-      onGenerateHistoryList(response.data);
-    }else{
-      table.innerHTML ="";
-      var template =`
-          <thead>
-            <th>#</th>
-            <th>Category</th>
-            <th>Full Name</th>
-            <th>Department</th>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Date Requested</th>
-            <th>Status</th>
-            <th>Action</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="12">No records found!</td>
-            </tr>
-          </tbody>`;
-      table.innerHTML += template;
-    }
-  }).fail(function (response){
-    console.log(response.responseText);
-  });
+function onResetFilterHistory() {
+  dateStart = '';
+  dateEnd ='';
+  onViewAllHistory();
+
 }
 function onGenerateHistoryList(data) {
   let table = document.querySelector("table");
