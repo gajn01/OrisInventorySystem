@@ -19,14 +19,20 @@
 
     }
     $result = mysqli_query($db, $sql);
-    $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
-    if($fetch){
+    $rows = array();
+    while ($row = mysqli_fetch_array($result, MYSQLI_BOTH)) {
+        $rows[] = $row;
+    }
+    if (!empty($rows)) {
         $form_data['success'] = true;
-        $form_data['date'] = $fetch;
-    }else{
+        $form_data['date'] = $rows;
+    } else {
         $form_data['success'] = false;
         $form_data['error_msg'] = "No record found!";
     }
+   
 
     echo json_encode($form_data);
+    $db->close();
+
 ?>

@@ -70,18 +70,32 @@ scanner.addListener('scan', function (content) {
 });
 
 function onStartScan() {
- 
   Instascan.Camera.getCameras().then(function (cameras) {
-    if (cameras.length > 0) {
+    if(cameras.length>0){
       scanner.start(cameras[0]);
-    } else {
-        console.error('No cameras found.');
-    }
+      $('[name="options"]').on('change',function(){
+          if($(this).val()==1){
+              if(cameras[0]!=""){
+                  scanner.start(cameras[0]);
+              }else{
+                  alert('No Front camera found!');
+              }
+          }else if($(this).val()==2){
+              if(cameras[1]!=""){
+                  scanner.start(cameras[1]);
+              }else{
+                  alert('No Back camera found!');
+              }
+          }
+      });
+      }else{
+          console.error('No cameras found.');
+          alert('No cameras found.');
+      }
   }).catch(function (e) {
       console.error(e);
   });
   
- 
 }
 function onScan() {
   scanner.start();
@@ -176,7 +190,7 @@ function onLogin() {
           if(response.success){
             sessionStorage.setItem("account",JSON.stringify(response.data));
             alert(response.success_msg);
-            location.href = '../admin/pages/dashboard.html'
+            location.href = '../pages/dashboard.html'
           }else{
             alert(response.error_msg);
           }
@@ -425,7 +439,7 @@ function onCreateAccount() {
               Thanks for signing up in ORIS: An Online Requisition and Inventory System for City College of Calamba.<br>
               Your account has been successfully created. Below is your account password information.<br>
               Password: ${response.data} <br>
-              <a href='http://orisadmin.ezyro.com/'>Login here </a> <br>
+              <a href='https://orisinventory.online/'>Login here </a> <br>
               Thanks and Regards,.<br>
               ORIS`;
             sendMail($('#email').val(),subject,template);
@@ -1009,6 +1023,9 @@ function onNotify() {
     let notif_badge = document.getElementById('notification-badge');
     if(response.data.length == json_history.length){
       notif_badge.classList.add('d-none');
+    }else{
+      notif_badge.classList.remove('d-none');
+      notif_badge.innerText = (response.data.length - json_history.length);
     }
   }).fail(function (response){
     console.log(response.responseText);

@@ -603,6 +603,7 @@ function onRequest() {
         }).done(function (response) {
           if(response.success){
             alert(response.success_msg)
+            onViewAllHistoryList();
             window.location.reload();
           }else{
             alert(response.error_msg)

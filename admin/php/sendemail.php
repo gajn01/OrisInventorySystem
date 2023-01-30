@@ -43,4 +43,6 @@
   } catch  (Exception $e) {
     echo 'Message could not be sent. Mailer Error: ';
     var_dump($e);
+    $db->close();
+
   }  

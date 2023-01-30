@@ -54,4 +54,6 @@ include("connection.php");
     
     echo json_encode($form_data);
     $db->close();
+    $db->close();
+
 ?>
