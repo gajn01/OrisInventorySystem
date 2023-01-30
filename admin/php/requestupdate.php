@@ -20,7 +20,8 @@ include("connection.php");
         status = '$status',
         approved_by = '$approved_by', 
         noted_by = '$noted_by',
-        remarks = '$remarks'
+        remarks = '$remarks',
+        product_quantity = '$product_quantity'
         WHERE id = '$request_id' ";
         $update_inventory_query = "";
     if ($status == '2') {
