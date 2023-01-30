@@ -26,4 +26,6 @@
         $form_data['error_msg'] = "No record found!";
     }
     echo json_encode($form_data);
+    $db->close();
+
 ?>

@@ -7,8 +7,11 @@
     /* Fetch module based on subject and teacher ID */
     $sql=("SELECT * FROM tbl_forgotpassword_request WHERE email = '$email' AND code = '$code' ");
     $result = mysqli_query($db, $sql);
-    $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
-    if($fetch){
+    $rows = array();
+    while ($row = mysqli_fetch_array($result, MYSQLI_BOTH)) {
+        $rows[] = $row;
+    }
+    if (!empty($rows)) {
         $sql=("SELECT * FROM tbl_account_profile WHERE email = '$email'");
         $result= mysqli_query($db,$sql);
         $form_data = array();
@@ -29,9 +32,11 @@
             $form_data['success'] = false;
             $form_data['error_msg'] = "No record found!";
         }
-    }else{
+    } else {
         $form_data['success'] = false;
         $form_data['error_msg'] = "No record found!";
     }
     echo json_encode($form_data);
+    $db->close();
+
 ?>

@@ -15,14 +15,18 @@
     /* get total items  */
     $sql=("SELECT COUNT(id) AS ctr FROM tbl_history WHERE account_id = $account_id");
     $result = mysqli_query($db, $sql);
-    $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
-    if($fetch){
-        $form_data['success'] = true;
-        $form_data['page_limit'] = $fetch;
-    }else{
-        $form_data['success'] = false;
-        $form_data['error_msg'] = "No records!";
+    $rows = array();
+    while ($row = mysqli_fetch_array($result, MYSQLI_BOTH)) {
+        $rows[] = $row;
     }
+    if (!empty($rows)) {
+        $form_data['success'] = true;
+        $form_data['page_limit'] = $rows;
+    } else {
+        $form_data['success'] = false;
+        $form_data['error_msg'] = "No record found!";
+    }
+
 
 
     $conditions = array();
@@ -40,13 +44,19 @@
     $where_clause = join(" AND ", $conditions);
     $sql = "SELECT * FROM tbl_history WHERE  account_id = $account_id AND  $where_clause ORDER BY status ASC , date_requested DESC, id DESC  LIMIT $limit OFFSET $page";
     $result = mysqli_query($db, $sql);
-    $fetch = mysqli_fetch_all ($result, MYSQLI_ASSOC);
-    if($fetch){
+    $rows = array();
+    while ($row = mysqli_fetch_array($result, MYSQLI_BOTH)) {
+        $rows[] = $row;
+    }
+    if (!empty($rows)) {
         $form_data['success'] = true;
-        $form_data['data'] = $fetch;
-    }else{
+        $form_data['data'] = $rows;
+    } else {
         $form_data['success'] = false;
         $form_data['error_msg'] = "No record found!";
     }
+
     echo json_encode($form_data);
+    $db->close();
+
 ?>
