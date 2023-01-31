@@ -790,23 +790,21 @@ function onClickAddMaterial() {
 }
 function onClickEditMaterial(product_details) {
   document.getElementById("material_form").reset();
-
   var select = document.getElementById("product_category");
   var option = document.createElement("option");
-
   console.log('product_code',product_details);
-  if(product_details.product_category == '2'){
-    option.value = 3;
-    option.text = "Defective";
-    select.appendChild(option);
-  }else{
-    for (var i = 0; i < select.length; i++) {
-      if (select.options[i].value == "3") {
-        select.remove(i);
-        break;
-      }
+  if (product_details.product_category == '2') {
+    if (select.length === 2) {
+      option.value = 3;
+      option.text = "Defective";
+      select.appendChild(option);
+    }
+  } else {
+    if (select.length > 3) {
+      select.remove(1);
     }
   }
+  
 
   document.getElementById("addMaterialModalLabel").innerText = "Update Material";
   document.getElementById("create_material_submit").setAttribute("onclick","onUpdateMaterial(1)");
