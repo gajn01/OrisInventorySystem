@@ -45,6 +45,7 @@ function onSelectLimit() {
   }
 }
 function onSearch() {
+  console.log("table_selected",table_selected)
   ctr =0;
   page = 0;
   if(table_selected == 1){
@@ -229,7 +230,7 @@ function onNotify() {
   let sessionData = sessionStorage.getItem("history_list");
   let json_history = JSON.parse(sessionData);
   /* console.log("res",json_history); */
-  table_selected = 3;
+  /* table_selected = 3; */
   limit =  '99999';
   search =  '';
   account_id = json_account.account_id;
@@ -260,7 +261,6 @@ function onNotify() {
   });
 }
 function onViewMaterialList(category_id) {
-
   table_selected = category_id;
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();

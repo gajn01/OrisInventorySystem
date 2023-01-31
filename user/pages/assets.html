@@ -154,7 +154,6 @@
             </div>
           </div>
     
-          <!-- Mobile view button -->
           <div class="container-fluid">
             <nav id="topbar-nav">
                
@@ -172,7 +171,7 @@
                 <div class="container-fluid">
                   <div class="row">
                     <div class="header-button ">
-                      <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch('account')">
+                      <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch()">
                       <!-- <button type="button" class="btn btn-primary btn-add">Filter</button> -->
                     </div>
                   </div>
@@ -198,7 +197,7 @@
                     <div class="pagination-container mt-4">
                       <div class="pager">
                         <p>Limit per Page</p>
-                        <select class="form-select page-number" id="page_limit" onchange="onSelectLimit('account')" aria-label="Default select example">
+                        <select class="form-select page-number" id="page_limit" onchange="onSelectLimit()" aria-label="Default select example">
                           <option value="1">1</option>
                           <option value="5">5</option>
                           <option selected value="10">10</option>
@@ -210,13 +209,13 @@
                       <nav aria-label="Page navigation example" class="bottom-pagination">
                         <ul class="pagination justify-content-end">
                           <li class="page-item">
-                            <a class="page-link" href="#" onclick="onPage(0,'account')" id="prev" aria-label="Previous">
+                            <a class="page-link" href="#" onclick="onPage(0)" id="prev" aria-label="Previous">
                               <span aria-hidden="true">&laquo;</span>
                             </a>
                           </li>
                           <li class="page-item "><a class="page-link" href="#" id="page_number">1</a></li>
                           <li class="page-item">
-                            <a class="page-link" href="#" onclick="onPage(1,'account')" id="next" aria-label="Next">
+                            <a class="page-link" href="#" onclick="onPage(1)" id="next" aria-label="Next">
                               <span aria-hidden="true">&raquo;</span>
                             </a>
                           </li>

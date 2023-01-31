@@ -779,7 +779,8 @@ function onChangeCategory() {
 }
 function onClickAddMaterial() {
   document.getElementById("material_form").reset();
-  $("#product_category option[value='3']").remove();
+  $("#material_form").find("#product_category").prop("disabled", false);
+
   product_inventory_date_input.max = new Date().toISOString().split("T")[0];
   product_recieved_date_input.max = new Date().toISOString().split("T")[0];
   product_inventory_date_input.value = new Date().toISOString().split("T")[0];
@@ -792,9 +793,14 @@ function onClickAddMaterial() {
 }
 function onClickEditMaterial(product_details) {
   document.getElementById("material_form").reset();
-  var select = document.getElementById("product_category");
-  var option = document.createElement("option");
+ 
   console.log('product_code',product_details);
+
+  $("#material_form").find("#product_category").prop("disabled", true);
+
+  /* 
+   var select = document.getElementById("product_category");
+  var option = document.createElement("option");
   if (product_details.product_category == '2') {
     if (select.length === 2) {
       option.value = 3;
@@ -803,7 +809,7 @@ function onClickEditMaterial(product_details) {
     }
   } else if (product_details.product_category == '1')  {
       select.remove(2);
-  }
+  } */
   
 
   document.getElementById("addMaterialModalLabel").innerText = "Update Material";
@@ -1557,7 +1563,7 @@ data.forEach(element => {
     }
     {/* <span data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="btn btn-primary" onClick='onClickEditMaterial(${JSON.stringify(productCode)})'>Edit</span> */}
     row += `<td>
-                <span class="btn btn-primary" onClick='onDeleteMaterial(${JSON.stringify(productCode)})'>Delete</span>
+            <span data-bs-toggle="modal" data-bs-target="#addMaterialModal" class="btn btn-primary" onClick='onClickViewPhysical(${JSON.stringify(element)})'>View</span> 
             </td>`;
 
     row += `</tr>`;
@@ -1573,6 +1579,22 @@ data.forEach(element => {
       table.innerHTML = "<tr><td colspan='10' class='text-center'>No data found.</td></tr>";
     }
 
+}
+function onClickViewPhysical(product_details) {
+  console.log('material_form',product_details);
+
+  product_code_input.value = product_details.product_code;
+  product_category_input.value = product_details.product_category;
+  product_name_input.value = product_details.product_name;
+  product_description_input.value = product_details.product_description;
+  product_unit_input.value = product_details.product_unit;
+  product_quantity_input.value = product_details.product_quantity;
+  product_location_input.value = product_details.product_location;
+  product_person_incharge_input.value = product_details.product_person_incharge;
+  product_inventory_date_input.value = product_details.product_inventory_date;
+  product_recieved_date_input.value = product_details.product_recieved_date;
+  product_remarks_input.value = product_details.product_remarks;
+  product_status_input.value = product_details.product_status;
 }
 function onDownloadPDFPhysical() {
   let table_header = "List of Supplies";

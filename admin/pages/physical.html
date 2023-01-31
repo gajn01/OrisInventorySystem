@@ -172,7 +172,7 @@
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h2 class="modal-title fs-5" id="addMaterialModalLabel" >Add Material</h2>
+                      <h2 class="modal-title fs-5" id="addMaterialModalLabel" >View Product Details</h2>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form id="material_form">
@@ -180,39 +180,47 @@
                           <div class="row">
                             <div class="col-md-6 col-sm-12">
                               <label for="product_category" class="col-sm-12 col-md-12 col-form-label">Category</label>
-                              <select class="form-select form-control" aria-label="Default select example" id="product_category" name="product_category" onchange="onChangeCategory()">
+                              <select class="form-select form-control" aria-label="Default select example" id="product_category" name="product_category" disabled>
                                 <option value="1" selected >Supplies</option>
                                 <option value="2">Fixed Assets</option>
                               </select>
                             </div>
                             <div class="col-md-6 col-sm-12">
                               <label for="product_code" class="col-sm-12 col-md-12 col-form-label">Product Code</label>
-                              <input class="form-control mb-3" type="text" id="product_code" name="product_code" readonly >
+                              <input class="form-control mb-3" type="text" id="product_code" name="product_code" disabled >
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-md-12 col-sm-12">
                               <label for="product_name" class="col-sm-12 col-md-12 col-form-label">Product Name  <span class="require"> * </span></label>
-                              <input class="form-control mb-3"  type="text"  id="product_name" name="product_name" >
+                              <input class="form-control mb-3"  type="text"  id="product_name" name="product_name" disabled>
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-md-12 col-sm-12">
                               <label for="product_description" class="col-sm-12 col-md-12 col-form-label">Product Description  <span class="require"> * </span></label>
-                              <textarea class="form-control mb-3" id="product_description" name="product_description" ></textarea>
+                              <textarea class="form-control mb-3" id="product_description" name="product_description" disabled></textarea>
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-md-6 col-sm-12">
                               <label for="product_quantity" class="col-sm-12  col-md-12 col-form-label">Quantity  <span class="require"> * </span></label>
-                              <input class="form-control mb-3" type="number" id="product_quantity" min="1" value="1" name="product_quantity" >
+                              <input class="form-control mb-3" type="number" id="product_quantity" min="1" value="1" name="product_quantity" disabled >
                             </div>
                             <div class="col-md-6 col-sm-12">
                               <label for="product_unit" class="col-sm-12 col-md-12 col-form-label">Units</label>
-                              <select class="form-select form-control" aria-label="Default select example" id="product_unit" name="product_unit" >
+                              <select class="form-select form-control" aria-label="Default select example" id="product_unit" name="product_unit"  disabled>
                                 <option value="Box" selected >Box</option>
-                                <option value="Gallons">Gallons</option>
+                                <option value="Bottles">Bottles</option>
                                 <option value="Pcs">Pcs</option>
+                                <option value="Rolls">Rolls</option>
+                                <option value="Cans">Cans</option>
+                                <option value="Packs">Packs</option>
+                                <option value="Unit">Unit</option>
+                                <option value="Pads">Pads</option>
+                                <option value="Reams">Reams</option>
+                                <option value="Gallons">Gallons</option>
+                                <option value="Pairs">Pairs</option>
                               </select>
                             </div>
                           </div>
@@ -220,46 +228,37 @@
                           <div class="row">
                             <div class="col-md-6 col-sm-12">
                               <label for="product_location" class="col-sm-12  col-md-12 col-form-label">Location  <span class="require"> * </span></label>
-                              <input class="form-control mb-3" type="text" id="product_location" name="product_location" >
+                              <input class="form-control mb-3" type="text" id="product_location" name="product_location" disabled >
                             </div>
                             <div class="col-md-6 col-sm-12">
                               <label for="product_person_incharge" class="col-sm-12 col-md-12 col-form-label">Person in Charge <span class="require"> * </span></label>
-                              <input class="form-control mb-3" type="text" id="product_person_incharge" name="product_person_incharge" >
+                              <input class="form-control mb-3" type="text" id="product_person_incharge" name="product_person_incharge" disabled >
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-md-6 col-sm-12">
                               <label for="product_inventory_date" class="col-sm-12  col-md-12 col-form-label">Inventory Date</label>
-                              <input class="form-control mb-3" type="date" id="product_inventory_date" name="product_inventory_date" >
+                              <input class="form-control mb-3" type="date" id="product_inventory_date" name="product_inventory_date" disabled >
                             </div>
                             <div class="col-md-6 col-sm-12">
                               <label for="product_recieved_date" class="col-sm-12 col-md-12 col-form-label">Receiving Date</label>
-                              <input class="form-control mb-3" type="date" id="product_recieved_date" name="product_recieved_date" >
+                              <input class="form-control mb-3" type="date" id="product_recieved_date" name="product_recieved_date"  disabled>
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-sm-12 col-lg-12" id="remarks_div">
                               <label for="product_remarks" class="col-sm-12 col-md-12 col-form-label">Product Remarks</label>
-                              <input class="form-control mb-3" type="text" id="product_remarks" name="product_remarks" >
+                              <input class="form-control mb-3" type="text" id="product_remarks" name="product_remarks" disabled>
                             </div>
                             <div class="col-sm-12 col-lg-6 d-none" id="status_div">
                               <label for="product_status" class="col-sm-12 col-md-12 col-form-label">Status</label>
-                              <select class="form-select form-control" aria-label="Default select example" id="product_status" name="product_status" >
+                              <select class="form-select form-control" aria-label="Default select example" id="product_status" name="product_status" disabled>
                                 <option value="Working" selected >Working</option>
                                 <option value="Not Working">Not Working</option>
                               </select>
                             </div>
-                            <div class="col-md-12 col-sm-12">
-                              <label class="col-sm-12 col-md-12 col-form-label">Product QR Code</label>
-                              <div class="qr-code-container">
-                                <div class="qr-code" ></div>
-                              </div>
-                            </div>
+                          
                           </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="submit" class="btn btn-secondary" id="create_material_submit">Submit</button>
-                        
                       </div>
                     </form>
                   </div>
