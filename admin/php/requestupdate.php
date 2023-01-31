@@ -46,9 +46,10 @@ include("connection.php");
         $form_data['success_msg'] = "Record updated successfully!";
     
         $ip = file_get_contents('http://icanhazip.com/');
-        $template = 'Update status of request ID: '+$request_id;
-        $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', '$template', '$ip')";
+        $template = "Update status of request ID: " . $request_id;
+        $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', '$template' , '$ip')";
         mysqli_query($db, $sql_activity);
+  
     } else {
         $form_data['success'] = false;
         $form_data['error_msg'] ="Failed to update record!";

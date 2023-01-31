@@ -18,7 +18,7 @@ include("connection.php");
         $form_data['success_msg'] = "Record updated successfully!";
 
         $ip = file_get_contents('http://icanhazip.com/');
-        $template = 'Made changes to '+$email;
+        $template = 'Made changes to '. $email;
         $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', '$template', '$ip')";
 
 
