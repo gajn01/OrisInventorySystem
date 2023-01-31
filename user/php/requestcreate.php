@@ -35,7 +35,7 @@ include("connection.php"); //Establishing connection with our database
     $product_code = mysqli_real_escape_string($db,$product_code);
     $product_category = mysqli_real_escape_string($db,$product_category);
     $product_name = mysqli_real_escape_string($db,$product_name);
-    $product_description = stripslashes($db,$product_description);
+    $product_description = mysqli_real_escape_string($db,$product_description);
     $product_quantity = mysqli_real_escape_string($db,$product_quantity);
     $purpose = mysqli_real_escape_string($db,$purpose);
     $full_name = mysqli_real_escape_string($db,$full_name);

@@ -608,6 +608,8 @@ function onViewMaterialList(category_id) {
     dataType: "json",
     encode: true, 
   }).done(function (response) {
+    sessionStorage.setItem("filtered_material",JSON.stringify(response.data));
+
     var table = document.querySelector("table");
     if(response.success){
       console.log("result",response);
@@ -940,8 +942,9 @@ function onDownloadPDFMaterial() {
   }
   // Select the table
 
-  let material_list = sessionStorage.getItem('material_list');
-  var jsonData = JSON.parse(material_list);
+
+  let filtered_material = sessionStorage.getItem('filtered_material');
+  var jsonData = JSON.parse(filtered_material);
   var pdfData = [];
   
   var pdfRow = [
@@ -1019,7 +1022,7 @@ function onNotify() {
     let notif_badge = document.getElementById('notification-badge');
     if(response.data.length == json_history.length){
       notif_badge.classList.add('d-none');
-    }else{
+    }else if(response.data.length > json_history.length){
       notif_badge.classList.remove('d-none');
       notif_badge.innerText = (response.data.length - json_history.length);
     }
@@ -1043,6 +1046,7 @@ function onViewHistoryList() {
     dataType: "json",
     encode: true, 
   }).done(function (response) {
+    sessionStorage.setItem("filtered_history",JSON.stringify(response.data));
     var table = document.querySelector("table");
     if(response.success){
       items = response.page_limit[0].ctr;
@@ -1300,8 +1304,19 @@ function sendMail(email,subject,body) {
      }); 
 }
 function onDownlaodPDF() {
-let request_list = sessionStorage.getItem('history_list');
+let request_list = sessionStorage.getItem('filtered_history');
 var jsonData = JSON.parse(request_list);
+
+jsonData.forEach(element => {
+  if(element.product_category == '1'){
+    element.product_category = "Supplies";
+  }else if(element.product_category == '2'){
+    element.product_category = "Fixed Asset";
+  }else{
+    element.product_category = "Defective";
+  }
+  
+});
 var pdfData = [];
 
 var pdfRow = [
@@ -1376,6 +1391,7 @@ function onViewPhysicalList(category_id) {
     dataType: "json",
     encode: true, 
   }).done(function (response) {
+    sessionStorage.setItem("filtered_physical",JSON.stringify(response.data));
     var table = document.querySelector("table");
     if(response.success){
       items = response.page_limit[0].ctr;
@@ -1569,8 +1585,9 @@ function onDownloadPDFPhysical() {
   }
   // Select the table
 
-  let physical_list = sessionStorage.getItem('physical_list');
+  let physical_list = sessionStorage.getItem('filtered_physical');
   var jsonData = JSON.parse(physical_list);
+
   var pdfData = [];
   
   var pdfRow = [

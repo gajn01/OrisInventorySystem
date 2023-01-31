@@ -566,7 +566,7 @@ function onClickViewHistory(history) {
   document.getElementById("product_name").value = history.product_name ;
   document.getElementById("product_quantity").value = history.product_quantity ;
   document.getElementById("full_name").value = history.full_name ;
- /*  document.getElementById("product_description").value = history.product_description ; */
+  document.getElementById("product_description").value = history.product_description ;
   document.getElementById("purpose").value = history.purpose ;
   document.getElementById("date_requested").value = history.date_requested ;
   document.getElementById("date_to_claim").value = history.date_to_claim ;
