@@ -799,10 +799,8 @@ function onClickEditMaterial(product_details) {
       option.text = "Defective";
       select.appendChild(option);
     }
-  } else {
-    if (select.length > 3) {
-      select.remove(1);
-    }
+  } else if (product_details.product_category == '1')  {
+      select.remove(2);
   }
   
 
