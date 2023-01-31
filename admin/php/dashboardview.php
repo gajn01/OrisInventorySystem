@@ -35,7 +35,7 @@
    
 
      /* get total Account  */
-     $sql=("SELECT COUNT(id) AS ctr FROM tbl_history WHERE status != '2'");
+     $sql=("SELECT COUNT(id) AS ctr FROM tbl_history WHERE status = '1'");
      $result = mysqli_query($db, $sql);
      $rows = array();
      while ($row = mysqli_fetch_array($result, MYSQLI_BOTH)) {

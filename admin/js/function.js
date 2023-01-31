@@ -1478,7 +1478,8 @@ function onResetPhysicalFilter() {
 }
 function onRegisterScanedItem() {
   let qty = $('#product_quantity_scan').val;
-
+  $("#scaned_material_form").find("select").prop("disabled", false);
+  $("#scaned_material_form").find("input").prop("disabled", false);
   $('#scaned_material_form').validate({
     submitHandler: function (form) {
       $.ajax({  

@@ -18,7 +18,11 @@ include("connection.php");
         $form_data['success_msg'] = "Record updated successfully!";
 
         $ip = file_get_contents('http://icanhazip.com/');
-        $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', 'Made changes to an account', '$ip')";
+        $template = 'Made changes to ',$email;
+        $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', '$template', '$ip')";
+
+
+
         mysqli_query($db, $sql_activity);
     } else {
         $form_data['success'] = false;

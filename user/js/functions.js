@@ -18,6 +18,7 @@ const account_id_input = document.getElementById("account_id");
 const product_code_input = document.getElementById("product_code");
 const product_category_input = document.getElementById("product_category");
 const product_name_input = document.getElementById("product_name");
+const product_description_input = document.getElementById("product_description");
 const product_quantity_input = document.getElementById("product_quantity");
 const product_unit_input = document.getElementById("product_unit");
 const product_location_input = document.getElementById("product_location");
@@ -298,6 +299,7 @@ function onViewMaterialList(category_id) {
             <th>#</th>
             <th>Code</th>
             <th>Name</th>
+            <th>Description</th>
             <th>Location</th>
             <th>Person-in-charge</th>
             <th>Action</th>
@@ -308,6 +310,7 @@ function onViewMaterialList(category_id) {
             <th>#</th>
             <th>Code</th>
             <th>Name</th>
+            <th>Description</th>
             <th>Location</th>
             <th>Person-in-charge</th>
             <th>Action</th>
@@ -323,6 +326,7 @@ function onViewMaterialList(category_id) {
             <th>#</th>
             <th>Code</th>
             <th>Name</th>
+            <th>Description</th>
             <th>Location</th>
             <th>Person-in-charge</th>
             <th>Status</th>
@@ -453,15 +457,15 @@ function onGenerateMaterialList(data,category_id) {
               <td>${ctr}</td>
               <td>${element.product_code}</td>
               <td>${element.product_name}</td>
+              <td>${element.product_description}</td>
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
-              <td  >
+              <td>
                   <span data-bs-toggle="modal" data-bs-target="#requestModal" class="btn btn-primary " onClick='onClickRequest(${JSON.stringify(element)})' >Request</span>
               </td>
           </tr>`;
          /*  <td>${element.product_unit}</td>
           <td>${element.product_location}</td> */
-      
         }else if(parseInt(category_id) == 2){
           ctr = ctr + 1;
           template = 
@@ -469,11 +473,11 @@ function onGenerateMaterialList(data,category_id) {
               <td>${ctr}</td>
               <td>${element.product_code}</td>
               <td>${element.product_name}</td>
+              <td>${element.product_description}</td>
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
               <td>
                   <span data-bs-toggle="modal" data-bs-target="#requestModal" class="btn btn-primary " onClick='onClickRequest(${JSON.stringify(element)})' >Borrow</span>
-
               </td>
           </tr>`;
         }else if(parseInt(category_id) == 3){
@@ -528,6 +532,7 @@ function onGenerateMaterialList(data,category_id) {
 
 }
 function onClickRequest(product) {
+  console.log('first',product)
   document.getElementById("request_form").reset();
   date_requested_input.min = new Date().toISOString().split("T")[0];
   date_return_input.min = new Date().toISOString().split("T")[0];
@@ -545,12 +550,11 @@ function onClickRequest(product) {
   product_name_input.value = product.product_name;
   department_input.value = product.department;
   product_unit_input.value = product.product_unit;
+  product_description_input.value = product.product_description;
   department_input.value = document.getElementById("account_label").innerText;
   onChangeCategory();
 }
 function onClickViewHistory(history) {
-  console.log('res',history);
-
 
   if(history.status == "Rejected"){
     document.getElementById('date_approved_label').innerText = "Date Rejected";
@@ -562,13 +566,15 @@ function onClickViewHistory(history) {
   document.getElementById("product_name").value = history.product_name ;
   document.getElementById("product_quantity").value = history.product_quantity ;
   document.getElementById("full_name").value = history.full_name ;
-  document.getElementById("position").value = history.position ;
+ /*  document.getElementById("product_description").value = history.product_description ; */
   document.getElementById("purpose").value = history.purpose ;
   document.getElementById("date_requested").value = history.date_requested ;
   document.getElementById("date_to_claim").value = history.date_to_claim ;
   document.getElementById("status").value = history.status ;
   document.getElementById("note_by").value = history.noted_by;
   document.getElementById("approved_by").value = history.approved_by ;
+  document.getElementById("remarks").value = history.remarks ;
+
   if(history.date_approved == null){
     document.getElementById("date_approved").value = 00/00/0000 ;
   }else{
