@@ -867,20 +867,11 @@ function onCreateMaterial() {
   });
 }
 function onUpdateMaterial(form) {
-    let formData;
-    let url;
-    if (form == 1) {
-       formData = $('#material_form').serialize();
-       url = "../php/materialupdate.php";
-
-    }else{
-       formData = $('#scaned_material_form').serialize();
-       url = "../php/materialscanupdate.php";
-    }
+  $("#material_form").find("#product_category").prop("disabled", false);
     $.ajax({  
-      url:url,  
+      url:"../php/materialupdate.php",  
       method:"POST",  
-      data: formData, 
+      data:  $('#material_form').serialize(), 
       dataType: "json",
       encode: true, 
     }).done(function (response) {
@@ -948,7 +939,6 @@ function onDownloadPDFMaterial() {
   }
   // Select the table
 
-
   let filtered_material = sessionStorage.getItem('filtered_material');
   var jsonData = JSON.parse(filtered_material);
   var pdfData = [];
@@ -992,6 +982,17 @@ function onDownloadPDFMaterial() {
         }
       },
     ],
+    footer: function(currentPage, pageCount) {
+      return {
+        columns: [
+          { text: 'Prepared by:Ma. Patricia Erika S. Arcillas\nAdmin Staff', alignment: 'center',fontSize:9 },
+          { text: 'Noted by:Agnes R. Silva\nAdmin Staff', alignment: 'center',fontSize:9 },
+          { text: 'Approved by:Lielanie O. Barrion, LPT, MACA\nVice President For Administration', alignment: 'center' ,fontSize:9},
+        ],
+        margin: [50, 20]
+      };
+    },
+    pageMargins: [ 40, 10, 40, 70 ],
     styles: {
       table:{
         fontSize: 10,
@@ -1000,6 +1001,7 @@ function onDownloadPDFMaterial() {
         fontSize: 11,
         bold: true,
       },
+   
     },
   };
   
@@ -1010,7 +1012,6 @@ function onDownloadPDFMaterial() {
   }
 
 /* Requisition */
-
 function onNotify() {
   let sessionData = sessionStorage.getItem("history_list");
   let json_history = JSON.parse(sessionData);
@@ -1371,6 +1372,17 @@ var docDefinition = {
       }
     },
   ],
+  footer: function(currentPage, pageCount) {
+    return {
+      columns: [
+        { text: 'Prepared by:Ma. Patricia Erika S. Arcillas\nAdmin Staff', alignment: 'center',fontSize:9 },
+        { text: 'Noted by:Agnes R. Silva\nAdmin Staff', alignment: 'center',fontSize:9 },
+        { text: 'Approved by:Lielanie O. Barrion, LPT, MACA\nVice President For Administration', alignment: 'center' ,fontSize:9},
+      ],
+      margin: [50, 20]
+    };
+  },
+  pageMargins: [ 40, 10, 40, 70 ],
   styles: {
 		header: {
 			fontSize: 14,
@@ -1499,9 +1511,9 @@ function onResetPhysicalFilter() {
   
 }
 function onRegisterScanedItem() {
-  let qty = $('#product_quantity_scan').val;
   $("#scaned_material_form").find("select").prop("disabled", false);
   $("#scaned_material_form").find("input").prop("disabled", false);
+  $("#scaned_material_form").find("textarea").prop("disabled", false);
   $('#scaned_material_form').validate({
     submitHandler: function (form) {
       $.ajax({  
@@ -1555,7 +1567,7 @@ data.forEach(element => {
         row += `<td>${element.product_inventory_date}</td>`;
         row += `<td>${element.product_remarks}</td>`;
     } else {
-        row += `<td>${productQuantity}</td>`;
+        row += `<td>${productQuantity}  <span class="d-block d-none warning" id="alert_quantity${productCode}">(Low)</span></td>`;
         row += `<td>${element.product_unit}</td>`;
         row += `<td>${element.product_location}</td>`;
         row += `<td>${element.product_person_incharge}</td>`;
@@ -1651,6 +1663,17 @@ function onDownloadPDFPhysical() {
         }
       },
     ],
+    footer: function(currentPage, pageCount) {
+      return {
+        columns: [
+          { text: 'Prepared by:Ma. Patricia Erika S. Arcillas\nAdmin Staff', alignment: 'center',fontSize:9 },
+          { text: 'Noted by:Agnes R. Silva\nAdmin Staff', alignment: 'center',fontSize:9 },
+          { text: 'Approved by:Lielanie O. Barrion, LPT, MACA\nVice President For Administration', alignment: 'center' ,fontSize:9},
+        ],
+        margin: [50, 20]
+      };
+    },
+    pageMargins: [ 40, 10, 40, 70 ],
     styles: {
       table:{
         fontSize: 10,
