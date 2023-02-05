@@ -57,7 +57,7 @@ scanner.addListener('scan', function (content) {
       document.getElementById("preview").classList.add("d-none");
       document.getElementById("product_details").classList.remove("d-none");
       document.getElementById("scan_btn").classList.remove("d-none");
-     /*  document.getElementById("delete_btn").classList.remove("d-none"); */
+      document.getElementById("delete_btn").classList.remove("d-none");
       document.getElementById("update_btn").classList.remove("d-none");
       scanner.stop();
 
@@ -598,7 +598,6 @@ function onDeleteAccount(account_id) {
 
 /* Material Functions */
 function onViewMaterialList(category_id) {
-  ctr = 0;
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
   $.ajax({  
@@ -793,25 +792,7 @@ function onClickAddMaterial() {
 }
 function onClickEditMaterial(product_details) {
   document.getElementById("material_form").reset();
- 
-  console.log('product_code',product_details);
-
   $("#material_form").find("#product_category").prop("disabled", true);
-
-  /* 
-   var select = document.getElementById("product_category");
-  var option = document.createElement("option");
-  if (product_details.product_category == '2') {
-    if (select.length === 2) {
-      option.value = 3;
-      option.text = "Defective";
-      select.appendChild(option);
-    }
-  } else if (product_details.product_category == '1')  {
-      select.remove(2);
-  } */
-  
-
   document.getElementById("addMaterialModalLabel").innerText = "Update Material";
   document.getElementById("create_material_submit").setAttribute("onclick","onUpdateMaterial(1)");
   product_code_input.value = product_details.product_code;
@@ -827,14 +808,6 @@ function onClickEditMaterial(product_details) {
   product_remarks_input.value = product_details.product_remarks;
   product_status_input.value = product_details.product_status;
   generate(product_details.product_code,2);
-
- /*  let material_list = sessionStorage.getItem("material_list");
-  let json_material = JSON.parse(material_list);
-  product_details.forEach(element => {
-    if(element.product_code == product_code){
-     
-    }
-  }); */
 }
 function onCreateMaterial() {
   $('#material_form').validate({
@@ -867,23 +840,44 @@ function onCreateMaterial() {
   });
 }
 function onUpdateMaterial(form) {
-  $("#material_form").find("#product_category").prop("disabled", false);
-    $.ajax({  
-      url:"../php/materialupdate.php",  
-      method:"POST",  
-      data:  $('#material_form').serialize(), 
-      dataType: "json",
-      encode: true, 
-    }).done(function (response) {
-      if(response.success){
-        alert(response.success_msg);
-        window.location.reload();
-      }else{
-        alert(response.error_msg);
-      }
-    }).fail(function (response){
-      console.log(response.responseText);
-    });
+  let formData = "";
+  let url = "";
+  let dataForm ="";
+  if(form == 1){
+    $("#material_form").find("#product_category").prop("disabled", false);
+    formData = $('#material_form').serialize();
+    url = "../php/materialupdate.php";
+    dataForm ="#material_form";
+  }else{
+    $("#scaned_material_form").find("#product_category_scan").prop("disabled", false);
+    $("#scaned_material_form").find("#product_code_scan").prop("disabled", false);
+    formData = $('#scaned_material_form').serialize();
+    url = "../php/materialscanupdate.php";
+     dataForm ="#scaned_material_form";
+  }
+  $(dataForm).validate({
+    submitHandler: function (form) {
+      $.ajax({  
+        url:url,  
+        method:"POST",  
+        data: formData , 
+        dataType: "json",
+        encode: true, 
+      }).done(function (response) {
+        if(response.success){
+          console.log("res");
+          alert(response.success_msg);
+          window.location.reload();
+        }else{
+          alert(response.error_msg);
+        }
+      }).fail(function (response){
+        console.log(response.responseText);
+      });
+    }
+  });
+ 
+ 
 }
 function onDeleteMaterial(product_code) {
   let text = "Do you want to delete the record?";
@@ -1009,7 +1003,7 @@ function onDownloadPDFMaterial() {
   pdfMake.createPdf(docDefinition).download();
   
   
-  }
+}
 
 /* Requisition */
 function onNotify() {
@@ -1039,8 +1033,6 @@ function onNotify() {
 
 }
 function onViewHistoryList() {
- 
-  ctr = 0;
   table_selected = 4;
   let category =  $('#category_filter').val();
   let status  =  $('#status_filter').val();
@@ -1074,6 +1066,7 @@ function onViewHistoryList() {
         var template =`
           <thead>
             <th>#</th>
+            <th>Requisition ID</th>
             <th>Category</th>
             <th>Full Name</th>
             <th>Department</th>
@@ -1091,6 +1084,7 @@ function onViewHistoryList() {
       var template =`
           <thead>
             <th>#</th>
+            <th>Requisition ID</th>
             <th>Category</th>
             <th>Full Name</th>
             <th>Department</th>
@@ -1158,6 +1152,7 @@ function onGenerateHistoryList(data) {
           template = 
           `<tr >
               <td>${ctr}</td>
+              <td>${element.id}</td>
               <td>${element.product_category}</td>
               <td>${element.full_name}</td>
               <td>${element.department}</td>
@@ -1255,26 +1250,55 @@ function onClickViewHistory(history) {
 
 }
 function onUpdateRequest() {
+  let onhand =  $('#on_hand').val();
+  let quantity =  $('#product_quantity').val();
+  let product_name =  $('#product_name').val();
+  let status =  $('#status').val();
   $("#history_form").find("select").prop("disabled", false);
   $("#history_form").find(".disable").prop("disabled", false);
   $("#history_form").find(".to-disable").prop("disabled", false);
-    $.ajax({  
-      url:"../php/requestupdate.php",  
-      method:"POST",  
-      data: $('#history_form').serialize(), 
-      dataType: "json",
-      encode: true, 
-    }).done(function (response) {
-      if(response.success){
-        console.log("Ressult",response);
+  var text;
+  if (status == '2') {
+    text = "Proceed with this action? The "+product_name+" will have a remaining capacity of "+ (onhand - quantity)+" after this request";
+    if (!confirm(text)) {
+      return;
+    }
+  }
+  $('#history_form').validate({
+    rules: {
+      date_to_claim: { required: true }
+    },
+    submitHandler: function (form) {
+      $.ajax({  
+        url:"../php/requestupdate.php",  
+        method:"POST",  
+        data: $('#history_form').serialize(), 
+        dataType: "json",
+        encode: true, 
+      }).done(function (response) {
+        if(response.success){
+          console.log("Result",response);
           alert(response.success_msg)
-          /*  window.location.reload(); */
-      }else{
-        alert(response.error_msg)
-      }
-    }).fail(function (response){
-      console.log(response.responseText);
-    });
+          let subject = "Account Creation";
+          let template = `
+            Hi , <br><br>
+            Thanks for signing up in ORIS: An Online Requisition and Inventory System for City College of Calamba.<br>
+            Your account has been successfully created. Below is your account password information.<br>
+            <a href='https://orisinventory.online/'>Login here </a> <br>
+            Thanks and Regards,.<br>
+            ORIS`;
+          sendMail('0nameless5@gmail.com',subject,template);
+          window.location.reload();
+        }else{
+          alert(response.error_msg)
+        }
+      }).fail(function (response){
+        console.log(response.responseText);
+      });
+    }
+  });
+  
+ 
 }
 function onUpdateStatus(params) {
   let status = document.getElementById("status").value;
@@ -1328,6 +1352,7 @@ var pdfData = [];
 
 var pdfRow = [
   { text: '#', style: 'header' },
+  { text: 'Requisition ID', style: 'header' },
   { text: 'Category', style: 'header' },
   { text: 'Name', style: 'header' },
   { text: 'Department', style: 'header' },
@@ -1351,7 +1376,7 @@ for (var i = 0; i < jsonData.length; i++) {
     }else if(obj.status == 4){
       obj.status = 'Returned';
     }
-    var pdfRow = [ctr,obj.product_category, obj.full_name, obj.department, obj.product_name, obj.product_quantity,obj.product_unit, obj.date_requested,obj.status];
+    var pdfRow = [ctr,obj.id,obj.product_category, obj.full_name, obj.department, obj.product_name, obj.product_quantity,obj.product_unit, obj.date_requested,obj.status];
     pdfData.push(pdfRow);
 }
 var docDefinition = {
@@ -1366,9 +1391,11 @@ var docDefinition = {
     {text: 'Office of the Vice President for Administration', fontSize: 10, alignment: 'center'},
     {text: 'List of Request', fontSize: 21, bold: true, margin: [0, 20, 20, 8],alignment: 'center'},
     {
+      style: 'tables',
       table: {
+        widths: ['auto','auto','auto', 'auto','auto', 'auto','auto',20,'auto', 'auto'],
         headerRows: 1,
-        body: pdfData
+        body: pdfData,
       }
     },
   ],
@@ -1385,9 +1412,12 @@ var docDefinition = {
   pageMargins: [ 40, 10, 40, 70 ],
   styles: {
 		header: {
-			fontSize: 14,
+			fontSize: 11,
 			bold: true,
 		},
+    tables:{
+      fontSize:9
+    }
 	},
 };
 
@@ -1399,7 +1429,6 @@ pdfMake.createPdf(docDefinition).download();
 
 /* Physical Inventory */
 function onViewPhysicalList(category_id) {
-  ctr = 0;
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
   $.ajax({  

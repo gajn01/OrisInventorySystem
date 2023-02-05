@@ -104,6 +104,7 @@
               <div class="header-button mb-3 ">
                 <button type="button" class="btn btn-primary btn-add" data-bs-toggle="collapse" href="#filterCollapse" role="button"  >Filter</button>
                 <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch()">
+                <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#openScannerModal"  onclick="onStartScan()">Open Scanner</button>
                 <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addMaterialModal" onclick="onClickAddMaterial()">Add Material</button>
                 <button type="button" class="btn btn-primary btn-add"  onclick="onDownloadPDFMaterial()">Download PDF</button>
               </div>
@@ -273,6 +274,105 @@
                   </div>
                 </div>
               </div>
+
+                <!-- Scanner Modal -->
+                <div class="modal fade" id="openScannerModal" tabindex="-1" aria-labelledby="openScannerModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h2 class="modal-title fs-5" id="openScannerModalLabel" >Material Information</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="scanModalClose()"></button>
+                      </div>
+                      <form id="scaned_material_form">
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="col-12">
+                              <video id="preview"></video>
+                            </div>
+                          </div>
+                          <div class="row d-none" id="product_details">
+                            <div class="col-md-6 col-sm-12">
+                              <label for="product_category_scan" class="col-sm-12 col-md-12 col-form-label p-0">Category</label>
+                              <select class="form-select form-control" aria-label="Default select example" id="product_category_scan" name="product_category_scan" onchange="onChangeCategory()" disabled>
+                                <option value="1" selected >Supplies</option>
+                                <option value="2">Fixed Assets</option>
+                                <option value="3">Defective</option>
+                              </select>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                              <label for="product_code_scan" class="col-sm-12 col-md-12 col-form-label p-0">Product Code</label>
+                              <input class="form-control" type="text" id="product_code_scan" name="product_code_scan" disabled >
+                            </div>
+                            <div class="col-12">
+                              <label for="product_name_scan" class="col-sm-12 col-md-12 col-form-label p-0">Product Name  </label>
+                              <input class="form-control"  type="text"  id="product_name_scan" name="product_name_scan"   >
+                            </div>
+                            <div class="col-12">
+                              <label for="product_description_scan" class="col-sm-12 col-md-12 col-form-label">Product Description  </label>
+                              <textarea class="form-control mb-3" id="product_description_scan" name="product_description_scan"  ></textarea>
+                            </div>
+  
+                            <div class="col-md-6 col-sm-12">
+                              <label for="product_quantity_scan" class="col-sm-12  col-md-12 col-form-label">Quantity  </label>
+                              <input class="form-control mb-3" type="number" id="product_quantity_scan" min="1" value="1" name="product_quantity_scan"  >
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                              <label for="product_unit_scan" class="col-sm-12 col-md-12 col-form-label">Units</label>
+                              <select class="form-select form-control" aria-label="Default select example" id="product_unit_scan" name="product_unit_scan"  >
+                                <option value="Box" selected >Box</option>
+                                <option value="Bottles">Bottles</option>
+                                <option value="Pcs">Pcs</option>
+                                <option value="Rolls">Rolls</option>
+                                <option value="Cans">Cans</option>
+                                <option value="Packs">Packs</option>
+                                <option value="Unit">Unit</option>
+                                <option value="Pads">Pads</option>
+                                <option value="Reams">Reams</option>
+                                <option value="Gallons">Gallons</option>
+                                <option value="Pairs">Pairs</option>
+                              </select>
+                            </div>
+  
+                            <div class="col-md-6 col-sm-12">
+                              <label for="product_location_scan" class="col-sm-12  col-md-12 col-form-label">Location  </label>
+                              <input class="form-control mb-3" type="text" id="product_location_scan" name="product_location_scan" >
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                              <label for="product_person_incharge_scan" class="col-sm-12 col-md-12 col-form-label">Person in Charge </label>
+                              <input class="form-control mb-3" type="text" id="product_person_incharge_scan" name="product_person_incharge_scan" >
+                            </div>
+  
+                            <div class="col-md-6 col-sm-12">
+                              <label for="product_inventory_date_scan" class="col-sm-12  col-md-12 col-form-label">Inventory Date</label>
+                              <input class="form-control mb-3" type="date" id="product_inventory_date_scan" name="product_inventory_date_scan" >
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                              <label for="product_recieved_date_scan" class="col-sm-12 col-md-12 col-form-label">Receiving Date</label>
+                              <input class="form-control mb-3" type="date" id="product_recieved_date_scan" name="product_recieved_date_scan" >
+                            </div>
+                            
+                            <div class="col-sm-12 col-lg-12" id="remarks_div">
+                              <label for="product_remarks_scan" class="col-sm-12 col-md-12 col-form-label">Product Remarks</label>
+                              <input class="form-control mb-3" type="text" id="product_remarks_scan" name="product_remarks_scan"  >
+                            </div>
+                            <div class="col-sm-12 col-lg-6 d-none" id="status_div">
+                              <label for="product_status_scan" class="col-sm-12 col-md-12 col-form-label">Status</label>
+                              <select class="form-select form-control" aria-label="Default select example" id="product_status_scan" name="product_status_scan"  >
+                                <option value="Working" selected >Working</option>
+                                <option value="Not Working">Not Working</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-danger d-none" id="delete_btn" onclick="onScanDelete()" >Delete</button>
+                          <button type="submit" class="btn btn-primary d-none" id="update_btn"  onclick="onUpdateMaterial(2)"  >Update</button>
+                        </div>
+                      </form>
+                      <button class="btn btn-primary scan-btn d-none mt-5" id="scan_btn" onclick="onScan()">Scan Again</button>
+                    </div>
+                  </div>
+                </div>
 
         
           </div>

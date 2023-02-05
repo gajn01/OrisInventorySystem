@@ -32,21 +32,17 @@
           
       }
       $(function() {
-        
-      $('input[name="date_requested_filter"]').daterangepicker({
-        opens: 'left'
-      }, function(start, end, label) {
-        dateStart = start.format('YYYY-MM-DD');
-        dateEnd  =  end.format('YYYY-MM-DD');
+        $('input[name="date_requested_filter"]').daterangepicker({
+          opens: 'left'
+        }, function(start, end, label) {
+          dateStart = start.format('YYYY-MM-DD');
+          dateEnd  =  end.format('YYYY-MM-DD');
+        });
       });
-    });
       
       setInterval(function() {
         onNotify();
-        onViewHistoryList();
-
       }, 1000);
-      
      
     </script>
 </head>
@@ -214,13 +210,16 @@
                       </div>
                       <form id="history_form">
                         <div class="modal-body">
-                          <input class="form-control mb-3 d-none" type="text" id="request_id" name="request_id"  >
                             <div class="row">
-                              <div class="col-md-6 col-sm-12">
+                              <div class="col-md-4 col-sm-12">
+                                <label for="product_category" class="col-sm-12 col-md-12 col-form-label">Requisition ID</label>
+                                <input class="form-control mb-3 disable" type="text" id="request_id" name="request_id" disabled >
+                              </div>
+                              <div class="col-md-4 col-sm-12">
                                 <label for="product_category" class="col-sm-12 col-md-12 col-form-label">Category</label>
                                 <input class="form-control mb-3 disable" type="text" id="product_category" name="product_category" disabled >
                               </div>
-                              <div class="col-md-6 col-sm-12">
+                              <div class="col-md-4 col-sm-12">
                                 <label for="product_code" class="col-sm-12 col-md-12 col-form-label">Product Code</label>
                                 <input class="form-control mb-3 disable" type="text" id="product_code" name="product_code" disabled >
                               </div>
@@ -261,7 +260,7 @@
                                 <input class="form-control mb-3 disable" type="date" id="date_requested" name="date_requested" disabled>
                               </div>
                               <div class="col-sm-12 col-md-6 ">
-                                <label for="date_to_claim" class="col-sm-12  col-md-12 col-form-label">Date to Claim </label>
+                                <label for="date_to_claim" class="col-sm-12  col-md-12 col-form-label">Date to Claim <span class="require"> * </span></label>
                                 <input class="form-control mb-3 to-disable" type="date" id="date_to_claim" name="date_to_claim" >
                               </div>
                             </div>

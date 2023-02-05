@@ -37,26 +37,31 @@ include("connection.php");
         echo json_encode($form_data);
         exit();
         }
-    } else {
+    } else if($status == '4') {
         $update_inventory_query = "UPDATE tbl_inventory SET product_quantity = product_quantity + '$product_quantity' WHERE product_code = '$product_code' ";
     }
+    if (mysqli_query($db, $update_query)) {
+        $update_inventory = false;
+        if ($update_inventory_query != "") {
+            $update_inventory = mysqli_query($db, $update_inventory_query);
+        }
+        if ($update_inventory || $update_inventory_query == "") {
+            $form_data['success'] = true;
+            $form_data['success_msg'] = "Record updated successfully!";
     
-    if (mysqli_query($db, $update_query) && mysqli_query($db, $update_inventory_query)) {
-        $form_data['success'] = true;
-        $form_data['success_msg'] = "Record updated successfully!";
-    
-        $ip = file_get_contents('http://icanhazip.com/');
-        $template = "Update status of request ID: " . $request_id;
-        $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', '$template' , '$ip')";
-        mysqli_query($db, $sql_activity);
-  
+            $ip = file_get_contents('http://icanhazip.com/');
+            $template = "Update status of request ID: " . $request_id;
+            $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', '$template' , '$ip')";
+            mysqli_query($db, $sql_activity);
+        } else {
+            $form_data['success'] = false;
+            $form_data['error_msg'] = "Failed to update record!";
+        }
     } else {
         $form_data['success'] = false;
-        $form_data['error_msg'] ="Failed to update record!";
+        $form_data['error_msg'] = "Failed to update record!";
     }
     
     echo json_encode($form_data);
     $db->close();
-    $db->close();
-
 ?>

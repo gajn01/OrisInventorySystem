@@ -299,6 +299,8 @@ function onViewMaterialList(category_id) {
             <th>#</th>
             <th>Code</th>
             <th>Name</th>
+            <th>Quantity</th>
+            <th>Unit</th>
             <th>Description</th>
             <th>Location</th>
             <th>Person-in-charge</th>
@@ -310,6 +312,8 @@ function onViewMaterialList(category_id) {
             <th>#</th>
             <th>Code</th>
             <th>Name</th>
+            <th>Quantity</th>
+            <th>Unit</th>
             <th>Description</th>
             <th>Location</th>
             <th>Person-in-charge</th>
@@ -326,6 +330,8 @@ function onViewMaterialList(category_id) {
             <th>#</th>
             <th>Code</th>
             <th>Name</th>
+            <th>Quantity</th>
+            <th>Unit</th>
             <th>Description</th>
             <th>Location</th>
             <th>Person-in-charge</th>
@@ -363,7 +369,6 @@ function onViewAllHistoryList() {
   });
 }
 function onViewHistoryList() {
-  ctr = 0;
   table_selected = 3;
   limit =  $('#page_limit').val();
   search =  $('#searchbar').val();
@@ -380,27 +385,24 @@ function onViewHistoryList() {
     var table = document.querySelector("table");
     if(response.success){
       items = response.page_limit[0].ctr;
-        let setPage = items / limit
-      let totalPage = Math.trunc(items / limit)
-      if( setPage % 1){
-          totalPage = totalPage +1
-      }
-      if(parseInt(limit) > parseInt(items) || parseInt(limit) == parseInt(items)){
-        document.getElementById("next").style.display = "none";
-        document.getElementById("prev").style.display = "none";
-      }else{
-          if(page <= 0){
-              document.getElementById("prev").style.display = "none";
-              document.getElementById("next").style.display = "block";
-          }else if(totalPage <= page+1){
-              document.getElementById("next").style.display = "none";
-              document.getElementById("prev").style.display = "block";
-          }
+      let totalPage = Math.ceil(items / limit);
+      let next = document.getElementById("next");
+      let prev = document.getElementById("prev");
+      if(parseInt(limit) >= parseInt(items)){
+          next.style.display = "none";
+          prev.style.display = "none";
+      }else if(page <= 0){
+          prev.style.display = "none";
+          next.style.display = "block";
+      }else if(totalPage <= page+1){
+          next.style.display = "none";
+          prev.style.display = "block";
       }
       table.innerHTML =  "";
         var template =`
           <thead>
             <th>#</th>
+            <th>Requisition ID</th>
             <th>Category</th>
             <th>Full Name</th>
             <th>Department</th>
@@ -419,6 +421,7 @@ function onViewHistoryList() {
       var template =`
           <thead>
             <th>#</th>
+            <th>Requisition ID</th>
             <th>Category</th>
             <th>Full Name</th>
             <th>Department</th>
@@ -457,6 +460,8 @@ function onGenerateMaterialList(data,category_id) {
               <td>${ctr}</td>
               <td>${element.product_code}</td>
               <td>${element.product_name}</td>
+              <td>${element.product_quantity}</td>
+              <td>${element.product_unit}</td>
               <td>${element.product_description}</td>
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
@@ -464,8 +469,7 @@ function onGenerateMaterialList(data,category_id) {
                   <span data-bs-toggle="modal" data-bs-target="#requestModal" class="btn btn-primary " onClick='onClickRequest(${JSON.stringify(element)})' >Request</span>
               </td>
           </tr>`;
-         /*  <td>${element.product_unit}</td>
-          <td>${element.product_location}</td> */
+         
         }else if(parseInt(category_id) == 2){
           ctr = ctr + 1;
           template = 
@@ -473,6 +477,8 @@ function onGenerateMaterialList(data,category_id) {
               <td>${ctr}</td>
               <td>${element.product_code}</td>
               <td>${element.product_name}</td>
+              <td>${element.product_quantity}</td>
+              <td>${element.product_unit}</td>
               <td>${element.product_description}</td>
               <td>${element.product_location}</td>
               <td>${element.product_person_incharge}</td>
@@ -500,6 +506,7 @@ function onGenerateMaterialList(data,category_id) {
           template = 
           `<tr>
               <td>${ctr}</td>
+              <td>${element.id}</td>
               <td>${element.product_category}</td>
               <td>${element.full_name}</td>
               <td>${element.department}</td>
@@ -561,10 +568,12 @@ function onClickViewHistory(history) {
   }else{
     document.getElementById('date_approved_label').innerText = "Date Approved";
   }
+  document.getElementById("id").value = history.id ;
   document.getElementById("product_category").value = history.product_category ;
   document.getElementById("product_code").value = history.product_code ;
   document.getElementById("product_name").value = history.product_name ;
   document.getElementById("product_quantity").value = history.product_quantity ;
+  document.getElementById("product_unit").value = history.product_unit ;
   document.getElementById("full_name").value = history.full_name ;
   document.getElementById("product_description").value = history.product_description ;
   document.getElementById("purpose").value = history.purpose ;

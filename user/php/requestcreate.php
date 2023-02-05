@@ -42,8 +42,13 @@ include("connection.php"); //Establishing connection with our database
     $department = mysqli_real_escape_string($db,$department);
     $date_requested = mysqli_real_escape_string($db,$date_requested);
   /*   $date_to_claim = mysqli_real_escape_string($db,$date_to_claim); */
-    $sql=("INSERT INTO tbl_history (account_id,product_category,product_name,product_description,product_code,product_quantity,product_unit,purpose,full_name,department,date_requested,date_return,status) 
-    VALUES ('$account_id','$product_category','$product_name','$product_description','$product_code','$product_quantity','$product_unit','$purpose','$full_name','$department','$date_requested','$date_return','1')");
+
+
+    $sql=("SELECT * FROM tbl_inventory WHERE product_code = '$product_code' AND product_quantity >= '$product_quantity' ");
+    $result= mysqli_query($db,$sql);
+    if ($result->num_rows > 0) {
+        $sql=("INSERT INTO tbl_history (account_id,product_category,product_name,product_description,product_code,product_quantity,product_unit,purpose,full_name,department,date_requested,date_return,status) 
+        VALUES ('$account_id','$product_category','$product_name','$product_description','$product_code','$product_quantity','$product_unit','$purpose','$full_name','$department','$date_requested','$date_return','1')");
         if (mysqli_query($db, $sql)) {
         $form_data['success'] = true;
         if($product_category == 1){
@@ -51,10 +56,19 @@ include("connection.php"); //Establishing connection with our database
         }else{
             $form_data['success_msg'] = "Borrow successful";
         }
+        } else {
+            $form_data['success'] = false;
+            $form_data['error_msg'] = "Action failed";
+        }
     } else {
-        $form_data['success'] = false;
-        $form_data['error_msg'] = "Action failed";
+    $form_data['success'] = false;
+    $form_data['error_msg'] = "Invalid quantity!";
     }
+
+
+
+
+    
 echo json_encode($form_data);
 $db->close();
 ?>

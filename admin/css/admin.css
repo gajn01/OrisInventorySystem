@@ -229,7 +229,7 @@ table tbody{
     justify-content: end;
 
 }
-.btn-primary, .btn-add{
+.btn-primary, .btn-add,.btn-danger{
     border-radius: 50px !important;
 }
 .btn-add{

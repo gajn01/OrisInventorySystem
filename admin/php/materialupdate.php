@@ -39,7 +39,6 @@ include("connection.php");
         $ip = file_get_contents('http://icanhazip.com/');
         $template = 'Made changes to '. $product_name;
         $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', '$template', '$ip')";
-
         mysqli_query($db, $sql_activity);
     } else {
         $form_data['success'] = false;
