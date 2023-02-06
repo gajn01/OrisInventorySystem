@@ -9,6 +9,9 @@
     <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.min.css" rel="stylesheet">
+    
     <title>Supplies | Oris Inventory System</title>
     <script>
       window.onload = function () {
@@ -161,6 +164,8 @@
                     <div class="modal-body">
                         <div class="row">
                           <input class="form-control mb-3 d-none"  type="text"  id="account_id" name="account_id" >
+                          <input class="form-control mb-3 d-none"  type="text"  id="email" name="email"  >
+
                           <div class="col-md-6 col-sm-12">
                             <label for="product_category" class="col-sm-12 col-md-12 col-form-label">Category</label>
                             <input class="form-control mb-3" type="text" id="product_category" name="product_category" disabled >
@@ -171,6 +176,7 @@
                           </div>
                         </div>
                         <div class="row">
+                          <input class="form-control mb-3 d-none"  type="text"  id="email" name="email"  >
                           <div class="col-md-6 col-sm-12">
                             <label for="product_name" class="col-sm-12 col-md-12 col-form-label">Product Name </label>
                             <input class="form-control mb-3"  type="text"  id="product_name" name="product_name" disabled >

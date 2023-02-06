@@ -105,12 +105,26 @@ function onLogin() {
           encode: true, 
         }).done(function (response) {
           if(response.success){
-            console.log("res:",response);
-            sessionStorage.setItem("account",JSON.stringify(response.data));
-            alert(response.success_msg);
-            location.href = 'pages/landing.html'
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: response.success_msg,
+              showConfirmButton: false,
+              timer: 1000
+            })   
+            setTimeout(function() {
+              Swal.close();
+              sessionStorage.setItem("account",JSON.stringify(response.data));
+              location.href = 'pages/landing.html'
+            }, 1000);
+            
           }else{
-            alert(response.error_msg);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: response.error_msg,
+              timer: 1000
+            })
           }
         }).fail(function (data){
           console.log(data);
@@ -119,11 +133,20 @@ function onLogin() {
   });
 }
 function onLogout() {
-  let text = "Are you sure you want to logout?";
-  if (confirm(text)) {
+  Swal.fire({
+    title: 'Question!',
+    text:'Are you sure you want to logout?',
+    icon:'question',
+    showDenyButton: true,
+    confirmButtonText: 'Yes',
+    denyButtonText: `No`,
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
       localStorage.clear();
       location.href = '../index.html';
-  }
+    } 
+  })
 }
 function goTo(params) {
   if(params == 1){
@@ -156,10 +179,24 @@ function onChangePassword() {
           encode: true, 
         }).done(function (response) {
           if(response.success){
-            alert(response.success_msg);
-            window.location.reload();
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: response.success_msg,
+              showConfirmButton: false,
+              timer: 1000
+            })   
+            setTimeout(function() {
+              Swal.close();
+              window.location.reload();
+            }, 1000);
           }else{
-            alert(response.error_msg);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: response.error_msg,
+              timer: 1000
+            })
           }
         }).fail(function (data){
           console.log(data.responseText);
@@ -201,7 +238,13 @@ function onSubmitEmail() {
             sendMail(email,subject,body);
             alert(response.success_msg);
           }else{
-            alert(response.error_msg);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: response.error_msg,
+              timer: 1000
+            })
+
           }
          /*  if(response.success){
             let subject = "Forgot Password Code";
@@ -214,7 +257,13 @@ function onSubmitEmail() {
             document.getElementById('btn_submit').classList.add('d-none');
             console.log(response);
           }else{
-            alert(response.error_msg);
+            Swal.fire({
+  icon: 'error',
+  title: 'Error',
+  text: response.error_msg,
+  timer: 1000
+})
+
           } */
         }).fail(function (data){
           console.log(data.responseText);
@@ -539,7 +588,8 @@ function onGenerateMaterialList(data,category_id) {
 
 }
 function onClickRequest(product) {
-  console.log('first',product)
+  let account = sessionStorage.getItem("account");
+  let json_account = JSON.parse(account);
   document.getElementById("request_form").reset();
   date_requested_input.min = new Date().toISOString().split("T")[0];
   date_return_input.min = new Date().toISOString().split("T")[0];
@@ -559,6 +609,8 @@ function onClickRequest(product) {
   product_unit_input.value = product.product_unit;
   product_description_input.value = product.product_description;
   department_input.value = document.getElementById("account_label").innerText;
+  document.getElementById("email").value = json_account.email;
+
   onChangeCategory();
 }
 function onClickViewHistory(history) {
@@ -600,7 +652,7 @@ function onChangeCategory() {
   }
 }
 function onRequest() {
-  $("#request_form").find("input").prop("disabled", false);
+  $("#request_form input").prop("disabled", false);
   $('#request_form').validate({
     rules: {
       full_name: { required: true },
@@ -617,11 +669,38 @@ function onRequest() {
           encode: true, 
         }).done(function (response) {
           if(response.success){
-            alert(response.success_msg)
-            onViewAllHistoryList();
-            window.location.reload();
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: response.success_msg,
+              showConfirmButton: false,
+              timer: 1000
+            })   
+            setTimeout(function() {
+              Swal.close();
+              let subject = `Request for Materials from ${$('#department').val()}`;
+              let template = `
+              Dear  Lielanie O. Barrion, LPT, MACA ,<br> <br>
+              I hope this email finds you well. I am writing from the ${$('#department').val()}, and I am in need of some materials for an upcoming project. I would like to request the following items from the Oris Inventory System:<br>
+              ${$('#product_name').val()} - ${$('#product_quantity').val()} ${$('#product_unit').val()}  <br>
+              We require these materials on  ${$('#date_requested').val()} . I would be grateful if you could arrange for these items to ${$('#department').val()}.<br>
+              Please let me know if there are any concerns or questions regarding this request. I would be happy to provide any additional information you may need.<br>
+              Thank you for your time and consideration.<br><br>
+              Best regards,<br><br>
+              ${$('#full_name').val()}<br>
+              ${$('#department').val()}<br>
+              Oris Inventory System`;
+              sendMail('2023.oris@gmail.com',subject,template);
+              onViewAllHistoryList();
+              window.location.reload();
+            }, 1000);
           }else{
-            alert(response.error_msg)
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: response.error_msg,
+              timer: 1000
+            })
           }
         }).fail(function (response){
           console.log(response.responseText);

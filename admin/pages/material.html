@@ -21,6 +21,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.min.css" rel="stylesheet">
+
     <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
     <title>Material | Oris Inventory System</title>
     <script>
@@ -100,11 +103,12 @@
           <!-- Mobile view button -->
           <div class="container-fluid">
             <h1>Inventory</h1>
+            
             <section>
               <div class="header-button mb-3 ">
                 <button type="button" class="btn btn-primary btn-add" data-bs-toggle="collapse" href="#filterCollapse" role="button"  >Filter</button>
                 <input class="searchbar" type="text" name="searchbar" id="searchbar" placeholder="Search here..." onkeyup="onSearch()">
-                <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#openScannerModal"  onclick="onStartScan()">Open Scanner</button>
+                <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#openScannerModal"  onclick="onStartScan(1)">Open Scanner</button>
                 <button type="button" class="btn btn-primary btn-add" data-bs-toggle="modal" data-bs-target="#addMaterialModal" onclick="onClickAddMaterial()">Add Material</button>
                 <button type="button" class="btn btn-primary btn-add"  onclick="onDownloadPDFMaterial()">Download PDF</button>
               </div>

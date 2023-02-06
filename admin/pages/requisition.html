@@ -12,10 +12,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
-
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.min.css" rel="stylesheet">
+    
 
     <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
     <title>Requisition | Oris Inventory System</title>
@@ -214,6 +217,8 @@
                               <div class="col-md-4 col-sm-12">
                                 <label for="product_category" class="col-sm-12 col-md-12 col-form-label">Requisition ID</label>
                                 <input class="form-control mb-3 disable" type="text" id="request_id" name="request_id" disabled >
+                                <input class="form-control mb-3 d-none"  type="text"  id="email" name="email"  >
+
                               </div>
                               <div class="col-md-4 col-sm-12">
                                 <label for="product_category" class="col-sm-12 col-md-12 col-form-label">Category</label>

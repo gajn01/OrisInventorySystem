@@ -14,13 +14,18 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
-
     <link rel="icon" type="image/x-icon" href="../assets/logo.ico">
     <title>Dashboard | Oris Inventory System</title>
     <script>
         window.onload = function () {
-            onViewDashboard();
+            let account = sessionStorage.getItem("account");
+            let json_account = JSON.parse(account);
+            if(!json_account){
+                location.href = '../index.html';
+            }else{
+                onViewDashboard();
             onChangeDateFilter();
+            }
         }
         setInterval(function() {
         onNotify();
@@ -78,7 +83,7 @@
                             <a href="../pages/activity.html" >Activity Log</a>
                             <a href="../pages/account.html" >Accounts</a>
                         </div>
-                        <a class="btn btn-primary btn-logout-mobile text-center" href="" onclick="onLogout()">Logout</a>
+                        <a class="btn btn-primary btn-logout-mobile text-center" href="../index.html" onclick="onLogout()">Logout</a>
                         </div>
                       </div>
                     </div>

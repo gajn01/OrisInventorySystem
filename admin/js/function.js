@@ -30,6 +30,7 @@ const product_status_input = document.getElementById("product_status");
 
 let dateStart ='';
 let dateEnd =''
+let scan_tab ='';
 
 let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
 scanner.addListener('scan', function (content) {
@@ -57,23 +58,32 @@ scanner.addListener('scan', function (content) {
       document.getElementById("preview").classList.add("d-none");
       document.getElementById("product_details").classList.remove("d-none");
       document.getElementById("scan_btn").classList.remove("d-none");
-      document.getElementById("delete_btn").classList.remove("d-none");
       document.getElementById("update_btn").classList.remove("d-none");
+      if(scan_tab == 1){
+        document.getElementById("delete_btn").classList.remove("d-none");
+      }
       scanner.stop();
 
     }else{
-      alert("No record found!");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: "No record found!",
+        timer: 1000
+      })
+      
     }
   }).fail(function (response){
     console.log(response.responseText);
   });
 });
 
-function onStartScan() {
+function onStartScan(data) {
+  scan_tab = data;
   Instascan.Camera.getCameras().then(function (cameras) {
     if(cameras.length>0){
       scanner.start(cameras[0]);
-      $('[name="options"]').on('change',function(){
+    /*   $('[name="options"]').on('change',function(){
           if($(this).val()==1){
               if(cameras[0]!=""){
                   scanner.start(cameras[0]);
@@ -87,10 +97,15 @@ function onStartScan() {
                   alert('No Back camera found!');
               }
           }
-      });
+      }); */
       }else{
-          console.error('No cameras found.');
           alert('No cameras found.');
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: "No cameras found.",
+            timer: 1000
+          })
       }
   }).catch(function (e) {
       console.error(e);
@@ -189,8 +204,19 @@ function onLogin() {
         }).done(function (response) {
           if(response.success){
             sessionStorage.setItem("account",JSON.stringify(response.data));
-            alert(response.success_msg);
-            location.href = '../admin/pages/dashboard.html'
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: response.success_msg,
+              showConfirmButton: false,
+              timer: 1500
+              })
+              setTimeout(function() {
+                Swal.close();
+                location.href = '../admin/pages/dashboard.html'
+              }, 1500);
+            /* alert(response.success_msg);
+             */
           }else{
             alert(response.error_msg);
           }
@@ -203,16 +229,8 @@ function onLogin() {
 function onLogout() {
   let text = "Are you sure you want to logout?";
   if (confirm(text)) {
-      $.ajax({  
-        url:"php/activitycreate.php",  
-        method:"POST",  
-        data: '', 
-      }).done(function (response) {
-        localStorage.clear();
-        location.href = '../index.html';
-      }).fail(function (data){
-        console.log(data);
-      });
+    localStorage.clear();
+    location.href = 'index.html';
   }
 }
 function onChangeTab(params,tab) {
@@ -431,21 +449,34 @@ function onCreateAccount() {
           encode: true, 
         }).done(function (response) {
           if(response.success){
-            alert(response.success_msg)
-            // $('#addUserModal').modal('hide');
-            let subject = "Account Creation";
-            let template = `
-              Hi ${$('#email').val()}, <br><br>
-              Thanks for signing up in ORIS: An Online Requisition and Inventory System for City College of Calamba.<br>
-              Your account has been successfully created. Below is your account password information.<br>
-              Password: ${response.data} <br>
-              <a href='https://orisinventory.online/'>Login here </a> <br>
-              Thanks and Regards,.<br>
-              ORIS`;
-            sendMail($('#email').val(),subject,template);
-             window.location.reload();
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: response.success_msg,
+              showConfirmButton: false,
+              timer: 1000
+            })   
+            setTimeout(function() {
+              Swal.close();
+              let subject = "Account Creation";
+              let template = `
+                Hi ${$('#email').val()}, <br><br>
+                Thanks for signing up in ORIS: An Online Requisition and Inventory System for City College of Calamba.<br>
+                Your account has been successfully created. Below is your account password information.<br>
+                Password: ${response.data} <br>
+                <a href='https://orisinventory.online/'>Login here </a> <br>
+                Thanks and Regards,.<br>
+                ORIS`;
+              sendMail($('#email').val(),subject,template);
+               window.location.reload();
+            }, 1000);
           }else{
-            alert(response.error_msg)
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: response.error_msg,
+              timer: 1000
+            })
           }
         }).fail(function (response){
           console.log(response.responseText);
@@ -496,7 +527,13 @@ function onViewAccountList() {
       onGenerateAccoutList(response.data);
       sessionStorage.setItem("account_list",JSON.stringify(response.data));
     }else{
-      alert(response.error_msg);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: response.error_msg,
+        timer: 1000
+      })
+      
       template = 
       `<tr>
           <td colspan="10">No records found!</td>
@@ -560,11 +597,26 @@ function onUpdateAccount() {
         encode: true, 
       }).done(function (response) {
         if(response.success){
-          alert(response.success_msg);
-          // $('#addUserModal').modal('hide');
-          window.location.reload();
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: response.success_msg,
+            showConfirmButton: false,
+            timer: 1000
+          })   
+          setTimeout(function() {
+            Swal.close();
+            window.location.reload();
+          
+          }, 1000);
         }else{
-          alert(response.error_msg);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.error_msg,
+            timer: 1000
+          })
+          
 
         }
       }).fail(function (response){
@@ -574,25 +626,50 @@ function onUpdateAccount() {
     });
 }
 function onDeleteAccount(account_id) {
-  let text = "Do you want to delete the account?";
-  if (confirm(text)) {
-    $.ajax({  
-      url:"../php/accountdelete.php",  
-      method:"POST",  
-      data: {account_id:account_id}, 
-      dataType: "json",
-      encode: true, 
-    }).done(function (response) {
-      if(response.success){
-        alert(response.success_msg);
-        window.location.reload();
-      }else{
-        alert(response.error_msg);
-      }
-    }).fail(function (response){
-      console.log(response.responseText);
-    });
-  }
+  Swal.fire({
+    title: 'Warning!',
+    text:'Do you want to delete the record?',
+    icon:'warning',
+    showDenyButton: true,
+    confirmButtonText: 'Yes',
+    denyButtonText: `No`,
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      $.ajax({  
+        url:"../php/accountdelete.php",  
+        method:"POST",  
+       data: {account_id:account_id}, 
+        dataType: "json",
+        encode: true, 
+      }).done(function (response) {
+        if(response.success){
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: response.success_msg,
+            showConfirmButton: false,
+            timer: 1000
+          })   
+          setTimeout(function() {
+            Swal.close();
+            window.location.reload();
+          }, 1000);
+        }else{
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.error_msg,
+            timer: 1000
+          })
+        }
+      }).fail(function (response){
+        console.log(response.responseText);
+      });
+    } else if (result.isDenied) {
+    }
+  })
+
 }
 /* Account Functions */
 
@@ -827,11 +904,25 @@ function onCreateMaterial() {
           encode: true, 
         }).done(function (response) {
           if(response.success){
-              alert(response.success_msg);
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: response.success_msg,
+              showConfirmButton: false,
+              timer: 1000
+            })   
+            setTimeout(function() {
+              Swal.close();
               document.getElementById('qr-download').click();
               window.location.reload();
+            }, 1000);
           }else{
-            alert(response.error_msg)
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: response.error_msg,
+              timer: 1000
+            })
           }
         }).fail(function (response){
           console.log(response.responseText);
@@ -865,11 +956,25 @@ function onUpdateMaterial(form) {
         encode: true, 
       }).done(function (response) {
         if(response.success){
-          console.log("res");
-          alert(response.success_msg);
-          window.location.reload();
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: response.success_msg,
+            showConfirmButton: false,
+            timer: 1000
+          })   
+          setTimeout(function() {
+            Swal.close();
+            window.location.reload();
+          }, 1000);
+          
         }else{
-          alert(response.error_msg);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.error_msg,
+            timer: 1000
+          })
         }
       }).fail(function (response){
         console.log(response.responseText);
@@ -880,47 +985,97 @@ function onUpdateMaterial(form) {
  
 }
 function onDeleteMaterial(product_code) {
-  let text = "Do you want to delete the record?";
-  if (confirm(text)) {
-    $.ajax({  
-      url:"../php/materialdelete.php",  
-      method:"POST",  
-      data: {product_code:product_code}, 
-      dataType: "json",
-      encode: true, 
-    }).done(function (response) {
-      if(response.success){
-        alert(response.success_msg);
-        window.location.reload();
-      }else{
-        alert(response.error_msg);
-      }
-    }).fail(function (response){
-      console.log(response.responseText);
-    });
-  }
+  Swal.fire({
+    title: 'Warning!',
+    text:'Do you want to delete the record?',
+    icon:'warning',
+    showDenyButton: true,
+    confirmButtonText: 'Yes',
+    denyButtonText: `No`,
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      $.ajax({  
+        url:"../php/materialdelete.php",  
+        method:"POST",  
+        data: {product_code:product_code}, 
+        dataType: "json",
+        encode: true, 
+      }).done(function (response) {
+        if(response.success){
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: response.success_msg,
+            showConfirmButton: false,
+            timer: 1000
+          })   
+          setTimeout(function() {
+            Swal.close();
+            window.location.reload();
+          }, 1000);
+        }else{
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.error_msg,
+            timer: 1000
+          })
+        }
+      }).fail(function (response){
+        console.log(response.responseText);
+      });
+    } else if (result.isDenied) {
+    }
+  })
+
 }
 function onScanDelete() {
   let product_code_scan =  $('#product_code_scan').val();
-  let text = "Do you want to delete the record?";
-  if (confirm(text)) {
-    $.ajax({  
-      url:"../php/materialdelete.php",  
-      method:"POST",  
-      data: {product_code:product_code_scan}, 
-      dataType: "json",
-      encode: true, 
-    }).done(function (response) {
-      if(response.success){
-        alert(response.success_msg);
-        window.location.reload();
-      }else{
-        alert(response.error_msg);
-      }
-    }).fail(function (response){
-      console.log(response.responseText);
-    });
-  }
+  Swal.fire({
+    title: 'Warning!',
+    text:'Do you want to delete the record?',
+    icon:'warning',
+    showDenyButton: true,
+    confirmButtonText: 'Yes',
+    denyButtonText: `No`,
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      $.ajax({  
+        url:"../php/materialdelete.php",  
+        method:"POST",  
+        data: {product_code:product_code_scan}, 
+        dataType: "json",
+        encode: true, 
+      }).done(function (response) {
+        if(response.success){
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: response.success_msg,
+            showConfirmButton: false,
+            timer: 1000
+          })   
+          setTimeout(function() {
+            Swal.close();
+            window.location.reload();
+          }, 1000);
+        }else{
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.error_msg,
+            timer: 1000
+          })
+        }
+      }).fail(function (response){
+        console.log(response.responseText);
+      });
+    } else if (result.isDenied) {
+    }
+  })
+
 }
 function onDownloadPDFMaterial() {
   let table_header = "List of Supplies";
@@ -1215,6 +1370,8 @@ function onClickViewHistory(history) {
   document.getElementById("note_by").value = history.noted_by;
   document.getElementById("request_id").value = history.id;
   document.getElementById("remarks").value = history.remarks;
+  document.getElementById("email").value = history.email;
+
   date_approved.value = history.date_approved ;
 
   if(history.product_category == "Fixed Assets"){
@@ -1223,6 +1380,11 @@ function onClickViewHistory(history) {
       $("#history_form").find(".disable").prop("disabled", true);
       $("#history_form").find(".to-disable").prop("disabled", true);
       document.getElementById('submit-btn').classList.remove('d-none');
+      var selectElement = document.getElementById("status");
+    // Remove the second option
+      selectElement.options[0].remove();
+      selectElement.options[1].remove();
+      selectElement.options[2].remove();
     } else if(history.status == 3 || history.status == 4){
       $("#history_form").find(".disable").prop("disabled", true);
       $("#history_form").find(".to-disable").prop("disabled", true);
@@ -1253,48 +1415,120 @@ function onUpdateRequest() {
   let onhand =  $('#on_hand').val();
   let quantity =  $('#product_quantity').val();
   let product_name =  $('#product_name').val();
-  let status =  $('#status').val();
   $("#history_form").find("select").prop("disabled", false);
   $("#history_form").find(".disable").prop("disabled", false);
   $("#history_form").find(".to-disable").prop("disabled", false);
-  var text;
-  if (status == '2') {
-    text = "Proceed with this action? The "+product_name+" will have a remaining capacity of "+ (onhand - quantity)+" after this request";
-    if (!confirm(text)) {
-      return;
-    }
-  }
   $('#history_form').validate({
     rules: {
       date_to_claim: { required: true }
     },
     submitHandler: function (form) {
-      $.ajax({  
-        url:"../php/requestupdate.php",  
-        method:"POST",  
-        data: $('#history_form').serialize(), 
-        dataType: "json",
-        encode: true, 
-      }).done(function (response) {
-        if(response.success){
-          console.log("Result",response);
-          alert(response.success_msg)
-          let subject = "Account Creation";
-          let template = `
-            Hi , <br><br>
-            Thanks for signing up in ORIS: An Online Requisition and Inventory System for City College of Calamba.<br>
-            Your account has been successfully created. Below is your account password information.<br>
-            <a href='https://orisinventory.online/'>Login here </a> <br>
-            Thanks and Regards,.<br>
-            ORIS`;
-          sendMail('0nameless5@gmail.com',subject,template);
-          window.location.reload();
-        }else{
-          alert(response.error_msg)
+      if ($('#on_hand').val() > $('#product_quantity').val()) {
+        let text = "";
+        if ($('#status').val() == '2') {
+          text = "Proceed with this action? The " + product_name + " will have a remaining capacity of " + (onhand - quantity) + " after this request";
+        }else if($('#status').val() == '3'){
+          text = "Do you wish to reject this request?";
+        }else if($('#status').val() == '4'){
+          text = "The "+product_name+" is now returned, do you wish to record?";
         }
-      }).fail(function (response){
-        console.log(response.responseText);
-      });
+        Swal.fire({
+          text: text,
+          icon: 'question',
+          showDenyButton: true,
+          confirmButtonText: 'Yes',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+              url: "../php/requestupdate.php",
+              method: "POST",
+              data: $('#history_form').serialize(),
+              dataType: "json",
+              encode: true,
+            }).done((response) => {
+              let subject, template = "";
+              if($('#status').val() == '2'){
+                  subject = `Approval of Material Request on Oris Inventory System`;
+                  template = `
+                Dear ${$('#full_name').val()},<br><br>
+                This email is in reference to your recent request for ${$('#product_name').val()} on the Oris Inventory System. I am pleased to inform you that your request has been approved.<br><br>
+                The following items will be reserved for your department's use:<br>
+                ${$('#product_name').val()} - ${$('#product_quantity').val()} <br><br>
+                ${$('#product_category').val() == 1 ? '' : 'Please be reminded to use the materials responsibly and to return them in good condition after use.'}
+                If there are any issues or concerns regarding the items, please do not hesitate to reach out to us. <br><br>
+                Thank you for using the Oris Inventory System for your material needs.<br><br>
+                Best regards,<br>
+                Lielanie O. Barrion, LPT, MACA <br>
+                Vice President For Administration<br>
+                Oris Inventory System`;
+              }else if($('#status').val() == '3'){
+                  subject = `Rejection of Material Request on Oris Inventory System`;
+                  template = `
+                Dear ${$('#full_name').val()},<br><br>
+                I hope this email finds you in good health and high spirits. I am writing to inform you that your request for ${$('#product_name').val()} has been rejected.<br><br>
+                After careful review and consideration, it has been determined that the requested material is not currently available in our inventory and cannot be procured at this time.<br><br>
+                We apologize for any inconvenience this may cause and we understand the urgency of your request. However, please be assured that we are always working to improve our resources and processes to better serve you in the future.<br><br>
+                If you have any further questions or concerns, please don't hesitate to reach out to us.<br><br>
+                Best regards,<br>
+                Lielanie O. Barrion, LPT, MACA <br>
+                Vice President For Administration<br>
+                Oris Inventory System`;
+              }else if($('#status').val() == '4'){
+                subject = `Return of Product ${$('#product_name').val()}  in School Inventory System`;
+                template = `
+                Dear ${$('#department').val()},<br><br>
+                We hope this email finds you well. This is to inform you that the return of ${$('#product_name').val()} has been successfully recorded in the Oris Inventory System. We would like to express our gratitude for your cooperation and responsibility in returning the items in good condition.
+                Should you have any further needs, please do not hesitate to reach out to us. Our team is always here to assist you.<br><br>
+                Best regards,<br>
+                Lielanie O. Barrion, LPT, MACA <br>
+                Vice President For Administration<br>
+                Oris Inventory System`;
+              }
+              sendMail($('#email').val(),subject,template);
+              if (response.success) {
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: response.success_msg,
+                  showConfirmButton: false,
+                  timer: 1000
+                });
+                setTimeout(() => {
+                  Swal.close();
+                  window.location.reload();
+                }, 1000);
+              } else {
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'error',
+                  text: response.error_msg,
+                  showConfirmButton: false,
+                  timer: 1000
+                });
+                setTimeout(() => {
+                  Swal.close();
+                }, 1000);
+              }
+            }).fail((response) => {
+              console.log(response.responseText);
+            });
+          } else if (result.isDenied) {
+          }
+        });
+      } else {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          text: "Invalid Quantity",
+          showConfirmButton: false,
+          timer: 1000
+        });
+        setTimeout(() => {
+          Swal.close();
+        }, 1000);
+      }
+      
+     
     }
   });
   
@@ -1330,7 +1564,13 @@ function sendMail(email,subject,body) {
          success: function(response) {
              /* alert('Email sent'); */
          },error: function() {
-             alert('System error: Ajax not working properly');
+             Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'System error: Ajax not working properly',
+              timer: 1000
+            })
+            
          }  
      }); 
 }
@@ -1537,7 +1777,6 @@ function onResetPhysicalFilter() {
   dateStart = '';
   dateEnd ='';
   onViewPhysicalList(table_selected);
-  
 }
 function onRegisterScanedItem() {
   $("#scaned_material_form").find("select").prop("disabled", false);
@@ -1553,12 +1792,24 @@ function onRegisterScanedItem() {
         encode: true, 
       }).done(function (response) {
         if(response.success){
-          console.log("Ressult",response);
-            alert(response.success_msg)
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: response.success_msg,
+            showConfirmButton: false,
+            timer: 1000
+          })   
+          setTimeout(function() {
+            Swal.close();
             window.location.reload();
+          }, 1000);
         }else{
-          alert(response.error_msg)
-            console.log("Ressult",response.error_msg);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: response.error_msg,
+              timer: 1000
+            })
         }
       }).fail(function (response){
         console.log(response.responseText);
@@ -1636,6 +1887,8 @@ function onClickViewPhysical(product_details) {
   product_recieved_date_input.value = product_details.product_recieved_date;
   product_remarks_input.value = product_details.product_remarks;
   product_status_input.value = product_details.product_status;
+  generate(product_details.product_code,2);
+
 }
 function onDownloadPDFPhysical() {
   let table_header = "List of Supplies";

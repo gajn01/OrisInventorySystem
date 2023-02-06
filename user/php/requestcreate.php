@@ -12,6 +12,8 @@ include("connection.php"); //Establishing connection with our database
     $full_name = $_POST['full_name'];
     $department= $_POST['department'];
     $date_requested= $_POST['date_requested'];
+    $email= $_POST['email'];
+
     /* $date_to_claim= $_POST['date_to_claim']; */
     if($product_category == "Supplies"){
         $product_category= 1;
@@ -30,6 +32,8 @@ include("connection.php"); //Establishing connection with our database
     $full_name = stripslashes($full_name);
     $department = stripslashes($department);
     $date_requested = stripslashes($date_requested);
+    $email = stripslashes($email);
+
     /* $date_to_claim = stripslashes($date_to_claim); */
     $date_return = stripslashes($date_return);
     $product_code = mysqli_real_escape_string($db,$product_code);
@@ -41,14 +45,16 @@ include("connection.php"); //Establishing connection with our database
     $full_name = mysqli_real_escape_string($db,$full_name);
     $department = mysqli_real_escape_string($db,$department);
     $date_requested = mysqli_real_escape_string($db,$date_requested);
+    $email = mysqli_real_escape_string($db,$email);
+
   /*   $date_to_claim = mysqli_real_escape_string($db,$date_to_claim); */
 
 
     $sql=("SELECT * FROM tbl_inventory WHERE product_code = '$product_code' AND product_quantity >= '$product_quantity' ");
     $result= mysqli_query($db,$sql);
     if ($result->num_rows > 0) {
-        $sql=("INSERT INTO tbl_history (account_id,product_category,product_name,product_description,product_code,product_quantity,product_unit,purpose,full_name,department,date_requested,date_return,status) 
-        VALUES ('$account_id','$product_category','$product_name','$product_description','$product_code','$product_quantity','$product_unit','$purpose','$full_name','$department','$date_requested','$date_return','1')");
+        $sql=("INSERT INTO tbl_history (account_id,email,product_category,product_name,product_description,product_code,product_quantity,product_unit,purpose,full_name,department,date_requested,date_return,status) 
+        VALUES ('$account_id','$email','$product_category','$product_name','$product_description','$product_code','$product_quantity','$product_unit','$purpose','$full_name','$department','$date_requested','$date_return','1')");
         if (mysqli_query($db, $sql)) {
         $form_data['success'] = true;
         if($product_category == 1){
