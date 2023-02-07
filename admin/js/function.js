@@ -32,7 +32,7 @@ let dateStart ='';
 let dateEnd =''
 let scan_tab ='';
 
-let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+let scanner = new Instascan.Scanner({ video: document.getElementById('preview'), mirror: false, scanPeriod: 5   });
 scanner.addListener('scan', function (content) {
   $.ajax({  
     url:"../php/materialallview.php",  
@@ -82,22 +82,15 @@ function onStartScan(data) {
   scan_tab = data;
   Instascan.Camera.getCameras().then(function (cameras) {
     if(cameras.length>0){
-      scanner.start(cameras[0]);
-    /*   $('[name="options"]').on('change',function(){
-          if($(this).val()==1){
-              if(cameras[0]!=""){
-                  scanner.start(cameras[0]);
-              }else{
-                  alert('No Front camera found!');
-              }
-          }else if($(this).val()==2){
-              if(cameras[1]!=""){
-                  scanner.start(cameras[1]);
-              }else{
-                  alert('No Back camera found!');
-              }
-          }
-      }); */
+      var screenWidth = window.innerWidth;
+      var screenHeight = window.innerHeight;
+      console.log("Screen width: " + screenWidth + "px");
+      console.log("Screen height: " + screenHeight + "px");
+      if(screenWidth > 768 ){
+        scanner.start(cameras[0]);
+      }else{
+        scanner.start(cameras[2]);
+      }
       }else{
           alert('No cameras found.');
           Swal.fire({
@@ -213,7 +206,7 @@ function onLogin() {
               })
               setTimeout(function() {
                 Swal.close();
-                location.href = '../pages/dashboard.html'
+                location.href = '../admin/pages/dashboard.html'
               }, 1500);
             /* alert(response.success_msg);
              */
