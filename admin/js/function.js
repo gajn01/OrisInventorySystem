@@ -1416,7 +1416,7 @@ function onUpdateRequest() {
       date_to_claim: { required: true }
     },
     submitHandler: function (form) {
-      if ($('#on_hand').val() > $('#product_quantity').val()) {
+      if (parseInt($('#on_hand').val() ) > parseInt($('#product_quantity').val()) ) {
         let text = "";
         if ($('#status').val() == '2') {
           text = "Proceed with this action? The " + product_name + " will have a remaining capacity of " + (onhand - quantity) + " after this request";
