@@ -906,7 +906,7 @@ function onCreateMaterial() {
             })   
             setTimeout(function() {
               Swal.close();
-              document.getElementById('qr-download').click();
+              /* document.getElementById('qr-download').click(); */
               window.location.reload();
             }, 1000);
           }else{
@@ -1419,7 +1419,7 @@ function onUpdateRequest() {
       if (parseInt($('#on_hand').val() ) > parseInt($('#product_quantity').val()) ) {
         let text = "";
         if ($('#status').val() == '2') {
-          text = "Proceed with this action? The " + product_name + " will have a remaining capacity of " + (onhand - quantity) + " after this request";
+          text = "Proceed with this action? The " + product_name + " will have a remaining capacity of " + (parseInt($('#on_hand').val() ) - parseInt($('#product_quantity').val())) + " after this request";
         }else if($('#status').val() == '3'){
           text = "Do you wish to reject this request?";
         }else if($('#status').val() == '4'){
