@@ -1,6 +1,9 @@
 <?php
 include("connection.php"); //Establishing connection with our database
  
+
+    $year = date("Y");
+    $id_format = "";
     $account_id = $_POST['account_id']; 
     $product_code = $_POST['product_code']; 
     $product_category = $_POST['product_category']; 
@@ -53,8 +56,19 @@ include("connection.php"); //Establishing connection with our database
     $sql=("SELECT * FROM tbl_inventory WHERE product_code = '$product_code' AND product_quantity >= '$product_quantity' ");
     $result= mysqli_query($db,$sql);
     if ($result->num_rows > 0) {
-        $sql=("INSERT INTO tbl_history (account_id,email,product_category,product_name,product_description,product_code,product_quantity,product_unit,purpose,full_name,department,date_requested,date_return,status) 
-        VALUES ('$account_id','$email','$product_category','$product_name','$product_description','$product_code','$product_quantity','$product_unit','$purpose','$full_name','$department','$date_requested','$date_return','1')");
+        $sql=("SELECT * FROM tbl_history ORDER BY id DESC LIMIT 1");
+        $result= mysqli_query($db,$sql);
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $parts = explode("-", $row['id']);
+                $new_id = str_pad(strval(intval($parts[1]) + 1), 5, "0", STR_PAD_LEFT);
+                $id_format = $parts[0] . "-" . $new_id;
+            }
+        }else {
+            $id_format = $year."-00001";
+        }
+        $sql=("INSERT INTO tbl_history (id,account_id,email,product_category,product_name,product_description,product_code,product_quantity,product_unit,purpose,full_name,department,date_requested,date_return,status) 
+        VALUES ('$id_format','$account_id','$email','$product_category','$product_name','$product_description','$product_code','$product_quantity','$product_unit','$purpose','$full_name','$department','$date_requested','$date_return','1')");
         if (mysqli_query($db, $sql)) {
         $form_data['success'] = true;
         if($product_category == 1){

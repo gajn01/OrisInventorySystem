@@ -213,7 +213,7 @@ function onLogin() {
               })
               setTimeout(function() {
                 Swal.close();
-                location.href = '../admin/pages/dashboard.html'
+                location.href = '../pages/dashboard.html'
               }, 1500);
             /* alert(response.success_msg);
              */
