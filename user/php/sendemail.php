@@ -13,7 +13,7 @@
 //  $port = 465;
 //  $secure = "ssl";
 $username = "2023.oris@gmail.com";
-$password = "nkqhapfyrwockhus";
+$password = "jlkchooqjvgchuyv";
 
   $email = $_POST['email'];
   $subject = $_POST['subject'];

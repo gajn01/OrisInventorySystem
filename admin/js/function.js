@@ -89,7 +89,7 @@ function onStartScan(data) {
       if(screenWidth > 768 ){
         scanner.start(cameras[0]);
       }else{
-        scanner.start(cameras[2]);
+        scanner.start(cameras[1]);
       }
       }else{
           alert('No cameras found.');
@@ -206,7 +206,7 @@ function onLogin() {
               })
               setTimeout(function() {
                 Swal.close();
-                location.href = '../admin/pages/dashboard.html'
+                location.href = '../pages/dashboard.html'
               }, 1500);
             /* alert(response.success_msg);
              */
@@ -1219,6 +1219,7 @@ function onViewHistoryList() {
             <th>Full Name</th>
             <th>Department</th>
             <th>Product Name</th>
+            <th>Product Description</th>
             <th>Quantity</th>
             <th>Unit</th>
             <th>Date Requested</th>
@@ -1237,6 +1238,7 @@ function onViewHistoryList() {
             <th>Full Name</th>
             <th>Department</th>
             <th>Product Name</th>
+            <th>Product Description</th>
             <th>Quantity</th>
             <th>Unit</th>
             <th>Date Requested</th>
@@ -1305,6 +1307,7 @@ function onGenerateHistoryList(data) {
               <td>${element.full_name}</td>
               <td>${element.department}</td>
               <td>${element.product_name}</td>
+              <td>${element.product_description}</td>
               <td>${element.product_quantity}</td>
               <td>${element.product_unit}</td>
               <td>${element.date_requested}</td>
@@ -1352,6 +1355,7 @@ function onClickViewHistory(history) {
   document.getElementById("product_category").value = history.product_category ;
   document.getElementById("product_code").value = history.product_code ;
   document.getElementById("product_name").value = history.product_name ;
+  document.getElementById("product_description").value = history.product_description ;
   document.getElementById("product_quantity").value = history.product_quantity ;
   document.getElementById("full_name").value = history.full_name ;
   document.getElementById("department").value = history.department ;
@@ -1416,7 +1420,7 @@ function onUpdateRequest() {
       date_to_claim: { required: true }
     },
     submitHandler: function (form) {
-      if (parseInt($('#on_hand').val() ) > parseInt($('#product_quantity').val()) ) {
+      if (parseInt($('#on_hand').val() ) >= parseInt($('#product_quantity').val()) ) {
         let text = "";
         if ($('#status').val() == '2') {
           text = "Proceed with this action? The " + product_name + " will have a remaining capacity of " + (parseInt($('#on_hand').val() ) - parseInt($('#product_quantity').val())) + " after this request";
@@ -1590,6 +1594,7 @@ var pdfRow = [
   { text: 'Name', style: 'header' },
   { text: 'Department', style: 'header' },
   { text: 'Product Name', style: 'header' },
+  { text: 'Product Description', style: 'header' },
   { text: 'Quantity', style: 'header' },
   { text: 'Unit', style: 'header' },
   { text: 'Date Requested', style: 'header' },
@@ -1609,7 +1614,7 @@ for (var i = 0; i < jsonData.length; i++) {
     }else if(obj.status == 4){
       obj.status = 'Returned';
     }
-    var pdfRow = [ctr,obj.id,obj.product_category, obj.full_name, obj.department, obj.product_name, obj.product_quantity,obj.product_unit, obj.date_requested,obj.status];
+    var pdfRow = [ctr,obj.id,obj.product_category, obj.full_name, obj.department,obj.product_name,  obj.product_description, obj.product_quantity,obj.product_unit, obj.date_requested,obj.status];
     pdfData.push(pdfRow);
 }
 var docDefinition = {
@@ -1626,7 +1631,7 @@ var docDefinition = {
     {
       style: 'tables',
       table: {
-        widths: ['auto','auto','auto', 'auto','auto', 'auto','auto',20,'auto', 'auto'],
+        widths: ['auto','auto','auto', 'auto','auto','auto', 'auto','auto',20,'auto', 'auto'],
         headerRows: 1,
         body: pdfData,
       }
@@ -1642,14 +1647,14 @@ var docDefinition = {
       margin: [50, 20]
     };
   },
-  pageMargins: [ 40, 10, 40, 70 ],
+  pageMargins: [ 10, 10, 10, 70 ],
   styles: {
 		header: {
 			fontSize: 11,
 			bold: true,
 		},
     tables:{
-      fontSize:9
+      fontSize:8
     }
 	},
 };
