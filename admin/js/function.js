@@ -2043,3 +2043,6 @@ function onGenerateActivityLog(data) {
         table.innerHTML += template;
     });
 }
+
+
+

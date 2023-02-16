@@ -157,7 +157,14 @@ function goTo(params) {
     window.location.href = "../pages/history.html";
   }
 }
+
+
 function onChangePassword() {
+
+  $.validator.addMethod("matchesPassword", function(value, element) {
+    return this.optional(element) || /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/.test(value);
+  }, "Your password must contain at least one uppercase letter, one lowercase letter, and one number.");
+
   let account = sessionStorage.getItem('account');
   let json_account = JSON.parse(account);
   let account_id = json_account.account_id;
@@ -166,10 +173,17 @@ function onChangePassword() {
   $('#changepass_form').validate({
     rules: {
       old_password: { required: true},
-      new_password: { required: true, minlength: 5 },
+      new_password: {
+        required: true,
+        minlength: 5,
+        matchesPassword: true // uses the custom validation method
+      },
       confirm_password: { required: true, minlength: 5, equalTo: "#new_password" }
     },
-    messages: { confirm_password: { equalTo: "The new password and confirm password fields must match." } },
+    messages: { 
+      confirm_password: { equalTo: "The new password and confirm password fields must match." } ,
+      //  new_password: { pattern: "Your password must contain at least one uppercase letter, one lowercase letter, and one number."}
+    },
     submitHandler: function (form) {
         $.ajax({  
           url:"../php/changepassword.php",  
@@ -613,8 +627,27 @@ function onClickRequest(product) {
 
   onChangeCategory();
 }
+function onCheckAgreement() {
+  let checkbox = document.getElementById("agreement");
+  let request_submit = document.getElementById("request_submit");
+  if (checkbox.checked) {
+    request_submit.disabled = false;
+  } else {
+    request_submit.disabled = true;
+  }
+}
 function onClickViewHistory(history) {
-
+    let checkbox = document.getElementById("agreement");
+    let request_submit = document.getElementById("request_submit");
+  if(history.product_category == 2){
+    if (checkbox.checked) {
+      request_submit.disabled = false;
+    } else {
+      request_submit.disabled = true;
+    }
+  }else{
+    request_submit.disabled = false;
+  }
   if(history.status == "Rejected"){
     document.getElementById('date_approved_label').innerText = "Date Rejected";
   }else{
@@ -678,7 +711,7 @@ function onRequest() {
             })   
             setTimeout(function() {
               Swal.close();
-              let subject = `Request for Materials from ${$('#department').val()}`;
+          /*     let subject = `Request for Materials from ${$('#department').val()}`;
               let template = `
               Dear  Lielanie O. Barrion, LPT, MACA ,<br> <br>
               I hope this email finds you well. I am writing from the ${$('#department').val()}, and I am in need of some materials for an upcoming project. I would like to request the following items from the Oris Inventory System:<br>
@@ -690,7 +723,7 @@ function onRequest() {
               ${$('#full_name').val()}<br>
               ${$('#department').val()}<br>
               Oris Inventory System`;
-              sendMail('2023.oris@gmail.com',subject,template);
+              sendMail('2023.oris@gmail.com',subject,template); */
               onViewAllHistoryList();
               window.location.reload();
             }, 1000);

@@ -225,9 +225,15 @@
                             <input class="form-control mb-3" type="date" id="date_return" name="date_return" >
                           </div>
                         </div>
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <input type="checkbox" name="agreement" id="agreement" onchange="onCheckAgreement()">
+                            <span>By checking the box you agree to our <a href="" data-bs-toggle="modal" data-bs-target="#termsModal">Terms & Conditions</a></span>
+                          </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-add" id="request_submit" onclick="onRequest()">Submit</button>
+                      <button type="submit" class="btn btn-add" id="request_submit" disabled="true" onclick="onRequest()">Submit</button>
                     </div>
                   </form>
                 </div>
@@ -235,37 +241,79 @@
             </div>
       
              <!-- modal change password -->
-      <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h2 class="modal-title fs-5" id="changePasswordModalLabel" >Change Password Form</h2>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="changepass_form">
-              <div class="modal-body">
-                  <div class="row">
-                    <div class="col-md-12 col-sm-12">
-                      <label for="old_password" class="col-sm-12 col-md-12 col-form-label">Old Password <span class="require"> * </span></label>
-                      <input class="form-control mb-3" type="password" id="old_password" name="old_password"  >
-                    </div>
-                    <div class="col-md-12 col-sm-12">
-                      <label for="new_password" class="col-sm-12 col-md-12 col-form-label">New Password <span class="require"> * </span></label>
-                      <input class="form-control mb-3" type="password" id="new_password" name="new_password"  >
-                    </div>
-                    <div class="col-md-12 col-sm-12">
-                      <label for="confirm_password" class="col-sm-12 col-md-12 col-form-label">Confirm Password <span class="require"> * </span></label>
-                      <input class="form-control mb-3" type="password" id="confirm_password" name="confirm_password"  >
-                    </div>
+            <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h2 class="modal-title fs-5" id="changePasswordModalLabel" >Change Password Form</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
+                  <form id="changepass_form">
+                    <div class="modal-body">
+                        <div class="row">
+                          <div class="col-md-12 col-sm-12">
+                            <label for="old_password" class="col-sm-12 col-md-12 col-form-label">Old Password <span class="require"> * </span></label>
+                            <input class="form-control mb-3" type="password" id="old_password" name="old_password"  >
+                          </div>
+                          <div class="col-md-12 col-sm-12">
+                            <label for="new_password" class="col-sm-12 col-md-12 col-form-label">New Password <span class="require"> * </span></label>
+                            <input class="form-control mb-3" type="password" id="new_password" name="new_password"  >
+                          </div>
+                          <div class="col-md-12 col-sm-12">
+                            <label for="confirm_password" class="col-sm-12 col-md-12 col-form-label">Confirm Password <span class="require"> * </span></label>
+                            <input class="form-control mb-3" type="password" id="confirm_password" name="confirm_password"  >
+                          </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-add"  onclick="onChangePassword()">Submit</button>
+                    </div>
+                  </form>
+                </div>
               </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-add" id="request_submit" onclick="onChangePassword()">Submit</button>
+            </div>
+            <!-- terms -->
+            <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h2 class="modal-title fs-5" id="termsModalLabel" >Terms & Conditions</h2>
+                    <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#requestModal" ></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                          <h6>
+                            The following Terms & Conditions are considered mandatory:
+                          </h6>
+                          <ul>
+                            <li>
+                              <p>
+                               Equipment must be returned in good order and must be devoid of permanent damage including but not limited to structural damage and markings beyond reasonable wear and tear.
+                              </p>
+                            </li>
+                            <li>
+                              <p>
+                               	The Borrower is responsible for the full cost of repair or replacement of any or all of the “Equipment” that is damaged, lost, or stolen from the time the Borrower assumes custody until its return to the OVPA at expiry of this agreement. (3 days to 1 week grace period)
+                              </p>
+                            </li>
+                            <li>
+                              <p>
+                                The Borrower shall be responsible for the proper use and deployment of the “Equipment”. 
+                              </p>
+                            </li>
+                            <li>
+                              <p>
+                                The Borrower shall be responsible for training anyone using the “Equipment” on the proper use of the “Equipment” in accordance with any usage procedures. If the Borrower is unclear about their responsibility in this regard, they are obligated to inquire to the Lender with regards to such procedures.
+                              </p>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                  </div>
+                </div>
               </div>
-            </form>
-          </div>
-        </div>
-      </div>
+            </div>
 
           </div>
         </div>
