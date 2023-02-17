@@ -780,7 +780,7 @@ function onResetFilter() {
 function onGenerateMaterialList(data,category_id) {
   let table = document.querySelector("table");
   let template;
-data.forEach(element => {
+  data.forEach(element => {
     ctr++;
     let productCode = element.product_code;
     let productQuantity = element.product_quantity;
@@ -1090,7 +1090,9 @@ function onDownloadPDFMaterial() {
     { text: 'Code', style: 'header' },
     { text: 'Name', style: 'header' },
     { text: 'Description', style: 'header' },
-    { text: 'Quantity', style: 'header' },
+    { text: 'Inital Qty', style: 'header' },
+    { text: 'On-hand Qty', style: 'header' },
+    { text: 'Issued Qty', style: 'header' },
     { text: 'Unit', style: 'header' },
     { text: 'Location', style: 'header' },
     { text: 'Person-in-charge', style: 'header' },
@@ -1102,7 +1104,7 @@ function onDownloadPDFMaterial() {
   for (var i = 0; i < jsonData.length; i++) {
      ctr++;
       var obj = jsonData[i];
-      var pdfRow = [ctr,obj.product_code, obj.product_name, obj.product_description,obj.product_quantity,obj.product_unit, obj.product_location,obj.product_person_incharge,obj.product_inventory_date,obj.product_recieved_date];
+      var pdfRow = [ctr,obj.product_code, obj.product_name, obj.product_description,obj.product_intial_quantity,obj.product_quantity, (obj.product_intial_quantity - obj.product_quantity),obj.product_unit, obj.product_location,obj.product_person_incharge,obj.product_inventory_date,obj.product_recieved_date];
       pdfData.push(pdfRow);
   }
   var docDefinition = {
@@ -1137,10 +1139,10 @@ function onDownloadPDFMaterial() {
     pageMargins: [ 40, 10, 40, 70 ],
     styles: {
       table:{
-        fontSize: 10,
+        fontSize: 9,
       },
       header: {
-        fontSize: 11,
+        fontSize: 10,
         bold: true,
       },
    
@@ -1150,6 +1152,53 @@ function onDownloadPDFMaterial() {
   // Download the PDF
   pdfMake.createPdf(docDefinition).download();
   
+  
+}
+function onSaveIntialInventory() {
+  Swal.fire({
+    text:'Do you wish to save initial inventory?',
+    icon:'info',
+    showDenyButton: true,
+    confirmButtonText: 'Yes',
+    denyButtonText: `No`,
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      $.ajax({  
+        url:"../php/materialrecordsaved.php",  
+        method:"POST",  
+        data: '', 
+        dataType: "json",
+        encode: true, 
+      }).done(function (response) {
+        if(response.success){
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: response.success_msg,
+            showConfirmButton: false,
+            timer: 1000
+          })   
+          setTimeout(function() {
+            Swal.close();
+          }, 1000);
+        }else{
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.error_msg,
+            timer: 1000
+          })
+        }
+      }).fail(function (response){
+        console.log(response.responseText);
+      });
+    } else if (result.isDenied) {
+    }
+  })
+
+
+
   
 }
 
@@ -1352,6 +1401,8 @@ function onClickViewHistory(history) {
 
   date_approved = document.getElementById("date_approved");
   date_approved.min = new Date().toISOString().split("T")[0];
+  date_to_claim = document.getElementById("date_to_claim");
+  date_to_claim.min = new Date().toISOString().split("T")[0];
   document.getElementById("product_category").value = history.product_category ;
   document.getElementById("product_code").value = history.product_code ;
   document.getElementById("product_name").value = history.product_name ;

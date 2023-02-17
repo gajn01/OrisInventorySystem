@@ -45,8 +45,8 @@ include("connection.php"); //Establishing connection with our database
     $product_remarks = mysqli_real_escape_string($db,$product_remarks);
     $product_status = mysqli_real_escape_string($db,$product_status);
 
-    $sql=("INSERT INTO tbl_inventory (product_code,product_category,product_name,product_description,product_quantity,product_unit,product_location,product_person_incharge,product_status,product_recieved_date,product_inventory_date,product_remarks) 
-    VALUES ('$product_code','$product_category','$product_name','$product_description','$product_quantity','$product_unit','$product_location','$product_person_incharge','$product_status','$product_recieved_date','$product_inventory_date','$product_remarks')");
+    $sql=("INSERT INTO tbl_inventory (product_code,product_category,product_name,product_description,product_intial_quantity,product_quantity,product_unit,product_location,product_person_incharge,product_status,product_recieved_date,product_inventory_date,product_remarks) 
+    VALUES ('$product_code','$product_category','$product_name','$product_description','$product_quantity','$product_quantity','$product_unit','$product_location','$product_person_incharge','$product_status','$product_recieved_date','$product_inventory_date','$product_remarks')");
         if (mysqli_query($db, $sql)) {
         $form_data['success'] = true;
         $form_data['success_msg'] = "Successfully added product";
@@ -55,7 +55,6 @@ include("connection.php"); //Establishing connection with our database
         $template = $product_name . ', added in inventory ';
         $sql_activity = "INSERT INTO tbl_activity_log (user , activity, ip_address) VALUES ('Admin', '$template', '$ip')";
         mysqli_query($db, $sql_activity);
-        
     } else {
         $form_data['success'] = false;
         $form_data['error_msg'] = "Failed to add product";
