@@ -1269,6 +1269,7 @@ function onViewHistoryList() {
             <th>Department</th>
             <th>Product Name</th>
             <th>Product Description</th>
+            <th>Purpose</th>
             <th>Quantity</th>
             <th>Unit</th>
             <th>Date Requested</th>
@@ -1288,6 +1289,7 @@ function onViewHistoryList() {
             <th>Department</th>
             <th>Product Name</th>
             <th>Product Description</th>
+            <th>Purpose</th>
             <th>Quantity</th>
             <th>Unit</th>
             <th>Date Requested</th>
@@ -1357,6 +1359,7 @@ function onGenerateHistoryList(data) {
               <td>${element.department}</td>
               <td>${element.product_name}</td>
               <td>${element.product_description}</td>
+              <td>${element.purpose}</td>
               <td>${element.product_quantity}</td>
               <td>${element.product_unit}</td>
               <td>${element.date_requested}</td>
